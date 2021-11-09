@@ -1,38 +1,17 @@
 ---
-title: Hello World
+title: 119行动
 ---
-Welcome to [Hexo](https://hexo.io/)! This is your very first post. Check [documentation](https://hexo.io/docs/) for more info. If you get any problems when using Hexo, you can find the answer in [troubleshooting](https://hexo.io/docs/troubleshooting.html) or you can ask me on [GitHub](https://github.com/hexojs/hexo/issues).
 
-## Quick Start
 
-### Create a new post
+## 内容
 
-``` bash
-$ hexo new "My New Post"
-```
+我打算开始写博客，今天是2021年11月9号。我称之为119行动。
 
-More info: [Writing](https://hexo.io/docs/writing.html)
+119，一方面因为今天是11月9号开始时间，另一方面也表示这个事情对我像火灾一样比较紧迫。
 
-### Run server
+github是我主发的地方，抽空会将文章同步到个人公众号、CSDN等等各个平台。
 
-``` bash
-$ hexo server
-```
-
-More info: [Server](https://hexo.io/docs/server.html)
-
-### Generate static files
-
-``` bash
-$ hexo generate
-```
-
-More info: [Generating](https://hexo.io/docs/generating.html)
-
-### Deploy to remote sites
-
-``` bash
-$ hexo deploy
-```
-
-More info: [Deployment](https://hexo.io/docs/one-command-deployment.html)
+119行动的内容包含：
+1，每天写一篇博客。
+2，至少每2天跑一次3公里。
+3，每天做一道code题目。

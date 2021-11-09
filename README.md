@@ -1,37 +1,22 @@
-## Welcome to GitHub Pages
+## 个人博客
 
-You can use the [editor on GitHub](https://github.com/liu-xiaoran/liu-xiaoran.github.io/edit/main/README.md) to maintain and preview the content for your website in Markdown files.
+转眼加入github已经6年了，虽然提交的都是我随手写的代码，质量不高，但中间有那么一两年，我提交很频繁，恰也是我进步最快的时候。
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+今天我思考了一些问题：
 
-### Markdown
+1，现在随着不停的加班的压力和生活的琐事，自己的学习动力却来越少。
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+2，现在很多人博客都是copy内容居多，工作中搜索到有价值的文章越来越少。
 
-```markdown
-Syntax highlighted code block
+3，自己平时工作中的心得，以及学习中的笔记，没有归纳整理。
 
-# Header 1
-## Header 2
-### Header 3
+4，最近面试了不少人，发现很多码农缺少展示自己的地方和案例（我也一样）。
 
-- Bulleted
-- List
+于是我打算开始写博客，今天是2021年11月9号。我称之为119行动。
 
-1. Numbered
-2. List
+119，一方面因为今天是11月9号开始时间，另一方面也表示这个事情对我像火灾一样比较紧迫。
 
-**Bold** and _Italic_ and `Code` text
+行动的内容就是：我打算挑战每天写博客，连续119天，如果中间有中断，那么就再从0开始。
+博客的内容，以系列技术分享、工作中的问题，面试题为主，还包含一些个人思考（忙碌没时间写博客当天的偷懒，比如今天现在22点，我还在加班）。
 
-[Link](url) and ![Image](src)
-```
-
-For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/liu-xiaoran/liu-xiaoran.github.io/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+github是我主发的地方，抽空会将文章同步到个人公众号、CSDN等等各个平台。

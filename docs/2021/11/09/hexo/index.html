@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="article title, 刘小然&amp;博客">
+    <meta name="keywords" content="hexo+GitHub 搭建博客, 刘小然&amp;博客">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>article title | 刘小然&amp;博客</title>
+    <title>hexo+GitHub 搭建博客 | 刘小然&amp;博客</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -312,12 +312,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/2.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/13.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">article title</h1>
+                    <h1 class="description center-align post-title">hexo+GitHub 搭建博客</h1>
                 </div>
             </div>
         </div>
@@ -452,21 +452,21 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2021-11-09
+                    2021-11-10
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    0
+                    828
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    1 分
+                    3 分
                 </div>
                 
 
@@ -486,7 +486,30 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                
+                <h2 id="hexo-GitHub-搭建博客"><a href="#hexo-GitHub-搭建博客" class="headerlink" title="hexo+GitHub 搭建博客"></a>hexo+GitHub 搭建博客</h2><p>基础环境：nodejs</p>
+<p><em>本文用使用示例是github，同样的操作也可用于gitee，但我在实际操作的过程中发现gitee需要实名手持身份证拍照审核，觉得麻烦随之放弃</em></p>
+<h3 id="1-新建仓库"><a href="#1-新建仓库" class="headerlink" title="1, 新建仓库"></a>1, 新建仓库</h3><p>github上新建代码仓库，用来存储博客</p>
+<p><img src="./hexo/githubNewKu.png" alt="githubNewKu.png" title="githubNew"></p>
+<p>注意，项目名字使用 你的github名字加 <font color="red">.github.io</font> 后缀，比如我的GitHub名称是<a target="_blank" rel="noopener" href="https://github.com/liu-xiaoran">liu-xiaoran</a>,n那么我的项目名字就是 liu-xiaoran.github.io 点击创建完成操作，注意不要勾选add Readme file 和其他选项，这个可以后续自行添加，空白的仓库库有助于git的第一次推送合并。</p>
+<h3 id="2-配置博客访问"><a href="#2-配置博客访问" class="headerlink" title="2, 配置博客访问"></a>2, 配置博客访问</h3><p>跳转到刚刚新建仓库首页，也厚点击上方菜单栏的<font color="pink">Settings</font>,再点击左边栏位的<font color="pink">Pages</font>, 填写对应的pages设置。</p>
+<p><img src="./hexo/setPage.png" alt="setPage.png" title="setPage"></p>
+<p>Source 那里默认是 root, 点击选择Theme Chooser，选择一个主体，点击保存。<br>此时你通过填写的仓库名，如 liu-xiaoran.github.io 就可以访问到该博客地址。</p>
+<h3 id="3-配置域名访问"><a href="#3-配置域名访问" class="headerlink" title="3, 配置域名访问"></a>3, 配置域名访问</h3><p>配置域名访问和配置https的方式，打开你的域名解析控制台，如我的阿里云域名配置页面。<br><img src="./hexo/DNS.png" alt="DNS.png" title="DNS"></p>
+<p>配置CNAME，指向你的博客访问地址，如liu-xiaoran.github.io。</p>
+<p>配置结束后，返回github的pages配置页面，填写上域名，自动生成CNAME文件，勾选启用https。保存后稍后即可使用域名访问博客。想使用GitHub自动博客功能的，到此处就可以结束了。</p>
+<h3 id="3-安装使用hexo"><a href="#3-安装使用hexo" class="headerlink" title="3, 安装使用hexo"></a>3, 安装使用hexo</h3><p>打开终端输入</p>
+<p><code>npm i hexo-cli -g</code></p>
+<p>安装hexo, 拉取我们的github上的博客库，到本地。清空内部GitHub博客配置的文件。在文件夹内使用终端，输入</p>
+<p><code>hexo init</code></p>
+<p>初始化文件夹，接着使用 <code>npm i</code> 安装依赖。</p>
+<p>这样hexo博客就配置好了，输入 <code>hexo g</code> 生成静态网页，然后输入 <code>hexo s</code> 打开本地服务器。可以写一个hello本地尝试一下。</p>
+<h3 id="4，配置GitHub默认路径"><a href="#4，配置GitHub默认路径" class="headerlink" title="4，配置GitHub默认路径"></a>4，配置GitHub默认路径</h3><p>本地写完博文，推送到github时，发现通过域名访问的并不去hexo博客地址，怎么办？<br>仔细看我的步骤2里的红框内的，GitHub上的默认博客根目录是固定，只有几个值可以选择，这里选择一个自己喜欢的值，不是root,比如我选的 <font color="pink">docs</font> , 打开自己的hexo配置，_config.yml 将里面的public_dir值改成和GitHub选择的值一致，比如我的都是 <font color="pink">docs</font> 。</p>
+<p><img src="./hexo/setpub.png" alt="setpub.png" title="setpub"></p>
+<p>重新生成静态文件，删除不需要的旧的生成目录，重新提交github。再次通过域名访问，就能看到效果了。</p>
+<h3 id="5，主题配置和hexo深入配置"><a href="#5，主题配置和hexo深入配置" class="headerlink" title="5，主题配置和hexo深入配置"></a>5，主题配置和hexo深入配置</h3><p>主题配置，想复用别人的主题很简单，以我使用的主题hexo-theme-matery为例，<a target="_blank" rel="noopener" href="https://github.com/blinkfox/hexo-theme-matery">https://github.com/blinkfox/hexo-theme-matery</a> 打开hexo-theme-matery项目地址，里面有详细的配置方式，其他开源主题可以自己搜索获得。由于hexo-theme-matery中文文档比较详细，这里就不再赘余了。</p>
+<p>hexo的深入配置也可以参考 <a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/">https://hexo.io/zh-cn/</a> 文档，根据自己的需求自定义配置。</p>
+<p>到此，hexo+GitHub 搭建博客 算是完成了。</p>
+
                 
             </div>
             <hr/>
@@ -512,7 +535,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://goings.top/2021/11/09/article-title/">https://goings.top/2021/11/09/article-title/</a>
+                    <a href="https://goings.top/2021/11/09/hexo/">https://goings.top/2021/11/09/hexo/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -758,13 +781,13 @@
                 本篇&nbsp;<i class="far fa-dot-circle"></i>
             </div>
             <div class="card">
-                <a href="/2021/11/09/article-title/">
+                <a href="/2021/11/09/hexo/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="article title">
+                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="hexo+GitHub 搭建博客">
                         
-                        <span class="card-title">article title</span>
+                        <span class="card-title">hexo+GitHub 搭建博客</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -985,7 +1008,7 @@
             <br>
             
             &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                class="white-color">127</span>&nbsp;字
+                class="white-color">955</span>&nbsp;字
             
             
             

@@ -1,5 +1,5 @@
 ---
-title: hexo+GitHub 搭建博客
+title: hexo+GitHub 搭建博客 1/119
 date: 2021-11-09 18:36:45
 ---
 
@@ -13,7 +13,7 @@ _本文用使用示例是github，同样的操作也可用于gitee，但我在�
 ### 1, 新建仓库
 github上新建代码仓库，用来存储博客
 
-![githubNewKu.png](./hexo/githubNewKu.png "githubNew")
+![githubNewKu.png](/images/githubNewKu.png "githubNew")
 
 注意，项目名字使用 你的github名字加 <font color=red>.github.io</font> 后缀，比如我的GitHub名称是[liu-xiaoran](https://github.com/liu-xiaoran),n那么我的项目名字就是 liu-xiaoran.github.io 点击创建完成操作，注意不要勾选add Readme file 和其他选项，这个可以后续自行添加，空白的仓库库有助于git的第一次推送合并。
 
@@ -21,7 +21,7 @@ github上新建代码仓库，用来存储博客
 ### 2, 配置博客访问
 跳转到刚刚新建仓库首页，也厚点击上方菜单栏的<font color=pink>Settings</font>,再点击左边栏位的<font color=pink>Pages</font>, 填写对应的pages设置。
 
-![setPage.png](./hexo/setPage.png "setPage")
+![setPage.png](/images/setPage.png "setPage")
 
 Source 那里默认是 root, 点击选择Theme Chooser，选择一个主体，点击保存。
 此时你通过填写的仓库名，如 liu-xiaoran.github.io 就可以访问到该博客地址。
@@ -29,7 +29,7 @@ Source 那里默认是 root, 点击选择Theme Chooser，选择一个主体，�
 
 ### 3, 配置域名访问
 配置域名访问和配置https的方式，打开你的域名解析控制台，如我的阿里云域名配置页面。
-![DNS.png](./hexo/DNS.png "DNS")
+![DNS.png](/images/DNS.png "DNS")
 
 配置CNAME，指向你的博客访问地址，如liu-xiaoran.github.io。
 
@@ -53,7 +53,7 @@ Source 那里默认是 root, 点击选择Theme Chooser，选择一个主体，�
 仔细看我的步骤2里的红框内的，GitHub上的默认博客根目录是固定，只有几个值可以选择，这里选择一个自己喜欢的值，不是root,比如我选的 <font color=pink>docs</font> , 打开自己的hexo配置，_config.yml 将里面的public_dir值改成和GitHub选择的值一致，比如我的都是 <font color=pink>docs</font> 。
 
 
-![setpub.png](./hexo/setpub.png "setpub")
+![setpub.png](/images/setpub.png "setpub")
 
 重新生成静态文件，删除不需要的旧的生成目录，重新提交github。再次通过域名访问，就能看到效果了。
 

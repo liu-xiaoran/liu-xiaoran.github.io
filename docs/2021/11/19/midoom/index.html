@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="119行动, 刘小然&amp;博客">
+    <meta name="keywords" content="线上OOM分析 2/119, 刘小然&amp;博客">
     <meta name="description" content="You adored the light,so you will never fear the darkness">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>119行动 | 刘小然&amp;博客</title>
+    <title>线上OOM分析 2/119 | 刘小然&amp;博客</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -290,12 +290,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/5.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/0.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">119行动</h1>
+                    <h1 class="description center-align post-title">线上OOM分析 2/119</h1>
                 </div>
             </div>
         </div>
@@ -423,28 +423,28 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-11-09
+                    2021-11-19
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2021-11-19
+                    2021-11-25
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    127
+                    620
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    1 分
+                    2 分
                 </div>
                 
 
@@ -464,11 +464,12 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="内容"><a href="#内容" class="headerlink" title="内容"></a>内容</h2><p>我打算开始写博客，今天是2021年11月9号。我称之为119行动。</p>
-<p>119，一方面因为今天是11月9号开始时间，另一方面也表示这个事情对我像火灾一样比较紧迫。</p>
-<p>github是我主发的地方，抽空会将文章同步到个人公众号、CSDN等等各个平台。</p>
-<p>119行动的内容包含：<br>1，每周写一篇博客。<br>2，至少每2天跑一次3公里。<br>3，每天做一道code题目。</p>
-
+                <h2 id="记一次mybatis引起的线上OOM"><a href="#记一次mybatis引起的线上OOM" class="headerlink" title="记一次mybatis引起的线上OOM"></a>记一次mybatis引起的线上OOM</h2><p>最近在忙着加班+找房换租的窝，所有很久没写博客，社畜的艰苦生活，哈哈</p>
+<p>言归正传，最近线上一个小项目，出现了特殊的OOM情况，很有意思，所以跟大家分享一下</p>
+<h3 id="奇特的内存溢出现象"><a href="#奇特的内存溢出现象" class="headerlink" title="奇特的内存溢出现象"></a>奇特的内存溢出现象</h3><h4 id="项目背景："><a href="#项目背景：" class="headerlink" title="项目背景："></a>项目背景：</h4><p>公司有某个线下零售业务部门，有POS一千台左右，业务和门店还在持续扩张中。业务现有的CRM和POS修改起来较为困难(全为供应商标准系统)。<br>业务有个中间件，用于接受POS的一个结账前的会员信息请求，转发到SRM系统获取基础信息后，然后查数据库表做数据加工后再返回POS，以此来做双方系统的自定义配置。(个人不认可这种方案)<br>这个小项目是由我们组的一个小伙伴完成开发，压测完成后部署在阿里云上，2台ECS做了负载均衡。</p>
+<h4 id="溢出现场"><a href="#溢出现场" class="headerlink" title="溢出现场:"></a>溢出现场:</h4><p>项目上线后，间隔一段时间后，用户反馈POS有些门店请求报错。上服务器查询日志发现报了内存溢出，项目已经被守护进程自动重启，无法查看溢出时内存具体成分。查看代码报错，是请求导致的OOM报错。结合之前的日志分析发现，崩溃前已经发生多次内存无法回收的异常。查看ECS的监控，发现内存是缓慢上升的。断定发生了内存泄漏。<br>监控了一段时间后，发现被重启后应用，内存依旧在缓慢上升。并发高发时间段是在晚上7-8点，而内存溢出发生在晚上9点多。所以也并不是并发引起的。思考这种内存无法释放的缓慢OOM，单靠增加内存或者JVM调优是很难解决的，应该是小伙伴的代码中有对象没有及时释放导致的，此时已经晚上十点多，门店已经关店，无法观察内存变化，而且之前压测也没有出现OOM。考虑有可能需要长压测来让内存缓慢累计，所有起了压测程序，参数并发调低，压测时间改为连续3小时。等待明早观察成果。</p>
+<h3 id="坚信的问题定位"><a href="#坚信的问题定位" class="headerlink" title="坚信的问题定位"></a>坚信的问题定位</h3><p>[加班太多，暂空]</p>
+<h3 id="问题解决"><a href="#问题解决" class="headerlink" title="问题解决"></a>问题解决</h3>
                 
             </div>
             <hr/>
@@ -494,7 +495,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://goings.top/2021/11/09/hello-world/">https://goings.top/2021/11/09/hello-world/</a>
+                    <a href="https://goings.top/2021/11/19/midoom/">https://goings.top/2021/11/19/midoom/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -699,9 +700,10 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2021/11/19/midoom/">
                     <div class="card-image">
@@ -719,9 +721,9 @@
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-11-19
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-11-19
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
@@ -730,6 +732,7 @@
                         </span>
                     </div>
                 </div>
+
                 
             </div>
         </div>
@@ -740,13 +743,13 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2021/11/09/hexo/">
+                <a href="/2021/11/09/hello-world/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="hexo+GitHub 搭建博客 1/119">
+                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="119行动">
                         
-                        <span class="card-title">hexo+GitHub 搭建博客 1/119</span>
+                        <span class="card-title">119行动</span>
                     </div>
                 </a>
                 <div class="card-content article-content">

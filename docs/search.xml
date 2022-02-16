@@ -4,11 +4,11 @@
   
     
     <entry>
-      <title>升级win11后 3/119</title>
-      <link href="/2022/02/16/win11/"/>
-      <url>/2022/02/16/win11/</url>
+      <title>nginx使用try_files配置vue 4/119</title>
+      <link href="/2022/02/16/nginx/"/>
+      <url>/2022/02/16/nginx/</url>
       
-        <content type="html"><![CDATA[<h2 id="升级成了WIN11"><a href="#升级成了WIN11" class="headerlink" title="升级成了WIN11"></a>升级成了WIN11</h2><p>年前公司给换了笔记本电脑，之前在公司一直用的是MACP15款。个人是更偏向苹果系统的，但是无奈老机子太卡了。<br>申请换电脑时，只能申请win笔记本了。拿到手后是win10，自己下载升级成了win11。</p><p>刚用11时，感觉很惊喜，跟MAC用起来很像，又能解决MAC的一些老软件兼容性问题，虽然小BUG比较多。</p><p>写一个系统的问题和小技巧吧，会持续更新这个文章</p><p>1，在执行shell命令时，报在此系统上禁止运行脚本。</p><p>解决方案，管理员身份 打开终端，执行 set-ExecutionPolicy RemoteSigned 解决</p><p>2，可以直接下载Linux，在应用市场搜索ubuntu。</p><p>3，如果下载视频是ev4加密视频的话，建议购买使用正版命令打开。（临时需要可以找我破解，python解密）</p><p>4，自带粘贴板记录功能 win + v 打开</p><p>5，自带多功能截图 win + shift + s </p><p>6，带多桌面功能，触控板可以设置的跟MAC一样。</p>]]></content>
+        <content type="html"><![CDATA[<h2 id="nginx使用try-files配置vue"><a href="#nginx使用try-files配置vue" class="headerlink" title="nginx使用try_files配置vue"></a>nginx使用try_files配置vue</h2><p>组内的小伙伴最近独立开发的一个项目，前端使用VUE，路由模式使用history。<br>部署时发现无法访问，自己研究半天后，无法解决，向我寻求帮助，发现是他的nginx配置错误</p><p>其实 vue router 的文档里有部署方式，<a href="https://router.vuejs.org/zh/guide/essentials/history-mode.html#%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%85%8D%E7%BD%AE%E7%A4%BA%E4%BE%8B">https://router.vuejs.org/zh/guide/essentials/history-mode.html#%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%85%8D%E7%BD%AE%E7%A4%BA%E4%BE%8B</a><br>服务器配置示例：<br>location / {<br>  try_files $uri $uri/ /index.html;<br>}</p><p>随手写篇文章记录一下，nginx的location下的配置中<br>root，alias，try_files 区别，未来有时间可以写一篇nginx的深入文章，包含负载均衡、双机热备、缓存等高级功能。</p><p>root:<br>location /test/ {<br>    root /var/www/image<br>}<br>若按照上述配置的话，访问/test目录里面的文件时, nginx会自动去/var/www/image/test去找。</p><p>alias:<br>location /test/ {<br> alias /var/www/image/<br>}<br>若按照上述配置的话，访问/img目录里面的文件时, nginx会自动去/var/www/image目录找文件, 也就是不会把后缀带上，常用来配置静态文件。</p><p>try_files:<br>location /test/ {<br>  try_files $uri $uri/ /index.html;<br>}<br>try_files 会到硬盘里尝试找这个文件, 找不到，就会 fall back 到 try_files 的最后一个选项index.html,将请求转发返回index.html上，然后html里的vue router再去跟去后缀路由对应的页面。</p><p>至此，完成history的转发。</p>]]></content>
       
       
       
@@ -22,6 +22,19 @@
       <url>/2022/02/16/hello-world/</url>
       
         <content type="html"><![CDATA[<h2 id="内容"><a href="#内容" class="headerlink" title="内容"></a>内容</h2><p>我打算开始写博客，今天是2021年11月9号。我称之为119行动。</p><p>119，一方面因为今天是11月9号开始时间，另一方面也表示这个事情对我像火灾一样比较紧迫。</p><p>github是我主发的地方，抽空会将文章同步到个人公众号、CSDN等等各个平台。</p><p>119行动的内容包含：<br>1，每周写一篇博客。<br>2，至少每2天跑一次3公里。<br>3，每天做一道code题目。</p>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>升级win11后 3/119</title>
+      <link href="/2022/02/11/win11/"/>
+      <url>/2022/02/11/win11/</url>
+      
+        <content type="html"><![CDATA[<h2 id="升级成了WIN11"><a href="#升级成了WIN11" class="headerlink" title="升级成了WIN11"></a>升级成了WIN11</h2><p>年前公司给换了笔记本电脑，之前在公司一直用的是MACP15款。个人是更偏向苹果系统的，但是无奈老机子太卡了。<br>申请换电脑时，只能申请win笔记本了。拿到手后是win10，自己下载升级成了win11。</p><p>刚用11时，感觉很惊喜，跟MAC用起来很像，又能解决MAC的一些老软件兼容性问题，虽然小BUG比较多。</p><p>写一个系统的问题和小技巧吧，会持续更新这个文章</p><p>1，在执行shell命令时，报在此系统上禁止运行脚本。</p><p>解决方案，管理员身份 打开终端，执行 set-ExecutionPolicy RemoteSigned 解决</p><p>2，可以直接下载Linux，在应用市场搜索ubuntu。</p><p>3，如果下载视频是ev4加密视频的话，建议购买使用正版命令打开。（临时需要可以找我破解，python解密）</p><p>4，自带粘贴板记录功能 win + v 打开</p><p>5，自带多功能截图 win + shift + s </p><p>6，带多桌面功能，触控板可以设置的跟MAC一样。</p>]]></content>
       
       
       

@@ -4,6 +4,19 @@
   
     
     <entry>
+      <title>go语言内存分析 5/119</title>
+      <link href="/2022/02/17/go-nei-cun/"/>
+      <url>/2022/02/17/go-nei-cun/</url>
+      
+        <content type="html"><![CDATA[<h2 id="go语言内存分析"><a href="#go语言内存分析" class="headerlink" title="go语言内存分析"></a>go语言内存分析</h2><p>最新看了一下go语言，感觉语言设计的比Java要好一些，底层实现了对并发的支持。<br>他的内存结构和内存回收跟Java的模型也有很大的不同，抽空写一下go语言的内存分析，后续也会写一篇G1和GMS用来坐对比。<br>（待续）</p>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>nginx使用try_files配置vue 4/119</title>
       <link href="/2022/02/16/nginx/"/>
       <url>/2022/02/16/nginx/</url>

@@ -4,11 +4,37 @@
   
     
     <entry>
+      <title>119行动</title>
+      <link href="/2022/05/24/hello-world/"/>
+      <url>/2022/05/24/hello-world/</url>
+      
+        <content type="html"><![CDATA[<h2 id="内容"><a href="#内容" class="headerlink" title="内容"></a>内容</h2><p>我打算开始写博客，今天是2021年11月9号。我称之为119行动。</p><p>119，一方面因为今天是11月9号开始时间，另一方面也表示这个事情对我像火灾一样比较紧迫。</p><p>github是我主发的地方，抽空会将文章同步到个人公众号、CSDN等等各个平台。</p><p>119行动的内容包含：<br>1，每周写一篇博客。<br>2，至少每2天跑一次3公里。<br>3，每天做一道code题目。</p>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>go语言内存分析 6/119</title>
+      <link href="/2022/02/23/mysql-suo-yin/"/>
+      <url>/2022/02/23/mysql-suo-yin/</url>
+      
+        <content type="html"><![CDATA[<h2 id="mysql索引"><a href="#mysql索引" class="headerlink" title="mysql索引"></a>mysql索引</h2>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>go语言内存分析 5/119</title>
       <link href="/2022/02/17/go-nei-cun/"/>
       <url>/2022/02/17/go-nei-cun/</url>
       
-        <content type="html"><![CDATA[<h2 id="go语言内存分析"><a href="#go语言内存分析" class="headerlink" title="go语言内存分析"></a>go语言内存分析</h2><p>最新看了一下go语言，感觉语言设计的比Java要好一些，底层实现了对并发的支持。<br>他的内存结构和内存回收跟Java的模型也有很大的不同，抽空写一下go语言的内存分析，后续也会写一篇G1和GMS用来坐对比。<br>（待续）</p>]]></content>
+        <content type="html"><![CDATA[<h2 id="go语言内存分析"><a href="#go语言内存分析" class="headerlink" title="go语言内存分析"></a>go语言内存分析</h2><p>最新看了一下go语言，感觉语言设计的比Java要好一些，底层实现了对并发的支持。<br>他的内存结构和内存回收跟Java的模型也有很大的不同，抽空写一下go语言的内存分析，后续也会写一篇G1和GMS用来坐对比。</p>]]></content>
       
       
       
@@ -22,19 +48,6 @@
       <url>/2022/02/16/nginx/</url>
       
         <content type="html"><![CDATA[<h2 id="nginx使用try-files配置vue"><a href="#nginx使用try-files配置vue" class="headerlink" title="nginx使用try_files配置vue"></a>nginx使用try_files配置vue</h2><p>组内的小伙伴最近独立开发的一个项目，前端使用VUE，路由模式使用history。<br>部署时发现无法访问，自己研究半天后，无法解决，向我寻求帮助，发现是他的nginx配置错误</p><p>其实 vue router 的文档里有部署方式，<a href="https://router.vuejs.org/zh/guide/essentials/history-mode.html#%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%85%8D%E7%BD%AE%E7%A4%BA%E4%BE%8B">https://router.vuejs.org/zh/guide/essentials/history-mode.html#%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%85%8D%E7%BD%AE%E7%A4%BA%E4%BE%8B</a><br>服务器配置示例：<br>location / {<br>  try_files $uri $uri/ /index.html;<br>}</p><p>随手写篇文章记录一下，nginx的location下的配置中<br>root，alias，try_files 区别，未来有时间可以写一篇nginx的深入文章，包含负载均衡、双机热备、缓存等高级功能。</p><p>root:<br>location /test/ {<br>    root /var/www/image<br>}<br>若按照上述配置的话，访问/test目录里面的文件时, nginx会自动去/var/www/image/test去找。</p><p>alias:<br>location /test/ {<br> alias /var/www/image/<br>}<br>若按照上述配置的话，访问/img目录里面的文件时, nginx会自动去/var/www/image目录找文件, 也就是不会把后缀带上，常用来配置静态文件。</p><p>try_files:<br>location /test/ {<br>  try_files $uri $uri/ /index.html;<br>}<br>try_files 会到硬盘里尝试找这个文件, 找不到，就会 fall back 到 try_files 的最后一个选项index.html,将请求转发返回index.html上，然后html里的vue router再去跟去后缀路由对应的页面。</p><p>至此，完成history的转发。</p>]]></content>
-      
-      
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>119行动</title>
-      <link href="/2022/02/16/hello-world/"/>
-      <url>/2022/02/16/hello-world/</url>
-      
-        <content type="html"><![CDATA[<h2 id="内容"><a href="#内容" class="headerlink" title="内容"></a>内容</h2><p>我打算开始写博客，今天是2021年11月9号。我称之为119行动。</p><p>119，一方面因为今天是11月9号开始时间，另一方面也表示这个事情对我像火灾一样比较紧迫。</p><p>github是我主发的地方，抽空会将文章同步到个人公众号、CSDN等等各个平台。</p><p>119行动的内容包含：<br>1，每周写一篇博客。<br>2，至少每2天跑一次3公里。<br>3，每天做一道code题目。</p>]]></content>
       
       
       
@@ -73,7 +86,7 @@
       <link href="/2021/11/09/hexo/"/>
       <url>/2021/11/09/hexo/</url>
       
-        <content type="html"><![CDATA[<h2 id="hexo-GitHub-搭建博客"><a href="#hexo-GitHub-搭建博客" class="headerlink" title="hexo+GitHub 搭建博客"></a>hexo+GitHub 搭建博客</h2><p>基础环境：nodejs</p><p><em>本文用使用示例是github，同样的操作也可用于gitee，但我在实际操作的过程中发现gitee需要实名手持身份证拍照审核，觉得麻烦随之放弃</em></p><h3 id="1-新建仓库"><a href="#1-新建仓库" class="headerlink" title="1, 新建仓库"></a>1, 新建仓库</h3><p>github上新建代码仓库，用来存储博客</p><p><img src="/images/githubNewKu.png" alt="githubNewKu.png" title="githubNew"></p><p>注意，项目名字使用 你的github名字加 <font color="red">.github.io</font> 后缀，比如我的GitHub名称是<a href="https://github.com/liu-xiaoran">liu-xiaoran</a>,n那么我的项目名字就是 liu-xiaoran.github.io 点击创建完成操作，注意不要勾选add Readme file 和其他选项，这个可以后续自行添加，空白的仓库库有助于git的第一次推送合并。</p><h3 id="2-配置博客访问"><a href="#2-配置博客访问" class="headerlink" title="2, 配置博客访问"></a>2, 配置博客访问</h3><p>跳转到刚刚新建仓库首页，也厚点击上方菜单栏的<font color="pink">Settings</font>,再点击左边栏位的<font color="pink">Pages</font>, 填写对应的pages设置。</p><p><img src="/images/setPage.png" alt="setPage.png" title="setPage"></p><p>Source 那里默认是 root, 点击选择Theme Chooser，选择一个主体，点击保存。<br>此时你通过填写的仓库名，如 liu-xiaoran.github.io 就可以访问到该博客地址。</p><h3 id="3-配置域名访问"><a href="#3-配置域名访问" class="headerlink" title="3, 配置域名访问"></a>3, 配置域名访问</h3><p>配置域名访问和配置https的方式，打开你的域名解析控制台，如我的阿里云域名配置页面。<br><img src="/images/DNS.png" alt="DNS.png" title="DNS"></p><p>配置CNAME，指向你的博客访问地址，如liu-xiaoran.github.io。</p><p>配置结束后，返回github的pages配置页面，填写上域名，自动生成CNAME文件，勾选启用https。保存后稍后即可使用域名访问博客。想使用GitHub自动博客功能的，到此处就可以结束了。</p><h3 id="3-安装使用hexo"><a href="#3-安装使用hexo" class="headerlink" title="3, 安装使用hexo"></a>3, 安装使用hexo</h3><p>打开终端输入</p><p><code>npm i hexo-cli -g</code></p><p>安装hexo, 拉取我们的github上的博客库，到本地。清空内部GitHub博客配置的文件。在文件夹内使用终端，输入</p><p><code>hexo init</code></p><p>初始化文件夹，接着使用 <code>npm i</code> 安装依赖。</p><p>这样hexo博客就配置好了，输入 <code>hexo g</code> 生成静态网页，然后输入 <code>hexo s</code> 打开本地服务器。可以写一个hello本地尝试一下。</p><h3 id="4，配置GitHub默认路径"><a href="#4，配置GitHub默认路径" class="headerlink" title="4，配置GitHub默认路径"></a>4，配置GitHub默认路径</h3><p>本地写完博文，推送到github时，发现通过域名访问的并不去hexo博客地址，怎么办？<br>仔细看我的步骤2里的红框内的，GitHub上的默认博客根目录是固定，只有几个值可以选择，这里选择一个自己喜欢的值，不是root,比如我选的 <font color="pink">docs</font> , 打开自己的hexo配置，_config.yml 将里面的public_dir值改成和GitHub选择的值一致，比如我的都是 <font color="pink">docs</font> 。</p><p><img src="/images/setpub.png" alt="setpub.png" title="setpub"></p><p>重新生成静态文件，删除不需要的旧的生成目录，重新提交github。再次通过域名访问，就能看到效果了。</p><h3 id="5，主题配置和hexo深入配置"><a href="#5，主题配置和hexo深入配置" class="headerlink" title="5，主题配置和hexo深入配置"></a>5，主题配置和hexo深入配置</h3><p>主题配置，想复用别人的主题很简单，以我使用的主题hexo-theme-matery为例，<a href="https://github.com/blinkfox/hexo-theme-matery">https://github.com/blinkfox/hexo-theme-matery</a> 打开hexo-theme-matery项目地址，里面有详细的配置方式，其他开源主题可以自己搜索获得。由于hexo-theme-matery中文文档比较详细，这里就不再赘余了。</p><p>hexo的深入配置也可以参考 <a href="https://hexo.io/zh-cn/">https://hexo.io/zh-cn/</a> 文档，根据自己的需求自定义配置。</p><p>到此，hexo+GitHub 搭建博客 算是完成了。</p>]]></content>
+        <content type="html"><![CDATA[<h2 id="hexo-GitHub-搭建博客"><a href="#hexo-GitHub-搭建博客" class="headerlink" title="hexo+GitHub 搭建博客"></a>hexo+GitHub 搭建博客</h2><p>基础环境：nodejs</p><p><em>本文用使用示例是github，同样的操作也可用于gitee，但我在实际操作的过程中发现gitee需要实名手持身份证拍照审核，觉得麻烦随之放弃</em></p><h3 id="1-新建仓库"><a href="#1-新建仓库" class="headerlink" title="1, 新建仓库"></a>1, 新建仓库</h3><p>github上新建代码仓库，用来存储博客</p><p><img src="/images/githubNewKu.png" alt="githubNewKu.png" title="githubNew"></p><p>注意，项目名字使用 你的github名字加 <code>&lt;font color=red&gt;</code>.github.io<code>&lt;/font&gt;</code> 后缀，比如我的GitHub名称是<a href="https://github.com/liu-xiaoran">liu-xiaoran</a>,n那么我的项目名字就是 liu-xiaoran.github.io 点击创建完成操作，注意不要勾选add Readme file 和其他选项，这个可以后续自行添加，空白的仓库库有助于git的第一次推送合并。</p><h3 id="2-配置博客访问"><a href="#2-配置博客访问" class="headerlink" title="2, 配置博客访问"></a>2, 配置博客访问</h3><p>跳转到刚刚新建仓库首页，也厚点击上方菜单栏的<code>&lt;font color=pink&gt;</code>Settings<code>&lt;/font&gt;</code>,再点击左边栏位的<code>&lt;font color=pink&gt;</code>Pages<code>&lt;/font&gt;</code>, 填写对应的pages设置。</p><p><img src="/images/setPage.png" alt="setPage.png" title="setPage"></p><p>Source 那里默认是 root, 点击选择Theme Chooser，选择一个主体，点击保存。<br>此时你通过填写的仓库名，如 liu-xiaoran.github.io 就可以访问到该博客地址。</p><h3 id="3-配置域名访问"><a href="#3-配置域名访问" class="headerlink" title="3, 配置域名访问"></a>3, 配置域名访问</h3><p>配置域名访问和配置https的方式，打开你的域名解析控制台，如我的阿里云域名配置页面。<br><img src="/images/DNS.png" alt="DNS.png" title="DNS"></p><p>配置CNAME，指向你的博客访问地址，如liu-xiaoran.github.io。</p><p>配置结束后，返回github的pages配置页面，填写上域名，自动生成CNAME文件，勾选启用https。保存后稍后即可使用域名访问博客。想使用GitHub自动博客功能的，到此处就可以结束了。</p><h3 id="3-安装使用hexo"><a href="#3-安装使用hexo" class="headerlink" title="3, 安装使用hexo"></a>3, 安装使用hexo</h3><p>打开终端输入</p><p><code>npm i hexo-cli -g</code></p><p>安装hexo, 拉取我们的github上的博客库，到本地。清空内部GitHub博客配置的文件。在文件夹内使用终端，输入</p><p><code>hexo init</code></p><p>初始化文件夹，接着使用 <code>npm i</code> 安装依赖。</p><p>这样hexo博客就配置好了，输入 <code>hexo g</code> 生成静态网页，然后输入 <code>hexo s</code> 打开本地服务器。可以写一个hello本地尝试一下。</p><h3 id="4，配置GitHub默认路径"><a href="#4，配置GitHub默认路径" class="headerlink" title="4，配置GitHub默认路径"></a>4，配置GitHub默认路径</h3><p>本地写完博文，推送到github时，发现通过域名访问的并不去hexo博客地址，怎么办？<br>仔细看我的步骤2里的红框内的，GitHub上的默认博客根目录是固定，只有几个值可以选择，这里选择一个自己喜欢的值，不是root,比如我选的 <code>&lt;font color=pink&gt;</code>docs<code>&lt;/font&gt;</code> , 打开自己的hexo配置，_config.yml 将里面的public_dir值改成和GitHub选择的值一致，比如我的都是 <code>&lt;font color=pink&gt;</code>docs<code>&lt;/font&gt;</code> 。</p><p><img src="/images/setpub.png" alt="setpub.png" title="setpub"></p><p>重新生成静态文件，删除不需要的旧的生成目录，重新提交github。再次通过域名访问，就能看到效果了。</p><h3 id="5，主题配置和hexo深入配置"><a href="#5，主题配置和hexo深入配置" class="headerlink" title="5，主题配置和hexo深入配置"></a>5，主题配置和hexo深入配置</h3><p>主题配置，想复用别人的主题很简单，以我使用的主题hexo-theme-matery为例，<a href="https://github.com/blinkfox/hexo-theme-matery">https://github.com/blinkfox/hexo-theme-matery</a> 打开hexo-theme-matery项目地址，里面有详细的配置方式，其他开源主题可以自己搜索获得。由于hexo-theme-matery中文文档比较详细，这里就不再赘余了。</p><p>hexo的深入配置也可以参考 <a href="https://hexo.io/zh-cn/">https://hexo.io/zh-cn/</a> 文档，根据自己的需求自定义配置。</p><p>到此，hexo+GitHub 搭建博客 算是完成了。</p>]]></content>
       
       
       

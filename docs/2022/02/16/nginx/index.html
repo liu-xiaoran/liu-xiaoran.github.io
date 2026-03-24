@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.leolabs.top","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="nginx使用try_files配置vue组内的小伙伴最近独立开发的一个项目，前端使用VUE，路由模式使用history。部署时发现无法访问，自己研究半天后，无法解决，向我寻求帮助，发现是他的nginx配置错误 其实 vue router 的文档里有部署方式，https:&#x2F;&#x2F;router.vuejs.org&#x2F;zh&#x2F;guide&#x2F;essentials&#x2F;history-mode.html#%E6%9C%">
+<meta property="og:type" content="article">
+<meta property="og:title" content="nginx使用try_files配置vue 4&#x2F;119">
+<meta property="og:url" content="https://blog.leolabs.top/2022/02/16/nginx/index.html">
+<meta property="og:site_name" content="刘小然&amp;博客">
+<meta property="og:description" content="nginx使用try_files配置vue组内的小伙伴最近独立开发的一个项目，前端使用VUE，路由模式使用history。部署时发现无法访问，自己研究半天后，无法解决，向我寻求帮助，发现是他的nginx配置错误 其实 vue router 的文档里有部署方式，https:&#x2F;&#x2F;router.vuejs.org&#x2F;zh&#x2F;guide&#x2F;essentials&#x2F;history-mode.html#%E6%9C%">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-02-16T09:21:45.000Z">
+<meta property="article:modified_time" content="2026-03-24T04:56:40.040Z">
+<meta property="article:author" content="liuxiaoran">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://blog.leolabs.top/2022/02/16/nginx/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.leolabs.top/2022/02/16/nginx/","path":"2022/02/16/nginx/","title":"nginx使用try_files配置vue 4/119"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>nginx使用try_files配置vue 4/119 | 刘小然&博客</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">刘小然&博客</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">hope</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#nginx%E4%BD%BF%E7%94%A8try-files%E9%85%8D%E7%BD%AEvue"><span class="nav-number">1.</span> <span class="nav-text">nginx使用try_files配置vue</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">liuxiaoran</p>
+  <div class="site-description" itemprop="description">You adored the light,so you will never fear the darkness</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/liu-xiaoran" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;liu-xiaoran" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:liuxiaoranm@gmail.com" title="E-Mail → mailto:liuxiaoranm@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.leolabs.top/2022/02/16/nginx/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liuxiaoran">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘小然&博客">
+      <meta itemprop="description" content="You adored the light,so you will never fear the darkness">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="nginx使用try_files配置vue 4&#x2F;119 | 刘小然&博客">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          nginx使用try_files配置vue 4/119
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-02-16 17:21:45" itemprop="dateCreated datePublished" datetime="2022-02-16T17:21:45+08:00">2022-02-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2026-03-24 12:56:40" itemprop="dateModified" datetime="2026-03-24T12:56:40+08:00">2026-03-24</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="nginx使用try-files配置vue"><a href="#nginx使用try-files配置vue" class="headerlink" title="nginx使用try_files配置vue"></a>nginx使用try_files配置vue</h2><p>组内的小伙伴最近独立开发的一个项目，前端使用VUE，路由模式使用history。<br>部署时发现无法访问，自己研究半天后，无法解决，向我寻求帮助，发现是他的nginx配置错误</p>
+<p>其实 vue router 的文档里有部署方式，<a target="_blank" rel="noopener" href="https://router.vuejs.org/zh/guide/essentials/history-mode.html#%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%85%8D%E7%BD%AE%E7%A4%BA%E4%BE%8B">https://router.vuejs.org/zh/guide/essentials/history-mode.html#%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%85%8D%E7%BD%AE%E7%A4%BA%E4%BE%8B</a><br>服务器配置示例：<br>location / {<br>  try_files $uri $uri/ /index.html;<br>}</p>
+<p>随手写篇文章记录一下，nginx的location下的配置中<br>root，alias，try_files 区别，未来有时间可以写一篇nginx的深入文章，包含负载均衡、双机热备、缓存等高级功能。</p>
+<p>root:<br>location /test/ {<br>    root /var/www/image<br>}<br>若按照上述配置的话，访问/test目录里面的文件时, nginx会自动去/var/www/image/test去找。</p>
+<p>alias:<br>location /test/ {<br> alias /var/www/image/<br>}<br>若按照上述配置的话，访问/img目录里面的文件时, nginx会自动去/var/www/image目录找文件, 也就是不会把后缀带上，常用来配置静态文件。</p>
+<p>try_files:<br>location /test/ {<br>  try_files $uri $uri/ /index.html;<br>}<br>try_files 会到硬盘里尝试找这个文件, 找不到，就会 fall back 到 try_files 的最后一个选项index.html,将请求转发返回index.html上，然后html里的vue router再去跟去后缀路由对应的页面。</p>
+<p>至此，完成history的转发。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="followme">
+  <span>欢迎关注我的其它发布渠道</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="https://t.me/leolabstop">
+            <span class="icon">
+              <i class="fab fa-telegram"></i>
+            </span>
+
+            <span class="label">Telegram</span>
+          </a>
+      </div>
+  </div>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/02/11/win11/" rel="prev" title="升级win11后 3&#x2F;119">
+                  <i class="fa fa-angle-left"></i> 升级win11后 3/119
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/02/17/go-nei-cun/" rel="next" title="go语言内存分析 5&#x2F;119">
+                  go语言内存分析 5/119 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">liuxiaoran</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

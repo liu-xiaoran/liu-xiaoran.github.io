@@ -164,7 +164,7 @@ site_state: true
 # Value before `||` delimiter is the target permalink, value after `||` delimiter is the name of Font Awesome icon.
 social:
   GitHub: https://github.com/liu-xiaoran || fab fa-github
-  E-Mail: liuxiaoranm@gmail.com || fa fa-envelope
+  E-Mail: mailto:liuxiaoranm@gmail.com || fa fa-envelope
   #Weibo: https://weibo.com/yourname || fab fa-weibo
   #Twitter: https://twitter.com/yourname || fab fa-twitter
   #FB Page: https://www.facebook.com/yourname || fab fa-facebook
@@ -289,7 +289,7 @@ reward:
 follow_me:
   #Twitter: https://twitter.com/username || fab fa-twitter
   Telegram: https://t.me/leolabstop || fab fa-telegram
-  WeChat: /images/wechat_channel.png || fab fa-weixin
+  # WeChat: /images/wechat_channel.png || fab fa-weixin
   #RSS: /atom.xml || fa fa-rss
 
 # Related popular posts

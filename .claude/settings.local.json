@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm config:*)",
+      "Bash(npm i:*)",
+      "Bash(npx hexo:*)",
+      "mcp__playwright__browser_navigate",
+      "mcp__playwright__browser_console_messages"
+    ]
+  }
+}

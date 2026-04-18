@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.leolabs.top","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="一文读懂：AI 界的“判断大师”——逻辑回归算法 摘要：逻辑回归（Logistic Regression）是机器学习中最经典的分类算法。本文从线性回归的局限性出发，深入解析 Sigmoid 函数的作用机制、对数损失函数的原理及其在工业界的广泛应用。   1. 为什么不能直接用线性回归做分类？线性回归擅长预测连续数值，但在面对“非黑即白”的分类问题（如垃圾邮件检测、肿瘤良恶性判断）时，它会遇到两个致">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一文读懂：AI 界的“判断大师”——逻辑回归算法">
+<meta property="og:url" content="https://blog.leolabs.top/2026/04/16/logistic-regression/index.html">
+<meta property="og:site_name" content="leo工作室">
+<meta property="og:description" content="一文读懂：AI 界的“判断大师”——逻辑回归算法 摘要：逻辑回归（Logistic Regression）是机器学习中最经典的分类算法。本文从线性回归的局限性出发，深入解析 Sigmoid 函数的作用机制、对数损失函数的原理及其在工业界的广泛应用。   1. 为什么不能直接用线性回归做分类？线性回归擅长预测连续数值，但在面对“非黑即白”的分类问题（如垃圾邮件检测、肿瘤良恶性判断）时，它会遇到两个致">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-04-16T00:00:00.000Z">
+<meta property="article:modified_time" content="2026-04-16T00:00:00.000Z">
+<meta property="article:author" content="liuxiaoran">
+<meta property="article:tag" content="机器学习">
+<meta property="article:tag" content="逻辑回归">
+<meta property="article:tag" content="Sigmoid 函数">
+<meta property="article:tag" content="分类算法">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://blog.leolabs.top/2026/04/16/logistic-regression/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.leolabs.top/2026/04/16/logistic-regression/","path":"2026/04/16/logistic-regression/","title":"一文读懂：AI 界的“判断大师”——逻辑回归算法"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>一文读懂：AI 界的“判断大师”——逻辑回归算法 | leo工作室</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">leo工作室</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">hope</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%80%E6%96%87%E8%AF%BB%E6%87%82%EF%BC%9AAI-%E7%95%8C%E7%9A%84%E2%80%9C%E5%88%A4%E6%96%AD%E5%A4%A7%E5%B8%88%E2%80%9D%E2%80%94%E2%80%94%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92%E7%AE%97%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">一文读懂：AI 界的“判断大师”——逻辑回归算法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E8%83%BD%E7%9B%B4%E6%8E%A5%E7%94%A8%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92%E5%81%9A%E5%88%86%E7%B1%BB%EF%BC%9F"><span class="nav-number">1.1.</span> <span class="nav-text">1. 为什么不能直接用线性回归做分类？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E6%A0%B8%E5%BF%83%E9%AD%94%E6%B3%95%EF%BC%9ASigmoid-%E5%87%BD%E6%95%B0"><span class="nav-number">1.2.</span> <span class="nav-text">2. 核心魔法：Sigmoid 函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E7%AE%97%E6%B3%95%E7%9A%84%E5%BA%95%E5%B1%82%E9%80%BB%E8%BE%91"><span class="nav-number">1.3.</span> <span class="nav-text">3. 算法的底层逻辑</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E6%AD%A5%EF%BC%9A%E7%BA%BF%E6%80%A7%E6%89%93%E5%88%86"><span class="nav-number">1.3.1.</span> <span class="nav-text">第一步：线性打分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E6%AD%A5%EF%BC%9A%E6%A6%82%E7%8E%87%E8%BD%AC%E5%8C%96"><span class="nav-number">1.3.2.</span> <span class="nav-text">第二步：概率转化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E6%AD%A5%EF%BC%9A%E5%86%B3%E7%AD%96"><span class="nav-number">1.3.3.</span> <span class="nav-text">第三步：决策</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83%EF%BC%9A%E5%AF%B9%E6%95%B0%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0"><span class="nav-number">1.4.</span> <span class="nav-text">4. 模型训练：对数损失函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-%E4%BC%98%E7%BC%BA%E7%82%B9%E5%88%86%E6%9E%90"><span class="nav-number">1.5.</span> <span class="nav-text">5. 优缺点分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E5%8A%BF"><span class="nav-number">1.5.1.</span> <span class="nav-text">优势</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B1%80%E9%99%90%E6%80%A7"><span class="nav-number">1.5.2.</span> <span class="nav-text">局限性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-%E6%80%BB%E7%BB%93"><span class="nav-number">1.6.</span> <span class="nav-text">6. 总结</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">liuxiaoran</p>
+  <div class="site-description" itemprop="description">You adored the light,so you will never fear the darkness</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">9</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/liu-xiaoran" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;liu-xiaoran" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:liuxiaoranm@gmail.com" title="E-Mail → mailto:liuxiaoranm@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.leolabs.top/2026/04/16/logistic-regression/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liuxiaoran">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="leo工作室">
+      <meta itemprop="description" content="You adored the light,so you will never fear the darkness">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="一文读懂：AI 界的“判断大师”——逻辑回归算法 | leo工作室">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          一文读懂：AI 界的“判断大师”——逻辑回归算法
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2026-04-16 08:00:00" itemprop="dateCreated datePublished" datetime="2026-04-16T08:00:00+08:00">2026-04-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">机器学习基础</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="一文读懂：AI-界的“判断大师”——逻辑回归算法"><a href="#一文读懂：AI-界的“判断大师”——逻辑回归算法" class="headerlink" title="一文读懂：AI 界的“判断大师”——逻辑回归算法"></a>一文读懂：AI 界的“判断大师”——逻辑回归算法</h1><blockquote>
+<p><strong>摘要</strong>：逻辑回归（Logistic Regression）是机器学习中最经典的分类算法。本文从线性回归的局限性出发，深入解析 Sigmoid 函数的作用机制、对数损失函数的原理及其在工业界的广泛应用。</p>
+</blockquote>
+<hr>
+<h2 id="1-为什么不能直接用线性回归做分类？"><a href="#1-为什么不能直接用线性回归做分类？" class="headerlink" title="1. 为什么不能直接用线性回归做分类？"></a>1. 为什么不能直接用线性回归做分类？</h2><p>线性回归擅长预测连续数值，但在面对“非黑即白”的分类问题（如垃圾邮件检测、肿瘤良恶性判断）时，它会遇到两个致命问题：</p>
+<ol>
+<li><strong>数值越界</strong>：线性回归的输出范围是 $(-\infty, \infty)$，而分类问题的概率必须限制在 $[0, 1]$ 之间。</li>
+<li><strong>对异常值敏感</strong>：极端值会严重拉偏拟合直线，导致分类边界失效。</li>
+</ol>
+<p>为了解决这个问题，我们需要一种方法，将线性回归的无限输出“压缩”到 0 和 1 之间。</p>
+<div style="background-color: #f0f7ff; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+<strong>💡 核心概念：</strong><br>
+<strong>逻辑回归</strong>：一种广义的线性模型，虽然名字带有“回归”，但主要用于解决二分类问题。
+</div>
+
+<hr>
+<h2 id="2-核心魔法：Sigmoid-函数"><a href="#2-核心魔法：Sigmoid-函数" class="headerlink" title="2. 核心魔法：Sigmoid 函数"></a>2. 核心魔法：Sigmoid 函数</h2><p>逻辑回归的核心在于引入了 <strong>Sigmoid 函数</strong>（也称 S 型函数）。</p>
+<p>$$y = \frac{1}{1 + e^{-z}}$$</p>
+<p>这个函数的形状像一个平滑的”S”。它的特性是：无论输入的 $z$ 是多大的正数或负数，输出结果永远被严格限制在 $(0, 1)$ 区间内。</p>
+<h2 id="3-算法的底层逻辑"><a href="#3-算法的底层逻辑" class="headerlink" title="3. 算法的底层逻辑"></a>3. 算法的底层逻辑</h2><p>逻辑回归的运作可以看作“线性回归 + Sigmoid 外衣”：</p>
+<h3 id="第一步：线性打分"><a href="#第一步：线性打分" class="headerlink" title="第一步：线性打分"></a>第一步：线性打分</h3><p>计算特征的线性组合：$z = w_1x_1 + … + w_nx_n + b$。</p>
+<h3 id="第二步：概率转化"><a href="#第二步：概率转化" class="headerlink" title="第二步：概率转化"></a>第二步：概率转化</h3><p>将 $z$ 输入 Sigmoid 函数，得到概率 $P$。例如 $P=0.85$ 表示模型认为该样本属于正类（如恶性肿瘤）的概率是 85%。</p>
+<h3 id="第三步：决策"><a href="#第三步：决策" class="headerlink" title="第三步：决策"></a>第三步：决策</h3><p>设定阈值（通常为 0.5）。若 $P \ge 0.5$ 则判定为 1，否则为 0。</p>
+<hr>
+<h2 id="4-模型训练：对数损失函数"><a href="#4-模型训练：对数损失函数" class="headerlink" title="4. 模型训练：对数损失函数"></a>4. 模型训练：对数损失函数</h2><p>在逻辑回归中，均方误差（MSE）不再适用，因为加上 Sigmoid 函数后，损失曲面会变得非凸，难以优化。因此，逻辑回归采用<strong>对数损失函数（Log Loss / Cross-Entropy Loss）</strong>。</p>
+<p>其核心逻辑是“<strong>惩罚盲目自信的错误</strong>”：</p>
+<ul>
+<li>如果真实标签是 1，而模型预测概率是 0.01（极其自信地认为是 0），损失函数会给出极大的惩罚值。</li>
+<li>模型通过梯度下降法不断调整参数，以最小化这种惩罚。</li>
+</ul>
+<hr>
+<h2 id="5-优缺点分析"><a href="#5-优缺点分析" class="headerlink" title="5. 优缺点分析"></a>5. 优缺点分析</h2><h3 id="优势"><a href="#优势" class="headerlink" title="优势"></a>优势</h3><ul>
+<li><strong>输出概率</strong>：不仅给出分类结果，还提供置信度。这在医疗诊断、金融风控等领域至关重要。</li>
+<li><strong>计算高效</strong>：训练和推理速度极快，占用资源少，常作为工业界（如推荐系统粗排）的基线模型（Baseline）。</li>
+<li><strong>可解释性强</strong>：权重 $w$ 直接反映了特征的重要性。</li>
+</ul>
+<h3 id="局限性"><a href="#局限性" class="headerlink" title="局限性"></a>局限性</h3><ul>
+<li><strong>线性边界</strong>：逻辑回归本质上只能学习线性决策边界。面对非线性可分数据（如异或问题），单纯使用逻辑回归效果不佳，需要配合复杂的特征工程。</li>
+</ul>
+<hr>
+<h2 id="6-总结"><a href="#6-总结" class="headerlink" title="6. 总结"></a>6. 总结</h2><p>从预测数值的线性回归，到预测概率的逻辑回归，这是理解机器学习决策过程的关键一步。尽管深度学习模型日益强大，但逻辑回归凭借其出色的效率与可解释性，依然是现代互联网架构中不可或缺的基石。</p>
+<hr>
+<p>如果你觉得这篇文章有帮助，欢迎分享给需要的朋友。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="followme">
+  <span>联系我</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="https://t.me/leolabstop">
+            <span class="icon">
+              <i class="fab fa-telegram"></i>
+            </span>
+
+            <span class="label">Telegram</span>
+          </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag"># 机器学习</a>
+              <a href="/tags/%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92/" rel="tag"># 逻辑回归</a>
+              <a href="/tags/Sigmoid-%E5%87%BD%E6%95%B0/" rel="tag"># Sigmoid 函数</a>
+              <a href="/tags/%E5%88%86%E7%B1%BB%E7%AE%97%E6%B3%95/" rel="tag"># 分类算法</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2026/04/16/linear-regression/" rel="prev" title="一文读懂线性回归算法">
+                  <i class="fa fa-angle-left"></i> 一文读懂线性回归算法
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">liuxiaoran</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

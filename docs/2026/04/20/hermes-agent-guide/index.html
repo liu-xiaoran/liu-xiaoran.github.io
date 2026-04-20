@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.leolabs.top","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="引言最近开源圈爆火的 Hermes Agent，凭借”自我进化”的闭环学习能力、多平台兼容特性，以及 52800+ GitHub Stars 的热度，成为很多开发者和AI爱好者的首选智能代理工具。 它不同于传统Agent框架，无需复杂配置就能部署，还能在使用中自动提炼技能、积累记忆，真正实现”越用越懂你”。 今天就给大家带来一篇保姆级博文，从安装到进阶使用，全程无坑，新手也能轻松拿捏～  Herm">
+<meta property="og:type" content="article">
+<meta property="og:title" content="保姆级Hermes Agent安装与实用技巧：新手也能快速上手的AI代理指南">
+<meta property="og:url" content="https://blog.leolabs.top/2026/04/20/hermes-agent-guide/index.html">
+<meta property="og:site_name" content="leo工作室">
+<meta property="og:description" content="引言最近开源圈爆火的 Hermes Agent，凭借”自我进化”的闭环学习能力、多平台兼容特性，以及 52800+ GitHub Stars 的热度，成为很多开发者和AI爱好者的首选智能代理工具。 它不同于传统Agent框架，无需复杂配置就能部署，还能在使用中自动提炼技能、积累记忆，真正实现”越用越懂你”。 今天就给大家带来一篇保姆级博文，从安装到进阶使用，全程无坑，新手也能轻松拿捏～  Herm">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-04-20T06:46:18.000Z">
+<meta property="article:modified_time" content="2026-04-20T06:46:18.000Z">
+<meta property="article:author" content="liuxiaoran">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="HermesAgent">
+<meta property="article:tag" content="开源">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="效率工具">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://blog.leolabs.top/2026/04/20/hermes-agent-guide/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.leolabs.top/2026/04/20/hermes-agent-guide/","path":"2026/04/20/hermes-agent-guide/","title":"保姆级Hermes Agent安装与实用技巧：新手也能快速上手的AI代理指南"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>保姆级Hermes Agent安装与实用技巧：新手也能快速上手的AI代理指南 | leo工作室</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">leo工作室</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">hope</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">引言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%AE%89%E8%A3%85%E5%89%8D%E5%87%86%E5%A4%87%EF%BC%9A%E7%A1%AE%E8%AE%A4%E7%8E%AF%E5%A2%83%EF%BC%8C%E9%81%BF%E5%85%8D%E8%B8%A9%E5%9D%91"><span class="nav-number">2.</span> <span class="nav-text">一、安装前准备：确认环境，避免踩坑</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A3%80%E6%9F%A5-Python-%E7%89%88%E6%9C%AC"><span class="nav-number">2.1.</span> <span class="nav-text">检查 Python 版本</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E4%B8%A4%E7%A7%8D%E5%AE%89%E8%A3%85%E6%96%B9%E5%BC%8F%EF%BC%9A%E4%B8%80%E9%94%AE%E5%AE%89%E8%A3%85-%E6%89%8B%E5%8A%A8%E5%AE%89%E8%A3%85"><span class="nav-number">3.</span> <span class="nav-text">二、两种安装方式：一键安装 + 手动安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E5%BC%8F1%EF%BC%9A%E4%B8%80%E9%94%AE%E5%AE%89%E8%A3%85%EF%BC%88%E6%8E%A8%E8%8D%90%EF%BC%8CLinux-macOS-WSL2-Termux%E9%80%9A%E7%94%A8%EF%BC%89"><span class="nav-number">3.1.</span> <span class="nav-text">方式1：一键安装（推荐，Linux&#x2F;macOS&#x2F;WSL2&#x2F;Termux通用）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E5%BC%8F2%EF%BC%9A%E6%89%8B%E5%8A%A8%E5%AE%89%E8%A3%85%EF%BC%88%E7%BD%91%E7%BB%9C%E5%8F%97%E9%99%90%E7%8E%AF%E5%A2%83%EF%BC%89"><span class="nav-number">3.2.</span> <span class="nav-text">方式2：手动安装（网络受限环境）</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E9%A6%96%E6%AC%A1%E9%85%8D%E7%BD%AE%EF%BC%9A3%E6%AD%A5%E5%AE%8C%E6%88%90%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">4.</span> <span class="nav-text">三、首次配置：3步完成初始化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E5%AE%9E%E7%94%A8%E4%BD%BF%E7%94%A8%E6%8A%80%E5%B7%A7%EF%BC%9A%E4%BB%8E%E5%9F%BA%E7%A1%80%E5%88%B0%E8%BF%9B%E9%98%B6"><span class="nav-number">5.</span> <span class="nav-text">四、实用使用技巧：从基础到进阶</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E6%8A%80%E8%83%BD%E7%AE%A1%E7%90%86%EF%BC%9A%E8%AE%A9-Agent-%E8%87%AA%E5%8A%A8%E2%80%9D%E6%88%90%E9%95%BF%E2%80%9D"><span class="nav-number">5.1.</span> <span class="nav-text">1. 技能管理：让 Agent 自动”成长”</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%A4%9A%E6%A8%A1%E5%9E%8B%E5%88%87%E6%8D%A2%EF%BC%9A%E4%B8%80%E9%94%AE%E5%88%87%E6%8D%A2"><span class="nav-number">5.2.</span> <span class="nav-text">2. 多模型切换：一键切换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E9%95%BF%E6%9C%9F%E8%AE%B0%E5%BF%86%EF%BC%9A%E8%B7%A8%E4%BC%9A%E8%AF%9D%E4%B8%8D%E2%80%9D%E5%A4%B1%E5%BF%86%E2%80%9D"><span class="nav-number">5.3.</span> <span class="nav-text">3. 长期记忆：跨会话不”失忆”</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1-%E5%AD%90%E4%BB%A3%E7%90%86%EF%BC%9A%E6%97%A0%E4%BA%BA%E5%80%BC%E5%AE%88"><span class="nav-number">5.4.</span> <span class="nav-text">4. 定时任务 + 子代理：无人值守</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5"><span class="nav-number">6.</span> <span class="nav-text">五、常见问题排查</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">7.</span> <span class="nav-text">总结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">liuxiaoran</p>
+  <div class="site-description" itemprop="description">You adored the light,so you will never fear the darkness</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/liu-xiaoran" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;liu-xiaoran" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:liuxiaoranm@gmail.com" title="E-Mail → mailto:liuxiaoranm@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.leolabs.top/2026/04/20/hermes-agent-guide/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liuxiaoran">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="leo工作室">
+      <meta itemprop="description" content="You adored the light,so you will never fear the darkness">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="保姆级Hermes Agent安装与实用技巧：新手也能快速上手的AI代理指南 | leo工作室">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          保姆级Hermes Agent安装与实用技巧：新手也能快速上手的AI代理指南
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2026-04-20 14:46:18" itemprop="dateCreated datePublished" datetime="2026-04-20T14:46:18+08:00">2026-04-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/AI%E6%95%99%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">AI教程</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>最近开源圈爆火的 <strong>Hermes Agent</strong>，凭借”自我进化”的闭环学习能力、多平台兼容特性，以及 52800+ GitHub Stars 的热度，成为很多开发者和AI爱好者的首选智能代理工具。</p>
+<p>它不同于传统Agent框架，无需复杂配置就能部署，还能在使用中自动提炼技能、积累记忆，真正实现”越用越懂你”。</p>
+<p>今天就给大家带来一篇保姆级博文，从安装到进阶使用，全程无坑，新手也能轻松拿捏～</p>
+<blockquote>
+<p><strong>Hermes Agent 简介</strong><br>由 Nous Research 开发的开源自主AI Agent，基于 MIT 协议完全开源。核心优势：</p>
+<ul>
+<li><strong>闭环学习</strong>：自动沉淀技能</li>
+<li><strong>长期记忆</strong>：跨会话不”失忆”</li>
+<li><strong>多模型自由切换</strong>：支持 OpenAI, Claude, Kimi, MiniMax 等</li>
+</ul>
+</blockquote>
+<hr>
+<h2 id="一、安装前准备：确认环境，避免踩坑"><a href="#一、安装前准备：确认环境，避免踩坑" class="headerlink" title="一、安装前准备：确认环境，避免踩坑"></a>一、安装前准备：确认环境，避免踩坑</h2><p>在安装前，先确认你的设备满足以下基础要求，避免后续出现兼容性问题：</p>
+<ul>
+<li><strong>操作系统</strong>：支持 Linux、macOS、Windows WSL2、Android Termux（不支持 Windows 原生系统）；</li>
+<li><strong>Python版本</strong>：必须是 <strong>3.10及以上</strong>（低于3.10会出现语法错误）；</li>
+<li><strong>硬件要求</strong>：基础使用需 4GB+ 内存；</li>
+<li><strong>网络要求</strong>：需能访问 GitHub；国内用户可选择 Kimi、MiniMax 等模型。</li>
+</ul>
+<h3 id="检查-Python-版本"><a href="#检查-Python-版本" class="headerlink" title="检查 Python 版本"></a>检查 Python 版本</h3><p>打开终端输入：</p>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python3 --version</span><br><span class="line"><span class="comment"># 预期输出：Python 3.11.x</span></span><br></pre></td></tr></tbody></table></figure>
+
+<p>若版本低于 3.10，可通过 pyenv 升级：</p>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">curl https://pyenv.run | bash</span><br><span class="line">pyenv install 3.11</span><br><span class="line">pyenv global 3.11</span><br></pre></td></tr></tbody></table></figure>
+
+<hr>
+<h2 id="二、两种安装方式：一键安装-手动安装"><a href="#二、两种安装方式：一键安装-手动安装" class="headerlink" title="二、两种安装方式：一键安装 + 手动安装"></a>二、两种安装方式：一键安装 + 手动安装</h2><h3 id="方式1：一键安装（推荐，Linux-macOS-WSL2-Termux通用）"><a href="#方式1：一键安装（推荐，Linux-macOS-WSL2-Termux通用）" class="headerlink" title="方式1：一键安装（推荐，Linux/macOS/WSL2/Termux通用）"></a>方式1：一键安装（推荐，Linux/macOS/WSL2/Termux通用）</h3><p>官方提供了一键安装脚本，会自动完成 Python 依赖安装、路径配置、初始化向导触发：</p>
+<ol>
+<li><p><strong>执行安装命令</strong>：</p>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -fsSL https://raw.githubusercontent.com/NousResearch/hermes-agent/main/scripts/install.sh | bash</span><br></pre></td></tr></tbody></table></figure></li>
+<li><p><strong>加载环境变量</strong>：</p>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> ~/.bashrc <span class="comment"># 或 source ~/.zshrc</span></span><br></pre></td></tr></tbody></table></figure></li>
+<li><p><strong>验证安装</strong>：</p>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hermes --version</span><br></pre></td></tr></tbody></table></figure></li>
+</ol>
+<h3 id="方式2：手动安装（网络受限环境）"><a href="#方式2：手动安装（网络受限环境）" class="headerlink" title="方式2：手动安装（网络受限环境）"></a>方式2：手动安装（网络受限环境）</h3><p>若一键安装脚本无法访问，可通过 Git 克隆源码手动安装：</p>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://github.com/NousResearch/hermes-agent.git</span><br><span class="line"><span class="built_in">cd</span> hermes-agent</span><br><span class="line">pip install -r requirements.txt</span><br></pre></td></tr></tbody></table></figure>
+
+<hr>
+<h2 id="三、首次配置：3步完成初始化"><a href="#三、首次配置：3步完成初始化" class="headerlink" title="三、首次配置：3步完成初始化"></a>三、首次配置：3步完成初始化</h2><p>安装成功后，首次启动会进入交互式配置向导：</p>
+<ol>
+<li><strong>选择 LLM 模型</strong>：推荐国内用户使用 <strong>Kimi</strong> 或 <strong>MiniMax</strong>，无需额外网络配置；</li>
+<li><strong>配置工具模块</strong>：按需开启文件操作、Shell 执行、网络请求等工具；</li>
+<li><strong>配置消息网关</strong>：接入 Telegram、Discord、微信等平台。</li>
+</ol>
+<hr>
+<h2 id="四、实用使用技巧：从基础到进阶"><a href="#四、实用使用技巧：从基础到进阶" class="headerlink" title="四、实用使用技巧：从基础到进阶"></a>四、实用使用技巧：从基础到进阶</h2><h3 id="1-技能管理：让-Agent-自动”成长”"><a href="#1-技能管理：让-Agent-自动”成长”" class="headerlink" title="1. 技能管理：让 Agent 自动”成长”"></a>1. 技能管理：让 Agent 自动”成长”</h3><p>这是 Hermes Agent 最核心的技巧——<strong>闭环学习</strong>。</p>
+<ul>
+<li>首次执行复杂任务后，Agent 会自动提炼最优路径生成技能文件。</li>
+<li><strong>查看技能</strong>：<code>hermes skills list</code></li>
+<li><strong>调用技能</strong>：下次直接输入指令调用，效率翻倍。</li>
+</ul>
+<h3 id="2-多模型切换：一键切换"><a href="#2-多模型切换：一键切换" class="headerlink" title="2. 多模型切换：一键切换"></a>2. 多模型切换：一键切换</h3><p>Hermes Agent 不绑定任何模型，支持 200+ 模型自由切换：</p>
+<figure class="highlight bash"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hermes model <span class="built_in">set</span> kimi</span><br></pre></td></tr></tbody></table></figure>
+
+<ul>
+<li><strong>简单任务</strong>（如文本总结）：使用轻量模型（GPT-4o-mini, Kimi 轻量版），节省成本。</li>
+<li><strong>复杂任务</strong>（如代码开发）：使用强力模型（GPT-4o, Claude 3.5），提升准确率。</li>
+</ul>
+<h3 id="3-长期记忆：跨会话不”失忆”"><a href="#3-长期记忆：跨会话不”失忆”" class="headerlink" title="3. 长期记忆：跨会话不”失忆”"></a>3. 长期记忆：跨会话不”失忆”</h3><p>内置 <strong>SOUL 记忆系统</strong>，能跨会话积累用户偏好。比如周五处理的任务，周一启动后直接说”接着处理”，Agent 会自动召回进度。</p>
+<h3 id="4-定时任务-子代理：无人值守"><a href="#4-定时任务-子代理：无人值守" class="headerlink" title="4. 定时任务 + 子代理：无人值守"></a>4. 定时任务 + 子代理：无人值守</h3><ul>
+<li><strong>自然语言调度</strong>：直接说”每天晚上11点自动备份”，Agent 自动转化为 Cron 脚本。</li>
+<li><strong>子代理委派</strong>：自动拆解任务，克隆子代理并行执行（最多 8 节点并发）。</li>
+</ul>
+<hr>
+<h2 id="五、常见问题排查"><a href="#五、常见问题排查" class="headerlink" title="五、常见问题排查"></a>五、常见问题排查</h2><table>
+<thead>
+<tr>
+<th align="left">问题</th>
+<th align="left">解决方法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>hermes: command not found</code></td>
+<td align="left">执行 <code>source ~/.zshrc</code> 或重启终端。</td>
+</tr>
+<tr>
+<td align="left"><code>SyntaxError: f-string expression</code></td>
+<td align="left">Python 版本过低，请升级到 3.10+。</td>
+</tr>
+<tr>
+<td align="left"><code>AuthenticationError</code></td>
+<td align="left">API Key 错误，重新配置 <code>hermes model set</code>。</td>
+</tr>
+<tr>
+<td align="left">Docker 报错</td>
+<td align="left">启动 Docker 服务并检查权限。</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Hermes Agent 的最大优势是 **”简单部署 + 自我进化”**。</p>
+<ul>
+<li><strong>新手建议</strong>：先从基础交互和简单任务开始，熟悉后再尝试技能管理。</li>
+<li><strong>高效建议</strong>：多让 Agent 处理重复任务，鼓励它生成技能文件。</li>
+</ul>
+<p>目前 Hermes Agent 已更新到 v0.10.0 版本，后续还会持续迭代。如果你在安装或使用过程中遇到其他问题，欢迎在评论区留言探讨！</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="followme">
+  <span>联系我</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="https://t.me/leolabstop">
+            <span class="icon">
+              <i class="fab fa-telegram"></i>
+            </span>
+
+            <span class="label">Telegram</span>
+          </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/AI/" rel="tag"># AI</a>
+              <a href="/tags/HermesAgent/" rel="tag"># HermesAgent</a>
+              <a href="/tags/%E5%BC%80%E6%BA%90/" rel="tag"># 开源</a>
+              <a href="/tags/Python/" rel="tag"># Python</a>
+              <a href="/tags/%E6%95%88%E7%8E%87%E5%B7%A5%E5%85%B7/" rel="tag"># 效率工具</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2026/04/19/2026-04-19-hermes-architecture/" rel="prev" title="Hermes Agent 架构解析：从一次性工具到自进化系统">
+                  <i class="fa fa-angle-left"></i> Hermes Agent 架构解析：从一次性工具到自进化系统
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">liuxiaoran</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

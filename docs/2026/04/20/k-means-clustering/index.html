@@ -20,31 +20,31 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"blog.leolabs.top","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
 
-    <meta name="description" content="hexo+GitHub 搭建博客基础环境：nodejs 本文用使用示例是github，同样的操作也可用于gitee，但我在实际操作的过程中发现gitee需要实名手持身份证拍照审核，觉得麻烦随之放弃 1, 新建仓库github上新建代码仓库，用来存储博客  注意，项目名字使用 你的github名字加 &lt;font color&#x3D;red&gt;.github.io &lt;&#x2F;font&gt; 后缀，">
+    <meta name="description" content="引言在无监督机器学习领域，K-均值聚类 (K-Means) 绝对是最经典、最易上手的算法之一。 它无需标注数据，就能自动从杂乱无章的数据中找到隐藏的分组规律，像“智能分类器”一样，把相似的数据归为一类。 本文将用最通俗的语言带你快速掌握其核心逻辑。  一、什么是 K-均值聚类？简单来说，核心目标是将一组无标签数据，划分为 K 个互不重叠的“簇”（即小组）。    K：预先指定的簇数量。   均值：">
 <meta property="og:type" content="article">
-<meta property="og:title" content="hexo+GitHub 搭建博客 1&#x2F;119">
-<meta property="og:url" content="https://blog.leolabs.top/2021/11/09/hexo/index.html">
+<meta property="og:title" content="简短易懂！K-均值聚类算法入门，新手也能秒懂">
+<meta property="og:url" content="https://blog.leolabs.top/2026/04/20/k-means-clustering/index.html">
 <meta property="og:site_name" content="leo工作室">
-<meta property="og:description" content="hexo+GitHub 搭建博客基础环境：nodejs 本文用使用示例是github，同样的操作也可用于gitee，但我在实际操作的过程中发现gitee需要实名手持身份证拍照审核，觉得麻烦随之放弃 1, 新建仓库github上新建代码仓库，用来存储博客  注意，项目名字使用 你的github名字加 &lt;font color&#x3D;red&gt;.github.io &lt;&#x2F;font&gt; 后缀，">
+<meta property="og:description" content="引言在无监督机器学习领域，K-均值聚类 (K-Means) 绝对是最经典、最易上手的算法之一。 它无需标注数据，就能自动从杂乱无章的数据中找到隐藏的分组规律，像“智能分类器”一样，把相似的数据归为一类。 本文将用最通俗的语言带你快速掌握其核心逻辑。  一、什么是 K-均值聚类？简单来说，核心目标是将一组无标签数据，划分为 K 个互不重叠的“簇”（即小组）。    K：预先指定的簇数量。   均值：">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://blog.leolabs.top/2021/11/09/images/githubNewKu.png">
-<meta property="og:image" content="https://blog.leolabs.top/2021/11/09/images/setPage.png">
-<meta property="og:image" content="https://blog.leolabs.top/2021/11/09/images/DNS.png">
-<meta property="og:image" content="https://blog.leolabs.top/2021/11/09/images/setpub.png">
-<meta property="article:published_time" content="2021-11-09T10:36:45.000Z">
-<meta property="article:modified_time" content="2021-11-09T10:36:45.000Z">
+<meta property="article:published_time" content="2026-04-20T07:45:00.000Z">
+<meta property="article:modified_time" content="2026-04-20T07:45:00.000Z">
 <meta property="article:author" content="liuxiaoran">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="算法">
+<meta property="article:tag" content="机器学习">
+<meta property="article:tag" content="数据分析">
+<meta property="article:tag" content="人工智能">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://blog.leolabs.top/2021/11/09/images/githubNewKu.png">
 
 
-<link rel="canonical" href="https://blog.leolabs.top/2021/11/09/hexo/">
+<link rel="canonical" href="https://blog.leolabs.top/2026/04/20/k-means-clustering/">
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.leolabs.top/2021/11/09/hexo/","path":"2021/11/09/hexo/","title":"hexo+GitHub 搭建博客 1/119"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.leolabs.top/2026/04/20/k-means-clustering/","path":"2026/04/20/k-means-clustering/","title":"简短易懂！K-均值聚类算法入门，新手也能秒懂"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>hexo+GitHub 搭建博客 1/119 | leo工作室</title>
+<title>简短易懂！K-均值聚类算法入门，新手也能秒懂 | leo工作室</title>
   
 
 
@@ -129,7 +129,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#hexo-GitHub-%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2"><span class="nav-number">1.</span> <span class="nav-text">hexo+GitHub 搭建博客</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E6%96%B0%E5%BB%BA%E4%BB%93%E5%BA%93"><span class="nav-number">1.1.</span> <span class="nav-text">1, 新建仓库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E9%85%8D%E7%BD%AE%E5%8D%9A%E5%AE%A2%E8%AE%BF%E9%97%AE"><span class="nav-number">1.2.</span> <span class="nav-text">2, 配置博客访问</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E9%85%8D%E7%BD%AE%E5%9F%9F%E5%90%8D%E8%AE%BF%E9%97%AE"><span class="nav-number">1.3.</span> <span class="nav-text">3, 配置域名访问</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%AE%89%E8%A3%85%E4%BD%BF%E7%94%A8hexo"><span class="nav-number">1.4.</span> <span class="nav-text">3, 安装使用hexo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4%EF%BC%8C%E9%85%8D%E7%BD%AEGitHub%E9%BB%98%E8%AE%A4%E8%B7%AF%E5%BE%84"><span class="nav-number">1.5.</span> <span class="nav-text">4，配置GitHub默认路径</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5%EF%BC%8C%E4%B8%BB%E9%A2%98%E9%85%8D%E7%BD%AE%E5%92%8Chexo%E6%B7%B1%E5%85%A5%E9%85%8D%E7%BD%AE"><span class="nav-number">1.6.</span> <span class="nav-text">5，主题配置和hexo深入配置</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">引言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E4%BB%80%E4%B9%88%E6%98%AF-K-%E5%9D%87%E5%80%BC%E8%81%9A%E7%B1%BB%EF%BC%9F"><span class="nav-number">2.</span> <span class="nav-text">一、什么是 K-均值聚类？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E6%A0%B8%E5%BF%83%E6%AD%A5%E9%AA%A4%EF%BC%9A4-%E6%AD%A5%E5%AE%8C%E6%88%90%E8%81%9A%E7%B1%BB"><span class="nav-number">3.</span> <span class="nav-text">二、核心步骤：4 步完成聚类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E5%B8%B8%E8%A7%81%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">4.</span> <span class="nav-text">三、常见应用场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E6%96%B0%E6%89%8B%E9%81%BF%E5%9D%91%E6%8C%87%E5%8D%97"><span class="nav-number">5.</span> <span class="nav-text">四、新手避坑指南</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">6.</span> <span class="nav-text">总结</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -188,7 +188,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blog.leolabs.top/2021/11/09/hexo/">
+    <link itemprop="mainEntityOfPage" href="https://blog.leolabs.top/2026/04/20/k-means-clustering/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -201,12 +201,12 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="hexo+GitHub 搭建博客 1&#x2F;119 | leo工作室">
+      <meta itemprop="name" content="简短易懂！K-均值聚类算法入门，新手也能秒懂 | leo工作室">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          hexo+GitHub 搭建博客 1/119
+          简短易懂！K-均值聚类算法入门，新手也能秒懂
         </h1>
 
         <div class="post-meta-container">
@@ -217,7 +217,16 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2021-11-09 18:36:45" itemprop="dateCreated datePublished" datetime="2021-11-09T18:36:45+08:00">2021-11-09</time>
+      <time title="创建时间：2026-04-20 15:45:00" itemprop="dateCreated datePublished" datetime="2026-04-20T15:45:00+08:00">2026-04-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">算法笔记</span></a>
+        </span>
     </span>
 
   
@@ -229,29 +238,60 @@
     
     
     
-    <div class="post-body" itemprop="articleBody"><h2 id="hexo-GitHub-搭建博客"><a href="#hexo-GitHub-搭建博客" class="headerlink" title="hexo+GitHub 搭建博客"></a>hexo+GitHub 搭建博客</h2><p>基础环境：nodejs</p>
-<p><em>本文用使用示例是github，同样的操作也可用于gitee，但我在实际操作的过程中发现gitee需要实名手持身份证拍照审核，觉得麻烦随之放弃</em></p>
-<h3 id="1-新建仓库"><a href="#1-新建仓库" class="headerlink" title="1, 新建仓库"></a>1, 新建仓库</h3><p>github上新建代码仓库，用来存储博客</p>
-<p><img src="../images/githubNewKu.png" alt="githubNewKu.png" title="githubNew"></p>
-<p>注意，项目名字使用 你的github名字加 <code>&lt;font color=red&gt;</code>.github.io <code>&lt;/font&gt;</code> 后缀，比如我的GitHub名称是<a target="_blank" rel="noopener" href="https://github.com/liu-xiaoran">liu-xiaoran</a>,n那么我的项目名字就是 liu-xiaoran.github.io 点击创建完成操作，注意不要勾选add Readme file 和其他选项，这个可以后续自行添加，空白的仓库库有助于git的第一次推送合并。</p>
-<h3 id="2-配置博客访问"><a href="#2-配置博客访问" class="headerlink" title="2, 配置博客访问"></a>2, 配置博客访问</h3><p>跳转到刚刚新建仓库首页，也厚点击上方菜单栏的 <code>&lt;font color=pink&gt;</code>Settings <code>&lt;/font&gt;</code>,再点击左边栏位的 <code>&lt;font color=pink&gt;</code>Pages <code>&lt;/font&gt;</code>, 填写对应的pages设置。</p>
-<p><img src="../images/setPage.png" alt="setPage.png" title="setPage"></p>
-<p>Source 那里默认是 root, 点击选择Theme Chooser，选择一个主体，点击保存。<br>此时你通过填写的仓库名，如 liu-xiaoran.github.io 就可以访问到该博客地址。</p>
-<h3 id="3-配置域名访问"><a href="#3-配置域名访问" class="headerlink" title="3, 配置域名访问"></a>3, 配置域名访问</h3><p>配置域名访问和配置https的方式，打开你的域名解析控制台，如我的阿里云域名配置页面。<br><img src="../images/DNS.png" alt="DNS.png" title="DNS"></p>
-<p>配置CNAME，指向你的博客访问地址，如liu-xiaoran.github.io。</p>
-<p>配置结束后，返回github的pages配置页面，填写上域名，自动生成CNAME文件，勾选启用https。保存后稍后即可使用域名访问博客。想使用GitHub自动博客功能的，到此处就可以结束了。</p>
-<h3 id="3-安装使用hexo"><a href="#3-安装使用hexo" class="headerlink" title="3, 安装使用hexo"></a>3, 安装使用hexo</h3><p>打开终端输入</p>
-<p><code>npm i hexo-cli -g</code></p>
-<p>安装hexo, 拉取我们的github上的博客库，到本地。清空内部GitHub博客配置的文件。在文件夹内使用终端，输入</p>
-<p><code>hexo init</code></p>
-<p>初始化文件夹，接着使用 <code>npm i</code> 安装依赖。</p>
-<p>这样hexo博客就配置好了，输入 <code>hexo g</code> 生成静态网页，然后输入 <code>hexo s</code> 打开本地服务器。可以写一个hello本地尝试一下。</p>
-<h3 id="4，配置GitHub默认路径"><a href="#4，配置GitHub默认路径" class="headerlink" title="4，配置GitHub默认路径"></a>4，配置GitHub默认路径</h3><p>本地写完博文，推送到github时，发现通过域名访问的并不去hexo博客地址，怎么办？<br>仔细看我的步骤2里的红框内的，GitHub上的默认博客根目录是固定，只有几个值可以选择，这里选择一个自己喜欢的值，不是root,比如我选的 <code>&lt;font color=pink&gt;</code>docs <code>&lt;/font&gt;</code> , 打开自己的hexo配置，_config.yml 将里面的public_dir值改成和GitHub选择的值一致，比如我的都是 <code>&lt;font color=pink&gt;</code>docs <code>&lt;/font&gt;</code> 。</p>
-<p><img src="../images/setpub.png" alt="setpub.png" title="setpub"></p>
-<p>重新生成静态文件，删除不需要的旧的生成目录，重新提交github。再次通过域名访问，就能看到效果了。</p>
-<h3 id="5，主题配置和hexo深入配置"><a href="#5，主题配置和hexo深入配置" class="headerlink" title="5，主题配置和hexo深入配置"></a>5，主题配置和hexo深入配置</h3><p>主题配置，想复用别人的主题很简单，以我使用的主题hexo-theme-matery为例，<a target="_blank" rel="noopener" href="https://github.com/blinkfox/hexo-theme-matery">https://github.com/blinkfox/hexo-theme-matery</a> 打开hexo-theme-matery项目地址，里面有详细的配置方式，其他开源主题可以自己搜索获得。由于hexo-theme-matery中文文档比较详细，这里就不再赘余了。</p>
-<p>hexo的深入配置也可以参考 <a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/">https://hexo.io/zh-cn/</a> 文档，根据自己的需求自定义配置。</p>
-<p>到此，hexo+GitHub 搭建博客 算是完成了。</p>
+    <div class="post-body" itemprop="articleBody"><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>在无监督机器学习领域，<strong>K-均值聚类 (K-Means)</strong> 绝对是最经典、最易上手的算法之一。</p>
+<p>它无需标注数据，就能自动从杂乱无章的数据中找到隐藏的分组规律，像“智能分类器”一样，把相似的数据归为一类。</p>
+<p>本文将用最通俗的语言带你快速掌握其核心逻辑。</p>
+<hr>
+<h2 id="一、什么是-K-均值聚类？"><a href="#一、什么是-K-均值聚类？" class="headerlink" title="一、什么是 K-均值聚类？"></a>一、什么是 K-均值聚类？</h2><p>简单来说，核心目标是将一组无标签数据，划分为 K 个互不重叠的“簇”（即小组）。</p>
+<ul>
+<li>  <strong>K</strong>：预先指定的簇数量。</li>
+<li>  <strong>均值</strong>：每个簇的中心（质心），是该簇内所有数据的平均值向量。</li>
+</ul>
+<blockquote>
+<p>🍎 <strong>生活实例</strong>：<br>想象有一堆混合的水果。K-均值就像一个自动分类器，它会根据大小、颜色、形状等特征，把苹果归为一类、橙子归为一类、香蕉归为一类。这里的 K 就等于 3。</p>
+</blockquote>
+<hr>
+<h2 id="二、核心步骤：4-步完成聚类"><a href="#二、核心步骤：4-步完成聚类" class="headerlink" title="二、核心步骤：4 步完成聚类"></a>二、核心步骤：4 步完成聚类</h2><p>K-均值聚类的逻辑非常直观，核心是“迭代优化”。</p>
+<ol>
+<li> <strong>预设 K 值</strong>：确定要把数据分成多少个簇（如 K=2, K=3）。</li>
+<li> <strong>初始化质心</strong>：随机从数据集中选择 K 个数据点，作为初始质心。</li>
+<li><strong>分配与更新</strong>：<ul>
+<li>  计算每个点到所有质心的距离（常用欧氏距离）。</li>
+<li>  将点归到距离最近的簇。</li>
+<li>  重新计算每个簇的质心（即簇内均值）。</li>
+</ul>
+</li>
+<li> <strong>迭代收敛</strong>：重复“分配 - 更新”，直到质心不再变化或达到最大迭代次数。</li>
+</ol>
+<hr>
+<h2 id="三、常见应用场景"><a href="#三、常见应用场景" class="headerlink" title="三、常见应用场景"></a>三、常见应用场景</h2><table>
+<thead>
+<tr>
+<th align="left">场景</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>电商用户分群</strong></td>
+<td align="left">根据购买频率、消费金额划分“高频消费群”、“价格敏感群”，用于精准营销。</td>
+</tr>
+<tr>
+<td align="left"><strong>图像分割</strong></td>
+<td align="left">将像素按颜色、亮度聚类，区分前景和背景，实现自动分割。</td>
+</tr>
+<tr>
+<td align="left"><strong>数据预处理</strong></td>
+<td align="left">对高维数据聚类，简化结构，为后续模型降低计算成本。</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="四、新手避坑指南"><a href="#四、新手避坑指南" class="headerlink" title="四、新手避坑指南"></a>四、新手避坑指南</h2><p>K-均值虽简单，但有两个关键点：</p>
+<ol>
+<li> <strong>K 值选择</strong>：常用<strong>“手肘法”</strong>（观察簇内误差变化拐点）辅助确定。</li>
+<li> <strong>初始质心敏感</strong>：随机选择可能导致局部最优，建议多次运行取最优结果。</li>
+</ol>
+<hr>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>K-均值聚类是无监督学习的入门必备算法。无需复杂知识即可实现数据分组，无论是新手练习还是实际业务中的简单聚类，它都是首选工具！</p>
 
     </div>
 
@@ -277,19 +317,23 @@
   </div>
 </div>
 
+          <div class="post-tags">
+              <a href="/tags/Python/" rel="tag"># Python</a>
+              <a href="/tags/%E7%AE%97%E6%B3%95/" rel="tag"># 算法</a>
+              <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag"># 机器学习</a>
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" rel="tag"># 数据分析</a>
+              <a href="/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/" rel="tag"># 人工智能</a>
+          </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2021/11/09/hello-world/" rel="prev" title="119行动">
-                  <i class="fa fa-angle-left"></i> 119行动
+                <a href="/2026/04/20/hermes-agent-guide/" rel="prev" title="保姆级Hermes Agent安装与实用技巧：新手也能快速上手的AI代理指南">
+                  <i class="fa fa-angle-left"></i> 保姆级Hermes Agent安装与实用技巧：新手也能快速上手的AI代理指南
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2021/11/19/midoom/" rel="next" title="线上OOM分析 2&#x2F;119">
-                  线上OOM分析 2/119 <i class="fa fa-angle-right"></i>
-                </a>
             </div>
           </div>
     </footer>

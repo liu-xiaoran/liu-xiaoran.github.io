@@ -4,6 +4,39 @@
   
     
     <entry>
+      <title>简短易懂！K-均值聚类算法入门，新手也能秒懂</title>
+      <link href="/2026/04/20/k-means-clustering/"/>
+      <url>/2026/04/20/k-means-clustering/</url>
+      
+        <content type="html"><![CDATA[<h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>在无监督机器学习领域，<strong>K-均值聚类 (K-Means)</strong> 绝对是最经典、最易上手的算法之一。</p><p>它无需标注数据，就能自动从杂乱无章的数据中找到隐藏的分组规律，像“智能分类器”一样，把相似的数据归为一类。</p><p>本文将用最通俗的语言带你快速掌握其核心逻辑。</p><hr><h2 id="一、什么是-K-均值聚类？"><a href="#一、什么是-K-均值聚类？" class="headerlink" title="一、什么是 K-均值聚类？"></a>一、什么是 K-均值聚类？</h2><p>简单来说，核心目标是将一组无标签数据，划分为 K 个互不重叠的“簇”（即小组）。</p><ul><li>  <strong>K</strong>：预先指定的簇数量。</li><li>  <strong>均值</strong>：每个簇的中心（质心），是该簇内所有数据的平均值向量。</li></ul><blockquote><p>🍎 <strong>生活实例</strong>：<br>想象有一堆混合的水果。K-均值就像一个自动分类器，它会根据大小、颜色、形状等特征，把苹果归为一类、橙子归为一类、香蕉归为一类。这里的 K 就等于 3。</p></blockquote><hr><h2 id="二、核心步骤：4-步完成聚类"><a href="#二、核心步骤：4-步完成聚类" class="headerlink" title="二、核心步骤：4 步完成聚类"></a>二、核心步骤：4 步完成聚类</h2><p>K-均值聚类的逻辑非常直观，核心是“迭代优化”。</p><ol><li> <strong>预设 K 值</strong>：确定要把数据分成多少个簇（如 K=2, K=3）。</li><li> <strong>初始化质心</strong>：随机从数据集中选择 K 个数据点，作为初始质心。</li><li><strong>分配与更新</strong>：<ul><li>  计算每个点到所有质心的距离（常用欧氏距离）。</li><li>  将点归到距离最近的簇。</li><li>  重新计算每个簇的质心（即簇内均值）。</li></ul></li><li> <strong>迭代收敛</strong>：重复“分配 - 更新”，直到质心不再变化或达到最大迭代次数。</li></ol><hr><h2 id="三、常见应用场景"><a href="#三、常见应用场景" class="headerlink" title="三、常见应用场景"></a>三、常见应用场景</h2><table><thead><tr><th align="left">场景</th><th align="left">说明</th></tr></thead><tbody><tr><td align="left"><strong>电商用户分群</strong></td><td align="left">根据购买频率、消费金额划分“高频消费群”、“价格敏感群”，用于精准营销。</td></tr><tr><td align="left"><strong>图像分割</strong></td><td align="left">将像素按颜色、亮度聚类，区分前景和背景，实现自动分割。</td></tr><tr><td align="left"><strong>数据预处理</strong></td><td align="left">对高维数据聚类，简化结构，为后续模型降低计算成本。</td></tr></tbody></table><hr><h2 id="四、新手避坑指南"><a href="#四、新手避坑指南" class="headerlink" title="四、新手避坑指南"></a>四、新手避坑指南</h2><p>K-均值虽简单，但有两个关键点：</p><ol><li> <strong>K 值选择</strong>：常用<strong>“手肘法”</strong>（观察簇内误差变化拐点）辅助确定。</li><li> <strong>初始质心敏感</strong>：随机选择可能导致局部最优，建议多次运行取最优结果。</li></ol><hr><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>K-均值聚类是无监督学习的入门必备算法。无需复杂知识即可实现数据分组，无论是新手练习还是实际业务中的简单聚类，它都是首选工具！</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 算法笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Python </tag>
+            
+            <tag> 算法 </tag>
+            
+            <tag> 机器学习 </tag>
+            
+            <tag> 数据分析 </tag>
+            
+            <tag> 人工智能 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>保姆级Hermes Agent安装与实用技巧：新手也能快速上手的AI代理指南</title>
       <link href="/2026/04/20/hermes-agent-guide/"/>
       <url>/2026/04/20/hermes-agent-guide/</url>
@@ -115,11 +148,11 @@
       
         <tags>
             
-            <tag> 线性回归 </tag>
-            
             <tag> 机器学习 </tag>
             
             <tag> 人工智能 </tag>
+            
+            <tag> 线性回归 </tag>
             
         </tags>
       

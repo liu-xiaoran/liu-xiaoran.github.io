@@ -4,6 +4,39 @@
   
     
     <entry>
+      <title>神经网络算法汇总：从基础到主流模型，一篇看懂</title>
+      <link href="/2026/04/22/neural-network-summary/"/>
+      <url>/2026/04/22/neural-network-summary/</url>
+      
+        <content type="html"><![CDATA[<h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>神经网络是深度学习的核心，本质是模拟人脑神经元连接，通过多层结构自动学习数据特征，完成分类、回归、生成、决策等任务。本文按基础结构 + 经典网络 + 专用领域模型做清晰汇总，兼顾原理和应用，适合快速建立知识体系。</p><hr><h2 id="一、基础神经网络（入门必学）"><a href="#一、基础神经网络（入门必学）" class="headerlink" title="一、基础神经网络（入门必学）"></a>一、基础神经网络（入门必学）</h2><h3 id="1-感知机（Perceptron）"><a href="#1-感知机（Perceptron）" class="headerlink" title="1. 感知机（Perceptron）"></a>1. 感知机（Perceptron）</h3><ul><li>最早的神经元模型，单层结构</li><li>只能处理线性可分问题</li><li>是所有神经网络的最小单元</li></ul><h3 id="2-前馈神经网络（FFNN-MLP）"><a href="#2-前馈神经网络（FFNN-MLP）" class="headerlink" title="2. 前馈神经网络（FFNN / MLP）"></a>2. 前馈神经网络（FFNN / MLP）</h3><ul><li>全称：多层感知机</li><li>结构：输入层 → 隐藏层 → 输出层，数据单向传播</li><li>适用：表格数据、简单分类/回归</li><li>局限：对图像、序列数据效率极低</li></ul><h3 id="3-反向传播（BP-神经网络）"><a href="#3-反向传播（BP-神经网络）" class="headerlink" title="3. 反向传播（BP 神经网络）"></a>3. 反向传播（BP 神经网络）</h3><ul><li>带误差反向传播的 MLP</li><li>通过梯度下降更新权重，是深度学习训练的基础</li></ul><hr><h2 id="二、图像处理专用神经网络"><a href="#二、图像处理专用神经网络" class="headerlink" title="二、图像处理专用神经网络"></a>二、图像处理专用神经网络</h2><h3 id="1-卷积神经网络（CNN）"><a href="#1-卷积神经网络（CNN）" class="headerlink" title="1. 卷积神经网络（CNN）"></a>1. 卷积神经网络（CNN）</h3><ul><li><strong>核心层</strong>：卷积层 + 池化层 + 全连接层</li><li><strong>优势</strong>：局部连接、权值共享，大幅减少参数量</li><li><strong>擅长</strong>：图像分类、检测、分割、人脸识别</li></ul><p><strong>经典模型：</strong></p><table><thead><tr><th align="left">模型</th><th align="left">特点</th></tr></thead><tbody><tr><td align="left">LeNet-5</td><td align="left">最早商用 CNN</td></tr><tr><td align="left">AlexNet</td><td align="left">深度学习爆发标志</td></tr><tr><td align="left">VGG</td><td align="left">结构简洁，深层特征提取</td></tr><tr><td align="left">ResNet</td><td align="left">残差连接，解决深层网络退化</td></tr><tr><td align="left">GoogLeNet / Inception</td><td align="left">多尺度卷积并行</td></tr></tbody></table><h3 id="2-目标检测类衍生网络"><a href="#2-目标检测类衍生网络" class="headerlink" title="2. 目标检测类衍生网络"></a>2. 目标检测类衍生网络</h3><ul><li><strong>两阶段（高精度）</strong>：R-CNN → Fast R-CNN → Faster R-CNN</li><li><strong>一阶段（高速度）</strong>：YOLO、SSD</li></ul><hr><h2 id="三、序列-文本数据专用网络"><a href="#三、序列-文本数据专用网络" class="headerlink" title="三、序列/文本数据专用网络"></a>三、序列/文本数据专用网络</h2><h3 id="1-循环神经网络（RNN）"><a href="#1-循环神经网络（RNN）" class="headerlink" title="1. 循环神经网络（RNN）"></a>1. 循环神经网络（RNN）</h3><ul><li>带记忆，可处理变长序列</li><li>问题：长序列会出现梯度消失/爆炸</li></ul><h3 id="2-LSTM（长短期记忆网络）"><a href="#2-LSTM（长短期记忆网络）" class="headerlink" title="2. LSTM（长短期记忆网络）"></a>2. LSTM（长短期记忆网络）</h3><ul><li>RNN 的改进版，加入门控机制（输入门/遗忘门/输出门）</li><li>解决长序列训练问题</li><li>适用：语音识别、文本生成、时间序列预测</li></ul><h3 id="3-GRU"><a href="#3-GRU" class="headerlink" title="3. GRU"></a>3. GRU</h3><ul><li>LSTM 的简化版，参数更少、速度更快</li><li>效果接近 LSTM，工业界常用</li></ul><hr><h2 id="四、注意力机制与-Transformer-家族"><a href="#四、注意力机制与-Transformer-家族" class="headerlink" title="四、注意力机制与 Transformer 家族"></a>四、注意力机制与 Transformer 家族</h2><h3 id="1-Attention（注意力机制）"><a href="#1-Attention（注意力机制）" class="headerlink" title="1. Attention（注意力机制）"></a>1. Attention（注意力机制）</h3><ul><li>让模型自动关注重要信息，忽略无关内容</li><li>彻底解决长序列依赖问题</li></ul><h3 id="2-Transformer"><a href="#2-Transformer" class="headerlink" title="2. Transformer"></a>2. Transformer</h3><ul><li>完全基于自注意力机制，不依赖 RNN/CNN</li><li>结构：Encoder + Decoder</li><li>奠定现代大模型基础</li></ul><h3 id="3-基于-Transformer-的主流模型"><a href="#3-基于-Transformer-的主流模型" class="headerlink" title="3. 基于 Transformer 的主流模型"></a>3. 基于 Transformer 的主流模型</h3><table><thead><tr><th align="left">模型</th><th align="left">结构</th><th align="left">擅长任务</th></tr></thead><tbody><tr><td align="left">BERT</td><td align="left">Encoder 为主</td><td align="left">理解类（分类、抽取、问答）</td></tr><tr><td align="left">GPT</td><td align="left">Decoder 为主</td><td align="left">生成类（写作、对话、代码）</td></tr><tr><td align="left">T5 / LLaMA</td><td align="left">Encoder+Decoder</td><td align="left">多任务通用</td></tr></tbody></table><hr><h2 id="五、生成式神经网络"><a href="#五、生成式神经网络" class="headerlink" title="五、生成式神经网络"></a>五、生成式神经网络</h2><h3 id="1-自编码器（AE）"><a href="#1-自编码器（AE）" class="headerlink" title="1. 自编码器（AE）"></a>1. 自编码器（AE）</h3><ul><li>结构：Encoder 压缩 + Decoder 还原</li><li>用途：降维、去噪、特征学习</li></ul><h3 id="2-VAE（变分自编码器）"><a href="#2-VAE（变分自编码器）" class="headerlink" title="2. VAE（变分自编码器）"></a>2. VAE（变分自编码器）</h3><ul><li>概率版自编码器，可生成新样本</li></ul><h3 id="3-GAN（生成对抗网络）"><a href="#3-GAN（生成对抗网络）" class="headerlink" title="3. GAN（生成对抗网络）"></a>3. GAN（生成对抗网络）</h3><ul><li><strong>生成器</strong>：造假数据</li><li><strong>判别器</strong>：分辨真假</li><li>用途：图像生成、风格迁移、超分辨率</li></ul><hr><h2 id="六、强化学习类神经网络"><a href="#六、强化学习类神经网络" class="headerlink" title="六、强化学习类神经网络"></a>六、强化学习类神经网络</h2><h3 id="1-DQN（深度-Q-网络）"><a href="#1-DQN（深度-Q-网络）" class="headerlink" title="1. DQN（深度 Q 网络）"></a>1. DQN（深度 Q 网络）</h3><ul><li>CNN + Q-Learning</li><li>代表：AlphaGo 前身、游戏 AI</li></ul><h3 id="2-Policy-Gradient-Actor-Critic"><a href="#2-Policy-Gradient-Actor-Critic" class="headerlink" title="2. Policy Gradient / Actor-Critic"></a>2. Policy Gradient / Actor-Critic</h3><ul><li>适合连续动作、机器人控制</li><li>广泛用于自动驾驶、智能体决策</li></ul><hr><h2 id="七、核心能力总结"><a href="#七、核心能力总结" class="headerlink" title="七、核心能力总结"></a>七、核心能力总结</h2><table><thead><tr><th align="left">网络类型</th><th align="left">擅长数据类型</th><th align="left">典型应用</th></tr></thead><tbody><tr><td align="left">MLP</td><td align="left">表格数据</td><td align="left">分类、回归、预测</td></tr><tr><td align="left">CNN</td><td align="left">图像、视频</td><td align="left">识别、检测、分割</td></tr><tr><td align="left">RNN/LSTM/GRU</td><td align="left">文本、时序数据</td><td align="left">翻译、语音、预测</td></tr><tr><td align="left">Transformer</td><td align="left">文本/图像/多模态</td><td align="left">大模型、对话、翻译</td></tr><tr><td align="left">GAN/VAE</td><td align="left">任意数据</td><td align="left">图像生成、数据增强</td></tr></tbody></table><hr><h2 id="八、学习路线建议"><a href="#八、学习路线建议" class="headerlink" title="八、学习路线建议"></a>八、学习路线建议</h2><ol><li>先学 <strong>MLP/BP</strong> 理解基本训练逻辑</li><li>再学 <strong>CNN</strong> 做图像</li><li>再学 <strong>LSTM/GRU</strong> 做序列</li><li>最后主攻 <strong>Transformer</strong>（现代 AI 主流）</li></ol>]]></content>
+      
+      
+      <categories>
+          
+          <category> 算法笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 深度学习 </tag>
+            
+            <tag> CNN </tag>
+            
+            <tag> 人工智能 </tag>
+            
+            <tag> 神经网络 </tag>
+            
+            <tag> Transformer </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>极简入门！卷积神经网络（CNN），看完就懂</title>
       <link href="/2026/04/21/cnn-introduction/"/>
       <url>/2026/04/21/cnn-introduction/</url>
@@ -183,9 +216,9 @@
             
             <tag> 人工智能 </tag>
             
-            <tag> 机器学习 </tag>
-            
             <tag> 线性回归 </tag>
+            
+            <tag> 机器学习 </tag>
             
         </tags>
       

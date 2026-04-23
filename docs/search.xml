@@ -4,6 +4,39 @@
   
     
     <entry>
+      <title>一文读懂卷积神经网络（CNN）：深度学习图像处理核心算法</title>
+      <link href="/2026/04/23/cnn-deep-learning/"/>
+      <url>/2026/04/23/cnn-deep-learning/</url>
+      
+        <content type="html"><![CDATA[<h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>在深度学习领域，<strong>卷积神经网络（Convolutional Neural Network，CNN）</strong>是专为图像、视频、网格类数据设计的经典算法，也是计算机视觉技术的基石。</p><p>从手机人脸识别、相册智能分类，到自动驾驶路况识别、医学影像病灶检测，都离不开它的支撑。</p><p>CNN 的核心设计思路，是模拟人类大脑视觉皮层的工作原理：我们观察物体时，会先捕捉边缘、线条等基础特征，再逐步组合成完整的物体轮廓；而 CNN 通过分层特征提取，自动从数据中学习有效信息，无需人工手动设计特征，完美解决了传统算法处理图像时效率低、准确率差的问题。</p><hr><h2 id="CNN-核心结构极简解析"><a href="#CNN-核心结构极简解析" class="headerlink" title="CNN 核心结构极简解析"></a>CNN 核心结构极简解析</h2><h3 id="1-卷积层"><a href="#1-卷积层" class="headerlink" title="1. 卷积层"></a>1. 卷积层</h3><p>算法核心，通过卷积核（过滤器）在图像上滑动，提取边缘、纹理、色彩等基础视觉特征，利用<strong>权值共享</strong>、<strong>局部连接</strong>大幅减少模型参数，提升计算效率。</p><h3 id="2-池化层"><a href="#2-池化层" class="headerlink" title="2. 池化层"></a>2. 池化层</h3><p>对特征图进行降维采样，在保留关键特征的同时，压缩数据量、降低计算复杂度，还能增强模型的<strong>鲁棒性</strong>。</p><h3 id="3-全连接层"><a href="#3-全连接层" class="headerlink" title="3. 全连接层"></a>3. 全连接层</h3><p>汇总前面提取的所有特征，将高维特征映射到样本标签空间，最终完成分类、识别等任务输出。</p><hr><h2 id="CNN-核心优势"><a href="#CNN-核心优势" class="headerlink" title="CNN 核心优势"></a>CNN 核心优势</h2><ul><li><strong>自动提取特征</strong>：省去繁琐的人工特征工程，让模型自己学习有效信息。</li><li><strong>处理效果好</strong>：对图像、语音等结构化数据处理效果极佳，泛化能力强。</li><li><strong>效率高</strong>：参数量少、训练效率高，适配深度学习多层架构。</li></ul><hr><h2 id="典型应用场景"><a href="#典型应用场景" class="headerlink" title="典型应用场景"></a>典型应用场景</h2><table><thead><tr><th align="left">领域</th><th align="left">应用</th></tr></thead><tbody><tr><td align="left">图像处理</td><td align="left">图像分类、目标检测与分割</td></tr><tr><td align="left">人脸识别</td><td align="left">手机解锁、支付验证、图像风格迁移</td></tr><tr><td align="left">医疗</td><td align="left">医学影像分析、病灶检测</td></tr><tr><td align="left">自动驾驶</td><td align="left">视觉感知、路况识别、行人检测</td></tr><tr><td align="left">文字与视频</td><td align="left">OCR 文字识别、视频内容理解</td></tr></tbody></table><hr><h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>卷积神经网络凭借独特的结构优势，成为计算机视觉领域最主流的算法，也是深度学习入门必学模型。</p><p>即便没有深厚的数学基础，也能快速理解其核心逻辑，轻松上手相关实践任务。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 算法笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 深度学习 </tag>
+            
+            <tag> CNN </tag>
+            
+            <tag> 卷积神经网络 </tag>
+            
+            <tag> 计算机视觉 </tag>
+            
+            <tag> 人工智能 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>神经网络算法汇总：从基础到主流模型，一篇看懂</title>
       <link href="/2026/04/22/neural-network-summary/"/>
       <url>/2026/04/22/neural-network-summary/</url>
@@ -88,9 +121,9 @@
             
             <tag> 人工智能 </tag>
             
-            <tag> 算法 </tag>
-            
             <tag> Python </tag>
+            
+            <tag> 算法 </tag>
             
             <tag> 机器学习 </tag>
             

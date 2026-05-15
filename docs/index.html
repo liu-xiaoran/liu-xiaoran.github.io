@@ -134,7 +134,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">15</span>
+          <span class="site-state-item-count">16</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -145,7 +145,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-count">27</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -170,6 +170,122 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  <div class="post-gallery" itemscope itemtype="http://schema.org/ImageGallery">
+    
+    <div class="post-gallery-image">
+      <img src="/images/prompt-engineering-cover.png" itemprop="contentUrl">
+    </div>
+    </div>
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://blog.leolabs.top/2026/05/15/2026-05-15-prompt-engineering/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liuxiaoran">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="leo工作室">
+      <meta itemprop="description" content="You adored the light,so you will never fear the darkness">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | leo工作室">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2026/05/15/2026-05-15-prompt-engineering/" class="post-title-link" itemprop="url">浅谈提示词工程核心原理与工程实践</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2026-05-15 11:00:00" itemprop="dateCreated datePublished" datetime="2026-05-15T11:00:00+08:00">2026-05-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="一、什么是提示词工程"><a href="#一、什么是提示词工程" class="headerlink" title="一、什么是提示词工程"></a>一、什么是提示词工程</h2><p>提示词工程，是<strong>面向大语言模型与多模态大模型</strong>，通过结构化设计、优化输入提示文本，引导模型按照指定逻辑、格式、约束与任务范式，稳定输出预期结果的系统化工程方法。</p>
+<p>它不依赖模型微调、无需二次训练，属于<strong>模型推理层的低成本调优手段</strong>，是当前大模型落地业务场景、标准化调用、效果可控化的核心基础能力。</p>
+<h2 id="二、核心底层逻辑"><a href="#二、核心底层逻辑" class="headerlink" title="二、核心底层逻辑"></a>二、核心底层逻辑</h2><p>大模型遵循<strong>上下文学习（In-Context Learning）</strong> 范式，不更新权重，仅依靠输入提示里的：任务描述、角色定义、规则约束、示例样例、输出规范，来推理并对齐用户意图。</p>
+<p>提示词工程的本质，就是<strong>把业务逻辑、任务规则、输出标准全部固化到Prompt上下文</strong>，让模型零训练即可适配各类业务任务。</p>
+<h2 id="三、专业Prompt工程核心构成要素"><a href="#三、专业Prompt工程核心构成要素" class="headerlink" title="三、专业Prompt工程核心构成要素"></a>三、专业Prompt工程核心构成要素</h2><ol>
+<li><p><strong>角色定位</strong><br>指定模型专业身份与知识边界，限定回答领域与专业视角，避免泛化闲聊。</p>
+</li>
+<li><p><strong>任务指令</strong><br>清晰定义目标任务：归纳、推理、改写、代码生成、结构化抽取、多轮对话等。</p>
+</li>
+<li><p><strong>上下文背景</strong><br>补充业务场景、前置信息、约束条件，消除意图歧义。</p>
+</li>
+<li><p><strong>范例引导（Few-shot）</strong><br>给出输入输出示例，让模型模仿固定格式与逻辑，大幅提升结果一致性。</p>
+</li>
+<li><p><strong>格式约束</strong><br>指定输出为Markdown、JSON、表格、分点步骤、结构化字段等，便于程序解析对接业务接口。</p>
+</li>
+<li><p><strong>边界与规则限制</strong><br>限定字数、专业口径、禁止内容、逻辑严谨性、拒绝幻觉输出等。</p>
+</li>
+</ol>
+<h2 id="四、主流工程化设计范式"><a href="#四、主流工程化设计范式" class="headerlink" title="四、主流工程化设计范式"></a>四、主流工程化设计范式</h2><ul>
+<li><strong>零样本提示（Zero-shot）</strong>：无示例，依靠清晰指令直接完成任务，适合通用场景。</li>
+<li><strong>少样本提示（Few-shot）</strong>：附带多条标准样例，适合结构化抽取、固定格式输出。</li>
+<li><strong>思维链CoT</strong>：引导模型分步推理、先思考再给出结论，提升复杂逻辑问题准确率。</li>
+<li><strong>角色隔离+规则锁死</strong>：用于企业业务落地，固定人设、固定口径、禁止自由发挥。</li>
+<li><strong>模块化Prompt</strong>：将角色、规则、模板、示例拆为独立模块，可复用、可配置、便于版本管理。</li>
+</ul>
+<h2 id="五、工程落地应用场景"><a href="#五、工程落地应用场景" class="headerlink" title="五、工程落地应用场景"></a>五、工程落地应用场景</h2><ul>
+<li>企业知识库问答、文档结构化抽取与摘要生成</li>
+<li>代码生成、接口文档编写、算法逻辑解释</li>
+<li>自动化文案生成、业务报表标准化输出</li>
+<li>多模态图文理解、AI绘画标准化正向/反向提示词设计</li>
+<li>智能客服、行业专属大模型对话口径管控</li>
+</ul>
+<h2 id="六、工程化价值总结"><a href="#六、工程化价值总结" class="headerlink" title="六、工程化价值总结"></a>六、工程化价值总结</h2><p>提示词工程是<strong>大模型轻量化落地的最优解</strong>之一，具备低成本、可快速迭代、无需算力训练、跨模型通用的特点。</p>
+<p>规范化、模块化的Prompt设计，能有效抑制模型幻觉、统一输出格式、保障业务结果稳定，是AI工程开发、业务落地必备的基础技能。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1602,84 +1718,6 @@
 <p>alias:<br>location /test/ {<br> alias /var/www/image/<br>}<br>若按照上述配置的话，访问/img目录里面的文件时, nginx会自动去/var/www/image目录找文件, 也就是不会把后缀带上，常用来配置静态文件。</p>
 <p>try_files:<br>location /test/ {<br>  try_files $uri $uri/ /index.html;<br>}<br>try_files 会到硬盘里尝试找这个文件, 找不到，就会 fall back 到 try_files 的最后一个选项index.html,将请求转发返回index.html上，然后html里的vue router再去跟去后缀路由对应的页面。</p>
 <p>至此，完成history的转发。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://blog.leolabs.top/2022/02/11/win11/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="liuxiaoran">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="leo工作室">
-      <meta itemprop="description" content="You adored the light,so you will never fear the darkness">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | leo工作室">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/02/11/win11/" class="post-title-link" itemprop="url">升级win11后 3/119</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-02-11 16:36:45" itemprop="dateCreated datePublished" datetime="2022-02-11T16:36:45+08:00">2022-02-11</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="升级成了WIN11"><a href="#升级成了WIN11" class="headerlink" title="升级成了WIN11"></a>升级成了WIN11</h2><p>年前公司给换了笔记本电脑，之前在公司一直用的是MACP15款。个人是更偏向苹果系统的，但是无奈老机子太卡了。<br>申请换电脑时，只能申请win笔记本了。拿到手后是win10，自己下载升级成了win11。</p>
-<p>刚用11时，感觉很惊喜，跟MAC用起来很像，又能解决MAC的一些老软件兼容性问题，虽然小BUG比较多。</p>
-<p>写一个系统的问题和小技巧吧，会持续更新这个文章</p>
-<p>1，在执行shell命令时，报在此系统上禁止运行脚本。</p>
-<p>解决方案，管理员身份 打开终端，执行 set-ExecutionPolicy RemoteSigned 解决</p>
-<p>2，可以直接下载Linux，在应用市场搜索ubuntu。</p>
-<p>3，如果下载视频是ev4加密视频的话，建议购买使用正版命令打开。（临时需要可以找我破解，python解密）</p>
-<p>4，自带粘贴板记录功能 win + v 打开</p>
-<p>5，自带多功能截图 win + shift + s </p>
-<p>6，带多桌面功能，触控板可以设置的跟MAC一样。</p>
 
       
     </div>

@@ -12,6 +12,8 @@ cover: /images/prompt-standardization-cover.png
 
 # Prompt工程标准化：从随意提问到工业化落地
 
+![Prompt工程标准化封面](/images/prompt-standardization-cover.png)
+
 随着大模型越来越多地进入真实业务场景，单纯依靠经验、口语化、即兴式的 Prompt 写法，已经很难满足生产环境对稳定性、一致性和可维护性的要求。
 
 Prompt 工程标准化，本质上是在把零散的 AI 使用经验，沉淀成一套可复用、可迭代、可管控的工程规范。它是大模型应用从 Demo 走向工业化的关键一步。

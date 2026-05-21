@@ -134,18 +134,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-count">17</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-count">5</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-count">28</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -170,6 +170,212 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://blog.leolabs.top/2026/05/21/2026-05-21-prompt-standardization/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liuxiaoran">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="leo工作室">
+      <meta itemprop="description" content="You adored the light,so you will never fear the darkness">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | leo工作室">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2026/05/21/2026-05-21-prompt-standardization/" class="post-title-link" itemprop="url">Prompt工程标准化：从随意提问到工业化落地</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2026-05-21 00:00:00" itemprop="dateCreated datePublished" datetime="2026-05-21T00:00:00+08:00">2026-05-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/AI%E5%B7%A5%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">AI工程</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="Prompt工程标准化：从随意提问到工业化落地"><a href="#Prompt工程标准化：从随意提问到工业化落地" class="headerlink" title="Prompt工程标准化：从随意提问到工业化落地"></a>Prompt工程标准化：从随意提问到工业化落地</h1><p>随着大模型越来越多地进入真实业务场景，单纯依靠经验、口语化、即兴式的 Prompt 写法，已经很难满足生产环境对稳定性、一致性和可维护性的要求。</p>
+<p>Prompt 工程标准化，本质上是在把零散的 AI 使用经验，沉淀成一套可复用、可迭代、可管控的工程规范。它是大模型应用从 Demo 走向工业化的关键一步。</p>
+<h2 id="为什么需要-Prompt-标准化？"><a href="#为什么需要-Prompt-标准化？" class="headerlink" title="为什么需要 Prompt 标准化？"></a>为什么需要 Prompt 标准化？</h2><p>在非标准化场景中，团队通常会遇到这些问题：</p>
+<ul>
+<li>输出格式不统一，难以接入业务系统</li>
+<li>结果波动大，同样问题每次回答风格都不同</li>
+<li>幻觉难控制，内容看似合理却不可信</li>
+<li>团队成员写法各异，Prompt 质量依赖个人经验</li>
+<li>无法版本化管理，也难以持续迭代优化</li>
+<li>很难接入自动化评测、流程编排和质量监控</li>
+</ul>
+<p>Prompt 标准化的目标，不是让模型“更聪明”，而是在不微调模型、不训练权重的前提下，通过输入侧的规范设计，让输出更稳定、更可控、更可解析、更可复盘。</p>
+<h2 id="Prompt-标准化的核心体系"><a href="#Prompt-标准化的核心体系" class="headerlink" title="Prompt 标准化的核心体系"></a>Prompt 标准化的核心体系</h2><p>一个工程化 Prompt，通常不是一句简单的提问，而是由多个结构化模块组成。实践中，下面六类模块最关键。</p>
+<h3 id="1-角色与边界标准化"><a href="#1-角色与边界标准化" class="headerlink" title="1. 角色与边界标准化"></a>1. 角色与边界标准化</h3><p>首先要明确模型扮演什么角色、具备什么能力、不能做什么。</p>
+<p>例如：</p>
+<ul>
+<li>它是“企业知识库问答助手”还是“资深数据分析师”</li>
+<li>它是否允许做开放性推测</li>
+<li>它是否必须限制在某一业务范围内回答</li>
+</ul>
+<p>角色和边界一旦定义清楚，就能明显减少模型自由发散和幻觉输出。</p>
+<h3 id="2-任务指令标准化"><a href="#2-任务指令标准化" class="headerlink" title="2. 任务指令标准化"></a>2. 任务指令标准化</h3><p>任务描述必须明确、唯一、无歧义。</p>
+<p>标准化任务指令通常需要写清楚：</p>
+<ul>
+<li>输入是什么</li>
+<li>要执行什么动作</li>
+<li>目标结果是什么</li>
+<li>成功输出长什么样</li>
+</ul>
+<p>模糊的自然语言指令，在测试阶段也许还能“勉强可用”，但在生产环境里通常会带来不可控波动。</p>
+<h3 id="3-上下文与场景标准化"><a href="#3-上下文与场景标准化" class="headerlink" title="3. 上下文与场景标准化"></a>3. 上下文与场景标准化</h3><p>模型输出质量高度依赖上下文。</p>
+<p>因此要尽量统一：</p>
+<ul>
+<li>业务背景</li>
+<li>前置条件</li>
+<li>输入数据结构</li>
+<li>相关约束信息</li>
+</ul>
+<p>当上下文被标准化后，模型每次推理所处的环境才是一致的，才能最大限度逼近“相同输入得到相同输出”。</p>
+<h3 id="4-输出格式标准化"><a href="#4-输出格式标准化" class="headerlink" title="4. 输出格式标准化"></a>4. 输出格式标准化</h3><p>工业级 Prompt 的一个核心标准，是输出必须可机器解析。</p>
+<p>常见约束方式包括：</p>
+<ul>
+<li>JSON</li>
+<li>Markdown 固定结构</li>
+<li>表格</li>
+<li>Key-Value 字段</li>
+<li>固定标题层级与字段顺序</li>
+</ul>
+<p>如果输出无法稳定解析，就很难接入自动化系统，也很难作为业务链路的一环长期运行。</p>
+<h3 id="5-规则与约束标准化"><a href="#5-规则与约束标准化" class="headerlink" title="5. 规则与约束标准化"></a>5. 规则与约束标准化</h3><p>除了任务本身，还需要统一回答规则。</p>
+<p>例如：</p>
+<ul>
+<li>字数限制</li>
+<li>是否允许引用外部信息</li>
+<li>是否需要标注不确定性</li>
+<li>是否必须先自检再输出</li>
+<li>是否需要规避幻觉并给出缺失信息提示</li>
+<li>是否遵守合规、审计或业务规范</li>
+</ul>
+<p>这些规则的标准化，本质上是在把业务质量要求提前写进 Prompt。</p>
+<h3 id="6-范例范式标准化（Few-shot）"><a href="#6-范例范式标准化（Few-shot）" class="headerlink" title="6. 范例范式标准化（Few-shot）"></a>6. 范例范式标准化（Few-shot）</h3><p>对于抽取、分类、结构化整理等任务，仅靠规则有时还不够。</p>
+<p>这时需要补充标准输入输出样例，让模型学习你真正想要的“业务范式”。</p>
+<p>Few-shot 的价值不在于增加信息量，而在于对齐格式、口径和判断标准，从而显著提高一致性与准确率。</p>
+<h2 id="标准化-Prompt-的三类工程范式"><a href="#标准化-Prompt-的三类工程范式" class="headerlink" title="标准化 Prompt 的三类工程范式"></a>标准化 Prompt 的三类工程范式</h2><p>在生产落地中，大多数 Prompt 设计都可以归纳为三种范式。</p>
+<h3 id="Zero-shot-标准范式"><a href="#Zero-shot-标准范式" class="headerlink" title="Zero-shot 标准范式"></a>Zero-shot 标准范式</h3><p>通过足够清晰的任务指令和约束，让模型在没有示例的情况下直接完成任务。</p>
+<p>适用场景：</p>
+<ul>
+<li>通用内容生成</li>
+<li>简单问答</li>
+<li>低误差容忍任务</li>
+</ul>
+<p>优点是成本低、扩展快；缺点是复杂任务下一致性有限。</p>
+<h3 id="Few-shot-标准范式"><a href="#Few-shot-标准范式" class="headerlink" title="Few-shot 标准范式"></a>Few-shot 标准范式</h3><p>在 Prompt 中加入固定样例，帮助模型对齐输出范式。</p>
+<p>适用场景：</p>
+<ul>
+<li>信息抽取</li>
+<li>文本分类</li>
+<li>结构化整理</li>
+<li>高一致性要求任务</li>
+</ul>
+<p>这是很多业务系统里最常见、也最实用的标准化方式。</p>
+<h3 id="CoT-推理标准范式"><a href="#CoT-推理标准范式" class="headerlink" title="CoT 推理标准范式"></a>CoT 推理标准范式</h3><p>通过显式要求模型分步推理，提高复杂任务的正确率。</p>
+<p>适用场景：</p>
+<ul>
+<li>算法推理</li>
+<li>数据分析</li>
+<li>逻辑计算</li>
+<li>多条件决策</li>
+</ul>
+<p>这类 Prompt 的关键不是“让模型多说一点”，而是把推理过程拆解成明确步骤，降低出错概率。</p>
+<h2 id="工业化落地的核心能力"><a href="#工业化落地的核心能力" class="headerlink" title="工业化落地的核心能力"></a>工业化落地的核心能力</h2><p>真正的 Prompt 标准化，不只是“会写 Prompt”，而是一整套工程管理体系。</p>
+<h3 id="模块化设计"><a href="#模块化设计" class="headerlink" title="模块化设计"></a>模块化设计</h3><p>把角色、规则、样例、格式、上下文拆成独立模块。</p>
+<p>这样可以：</p>
+<ul>
+<li>复用已有能力</li>
+<li>快速组合新场景</li>
+<li>降低维护成本</li>
+<li>提升团队协作效率</li>
+</ul>
+<h3 id="版本化管理"><a href="#版本化管理" class="headerlink" title="版本化管理"></a>版本化管理</h3><p>Prompt 应该像代码一样被管理。</p>
+<p>需要能够清楚区分：</p>
+<ul>
+<li>测试版</li>
+<li>生产版</li>
+<li>不同业务版本</li>
+<li>不同模型适配版本</li>
+</ul>
+<p>只有可追踪、可回滚、可对比，Prompt 优化才具备工程意义。</p>
+<h3 id="效果评测闭环"><a href="#效果评测闭环" class="headerlink" title="效果评测闭环"></a>效果评测闭环</h3><p>标准化不是写完就结束，而是要建立可量化的评估闭环。</p>
+<p>常见指标包括：</p>
+<ul>
+<li>准确率</li>
+<li>合规率</li>
+<li>格式命中率</li>
+<li>幻觉率</li>
+<li>任务完成率</li>
+</ul>
+<p>没有评测闭环，所谓“优化”往往只是主观感觉变好了。</p>
+<h3 id="业务可移植性"><a href="#业务可移植性" class="headerlink" title="业务可移植性"></a>业务可移植性</h3><p>优秀的 Prompt 体系不应绑定某一个特定模型。</p>
+<p>它应当尽量做到：</p>
+<ul>
+<li>能在不同大模型之间迁移</li>
+<li>能快速适配新的 API 与平台</li>
+<li>能在模型切换后保持主要业务逻辑稳定</li>
+</ul>
+<p>这也是标准化带来的长期价值之一。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Prompt 标准化的本质，是把业务规则代码化，把交互经验工程化，把模型输出可控化。</p>
+<p>对于大模型应用开发来说，它往往是成本最低、落地最快、稳定性最强的一类优化手段，也是 AI 应用工程师必须掌握的基础工程能力。</p>
+<p>当业务真正进入规模化阶段，Prompt 不再只是“提问技巧”，而是生产系统中的一层关键控制面。谁先把这层能力标准化，谁就更容易把 AI 从可演示，变成可交付、可运营、可复制的能力。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1643,81 +1849,6 @@
     
     <div class="post-body" itemprop="articleBody">
           <h2 id="go语言内存分析"><a href="#go语言内存分析" class="headerlink" title="go语言内存分析"></a>go语言内存分析</h2><p>最新看了一下go语言，感觉语言设计的比Java要好一些，底层实现了对并发的支持。<br>他的内存结构和内存回收跟Java的模型也有很大的不同，抽空写一下go语言的内存分析，后续也会写一篇G1和GMS用来坐对比。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://blog.leolabs.top/2022/02/16/nginx/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="liuxiaoran">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="leo工作室">
-      <meta itemprop="description" content="You adored the light,so you will never fear the darkness">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | leo工作室">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/02/16/nginx/" class="post-title-link" itemprop="url">nginx使用try_files配置vue 4/119</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-02-16 17:21:45" itemprop="dateCreated datePublished" datetime="2022-02-16T17:21:45+08:00">2022-02-16</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="nginx使用try-files配置vue"><a href="#nginx使用try-files配置vue" class="headerlink" title="nginx使用try_files配置vue"></a>nginx使用try_files配置vue</h2><p>组内的小伙伴最近独立开发的一个项目，前端使用VUE，路由模式使用history。<br>部署时发现无法访问，自己研究半天后，无法解决，向我寻求帮助，发现是他的nginx配置错误</p>
-<p>其实 vue router 的文档里有部署方式，<a target="_blank" rel="noopener" href="https://router.vuejs.org/zh/guide/essentials/history-mode.html#%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%85%8D%E7%BD%AE%E7%A4%BA%E4%BE%8B">https://router.vuejs.org/zh/guide/essentials/history-mode.html#%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%85%8D%E7%BD%AE%E7%A4%BA%E4%BE%8B</a><br>服务器配置示例：<br>location / {<br>  try_files $uri $uri/ /index.html;<br>}</p>
-<p>随手写篇文章记录一下，nginx的location下的配置中<br>root，alias，try_files 区别，未来有时间可以写一篇nginx的深入文章，包含负载均衡、双机热备、缓存等高级功能。</p>
-<p>root:<br>location /test/ {<br>    root /var/www/image<br>}<br>若按照上述配置的话，访问/test目录里面的文件时, nginx会自动去/var/www/image/test去找。</p>
-<p>alias:<br>location /test/ {<br> alias /var/www/image/<br>}<br>若按照上述配置的话，访问/img目录里面的文件时, nginx会自动去/var/www/image目录找文件, 也就是不会把后缀带上，常用来配置静态文件。</p>
-<p>try_files:<br>location /test/ {<br>  try_files $uri $uri/ /index.html;<br>}<br>try_files 会到硬盘里尝试找这个文件, 找不到，就会 fall back 到 try_files 的最后一个选项index.html,将请求转发返回index.html上，然后html里的vue router再去跟去后缀路由对应的页面。</p>
-<p>至此，完成history的转发。</p>
 
       
     </div>

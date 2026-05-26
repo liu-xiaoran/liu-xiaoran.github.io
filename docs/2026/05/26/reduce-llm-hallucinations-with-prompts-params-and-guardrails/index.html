@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.leolabs.top","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="彻底解决大模型幻觉：从提示词、模型参数、业务规则三层落地优化方案用过 AI 大模型的人，几乎都遇到过“幻觉”问题：模型一本正经地编造不存在的事实、虚构数据、杜撰论文、编造接口参数，甚至前后逻辑自相矛盾。 很多人会把幻觉理解成模型的“BUG”，但从原理上看并不准确。大模型的目标是生成在语言上连贯、概率上合理的内容，而不是天然追求绝对事实正确。当上下文不足、问题边界模糊、采样参数过于开放时，模型就会">
+<meta property="og:type" content="article">
+<meta property="og:title" content="彻底解决大模型幻觉！从提示词、模型参数、业务规则三层落地优化方案">
+<meta property="og:url" content="https://blog.leolabs.top/2026/05/26/reduce-llm-hallucinations-with-prompts-params-and-guardrails/index.html">
+<meta property="og:site_name" content="leo工作室">
+<meta property="og:description" content="彻底解决大模型幻觉：从提示词、模型参数、业务规则三层落地优化方案用过 AI 大模型的人，几乎都遇到过“幻觉”问题：模型一本正经地编造不存在的事实、虚构数据、杜撰论文、编造接口参数，甚至前后逻辑自相矛盾。 很多人会把幻觉理解成模型的“BUG”，但从原理上看并不准确。大模型的目标是生成在语言上连贯、概率上合理的内容，而不是天然追求绝对事实正确。当上下文不足、问题边界模糊、采样参数过于开放时，模型就会">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.leolabs.top/images/reduce-llm-hallucinations-cover.png">
+<meta property="article:published_time" content="2026-05-25T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-05-25T16:00:00.000Z">
+<meta property="article:author" content="liuxiaoran">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="大模型">
+<meta property="article:tag" content="Prompt">
+<meta property="article:tag" content="工程实践">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.leolabs.top/images/reduce-llm-hallucinations-cover.png">
+
+
+<link rel="canonical" href="https://blog.leolabs.top/2026/05/26/reduce-llm-hallucinations-with-prompts-params-and-guardrails/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.leolabs.top/2026/05/26/reduce-llm-hallucinations-with-prompts-params-and-guardrails/","path":"2026/05/26/reduce-llm-hallucinations-with-prompts-params-and-guardrails/","title":"彻底解决大模型幻觉！从提示词、模型参数、业务规则三层落地优化方案"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>彻底解决大模型幻觉！从提示词、模型参数、业务规则三层落地优化方案 | leo工作室</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">leo工作室</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">hope</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BD%BB%E5%BA%95%E8%A7%A3%E5%86%B3%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%B9%BB%E8%A7%89%EF%BC%9A%E4%BB%8E%E6%8F%90%E7%A4%BA%E8%AF%8D%E3%80%81%E6%A8%A1%E5%9E%8B%E5%8F%82%E6%95%B0%E3%80%81%E4%B8%9A%E5%8A%A1%E8%A7%84%E5%88%99%E4%B8%89%E5%B1%82%E8%90%BD%E5%9C%B0%E4%BC%98%E5%8C%96%E6%96%B9%E6%A1%88"><span class="nav-number">1.</span> <span class="nav-text">彻底解决大模型幻觉：从提示词、模型参数、业务规则三层落地优化方案</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%85%88%E6%90%9E%E6%87%82%EF%BC%9A%E5%A4%A7%E6%A8%A1%E5%9E%8B%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BC%9A%E4%BA%A7%E7%94%9F%E5%B9%BB%E8%A7%89%EF%BC%9F"><span class="nav-number">1.1.</span> <span class="nav-text">一、先搞懂：大模型为什么会产生幻觉？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E7%AC%AC%E4%B8%80%E5%B1%82%EF%BC%9A%E6%8F%90%E7%A4%BA%E8%AF%8D%E5%B7%A5%E7%A8%8B%E7%BA%A6%E6%9D%9F"><span class="nav-number">1.2.</span> <span class="nav-text">二、第一层：提示词工程约束</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%BC%BA%E5%88%B6%E5%BC%80%E5%90%AF%E8%AF%9A%E5%AE%9E%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.2.1.</span> <span class="nav-text">1. 强制开启诚实模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%BC%BA%E5%88%B6%E6%BA%AF%E6%BA%90%E4%B8%8E%E4%BE%9D%E6%8D%AE%E8%BE%93%E5%87%BA"><span class="nav-number">1.2.2.</span> <span class="nav-text">2. 强制溯源与依据输出</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E9%99%90%E5%88%B6%E5%9B%9E%E7%AD%94%E8%BE%B9%E7%95%8C%EF%BC%8C%E7%A6%81%E6%AD%A2%E8%BF%87%E5%BA%A6%E6%8B%93%E5%B1%95"><span class="nav-number">1.2.3.</span> <span class="nav-text">3. 限制回答边界，禁止过度拓展</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E5%A4%8D%E6%9D%82%E9%97%AE%E9%A2%98%E5%90%AF%E7%94%A8%E5%88%86%E6%AD%A5%E6%8E%A8%E7%90%86"><span class="nav-number">1.2.4.</span> <span class="nav-text">4. 复杂问题启用分步推理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E7%AC%AC%E4%BA%8C%E5%B1%82%EF%BC%9A%E6%A8%A1%E5%9E%8B%E6%8E%A8%E7%90%86%E5%8F%82%E6%95%B0%E8%B0%83%E4%BC%98"><span class="nav-number">1.3.</span> <span class="nav-text">三、第二层：模型推理参数调优</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Temperature%EF%BC%9A%E6%9C%80%E5%85%B3%E9%94%AE%E7%9A%84%E9%9A%8F%E6%9C%BA%E5%BA%A6%E6%8E%A7%E5%88%B6%E9%A1%B9"><span class="nav-number">1.3.1.</span> <span class="nav-text">1. Temperature：最关键的随机度控制项</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Top-p%EF%BC%9A%E6%94%B6%E7%B4%A7%E5%80%99%E9%80%89%E8%AF%8D%E5%88%86%E5%B8%83"><span class="nav-number">1.3.2.</span> <span class="nav-text">2. Top_p：收紧候选词分布</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Frequency-Penalty%EF%BC%9A%E6%8A%91%E5%88%B6%E5%86%97%E4%BD%99%E4%B8%8E%E9%94%99%E8%AF%AF%E6%8B%BC%E6%8E%A5"><span class="nav-number">1.3.3.</span> <span class="nav-text">3. Frequency Penalty：抑制冗余与错误拼接</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E7%AC%AC%E4%B8%89%E5%B1%82%EF%BC%9A%E4%B8%9A%E5%8A%A1%E8%A7%84%E5%88%99%E4%B8%8E%E5%90%8E%E5%A4%84%E7%90%86%E5%85%9C%E5%BA%95"><span class="nav-number">1.4.</span> <span class="nav-text">四、第三层：业务规则与后处理兜底</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%AD%97%E6%AE%B5%E4%B8%8E%E6%A0%BC%E5%BC%8F%E5%BC%BA%E6%A0%A1%E9%AA%8C"><span class="nav-number">1.4.1.</span> <span class="nav-text">1. 字段与格式强校验</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%95%8F%E6%84%9F%E5%86%85%E5%AE%B9%E4%B8%8E%E5%BC%82%E5%B8%B8%E5%80%BC%E6%8B%A6%E6%88%AA"><span class="nav-number">1.4.2.</span> <span class="nav-text">2. 敏感内容与异常值拦截</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E4%B8%8A%E4%B8%8B%E6%96%87%E7%9C%9F%E5%AE%9E%E6%80%A7%E6%A0%A1%E9%AA%8C"><span class="nav-number">1.4.3.</span> <span class="nav-text">3. 上下文真实性校验</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E5%A2%9E%E5%8A%A0%E4%BA%8C%E6%AC%A1%E8%87%AA%E6%9F%A5%E6%9C%BA%E5%88%B6"><span class="nav-number">1.4.4.</span> <span class="nav-text">4. 增加二次自查机制</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E5%B0%8F%E7%99%BD%E5%8F%AF%E7%9B%B4%E6%8E%A5%E5%A4%8D%E7%94%A8%E7%9A%84%E9%98%B2%E5%B9%BB%E8%A7%89%E9%85%8D%E7%BD%AE"><span class="nav-number">1.5.</span> <span class="nav-text">五、小白可直接复用的防幻觉配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E9%80%9A%E7%94%A8%E9%98%B2%E5%B9%BB%E8%A7%89-Prompt-%E6%A8%A1%E6%9D%BF"><span class="nav-number">1.5.1.</span> <span class="nav-text">1. 通用防幻觉 Prompt 模板</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E6%A0%87%E5%87%86%E5%8C%96%E5%8F%82%E6%95%B0%E7%BB%84%E5%90%88"><span class="nav-number">1.5.2.</span> <span class="nav-text">2. 标准化参数组合</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AD%E3%80%81%E6%80%BB%E7%BB%93"><span class="nav-number">1.6.</span> <span class="nav-text">六、总结</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">liuxiaoran</p>
+  <div class="site-description" itemprop="description">You adored the light,so you will never fear the darkness</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">32</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/liu-xiaoran" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;liu-xiaoran" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:liuxiaoranm@gmail.com" title="E-Mail → mailto:liuxiaoranm@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.leolabs.top/2026/05/26/reduce-llm-hallucinations-with-prompts-params-and-guardrails/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liuxiaoran">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="leo工作室">
+      <meta itemprop="description" content="You adored the light,so you will never fear the darkness">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="彻底解决大模型幻觉！从提示词、模型参数、业务规则三层落地优化方案 | leo工作室">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          彻底解决大模型幻觉！从提示词、模型参数、业务规则三层落地优化方案
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2026-05-26 00:00:00" itemprop="dateCreated datePublished" datetime="2026-05-26T00:00:00+08:00">2026-05-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/AI%E5%B7%A5%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">AI工程</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p><img src="/images/reduce-llm-hallucinations-cover.png" alt="文章封面"></p>
+<h1 id="彻底解决大模型幻觉：从提示词、模型参数、业务规则三层落地优化方案"><a href="#彻底解决大模型幻觉：从提示词、模型参数、业务规则三层落地优化方案" class="headerlink" title="彻底解决大模型幻觉：从提示词、模型参数、业务规则三层落地优化方案"></a>彻底解决大模型幻觉：从提示词、模型参数、业务规则三层落地优化方案</h1><p>用过 AI 大模型的人，几乎都遇到过“幻觉”问题：模型一本正经地编造不存在的事实、虚构数据、杜撰论文、编造接口参数，甚至前后逻辑自相矛盾。</p>
+<p>很多人会把幻觉理解成模型的“BUG”，但从原理上看并不准确。大模型的目标是生成在语言上连贯、概率上合理的内容，而不是天然追求绝对事实正确。当上下文不足、问题边界模糊、采样参数过于开放时，模型就会倾向于自动补全，这正是幻觉出现的根本原因。</p>
+<p>如果想把幻觉真正压下去，不能只改一条提示词，也不能只把 temperature 调低。更可靠的做法，是建立一套分层防护体系：<strong>输入约束、推理控制、结果校验</strong> 三层同时生效。</p>
+<h2 id="一、先搞懂：大模型为什么会产生幻觉？"><a href="#一、先搞懂：大模型为什么会产生幻觉？" class="headerlink" title="一、先搞懂：大模型为什么会产生幻觉？"></a>一、先搞懂：大模型为什么会产生幻觉？</h2><p>从工程实践看，幻觉通常来自三类根源：</p>
+<ul>
+<li><strong>信息不足</strong>：问题缺少上下文、限定条件或权威数据源，模型只能依赖已有泛化知识进行补全。</li>
+<li><strong>随机性过高</strong>：采样参数过于开放时，模型更容易追求表达多样性，而牺牲事实贴合度。</li>
+<li><strong>缺少校验约束</strong>：如果系统没有真实性规则、格式规则或后处理拦截机制，模型就不会为“是否真实”付出代价。</li>
+</ul>
+<p>所以，真正有效的治理方式不是“赌模型自己收敛”，而是搭建一套 <strong>输入约束 + 推理控制 + 规则兜底</strong> 的三层防线。</p>
+<h2 id="二、第一层：提示词工程约束"><a href="#二、第一层：提示词工程约束" class="headerlink" title="二、第一层：提示词工程约束"></a>二、第一层：提示词工程约束</h2><p>提示词是最靠前的一层，也是性价比最高的一层。核心目标不是让模型“更聪明”，而是让模型<strong>少脑补、少越界、少装懂</strong>。</p>
+<h3 id="1-强制开启诚实模式"><a href="#1-强制开启诚实模式" class="headerlink" title="1. 强制开启诚实模式"></a>1. 强制开启诚实模式</h3><p>这通常是最有效、也最容易落地的一条规则。对于不知道、不确定、缺少依据的内容，明确要求模型拒绝编造，而不是尝试给出“看起来像答案”的文本。</p>
+<p>可以直接加入类似约束：</p>
+<figure class="highlight text"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">如果没有足够依据，请直接回答“无相关有效信息”。</span><br><span class="line">禁止虚构数据、案例、参数、引用和结论；禁止主观推断；禁止为了回答完整而强行补全未知内容。</span><br></pre></td></tr></tbody></table></figure>
+
+<p>它的本质，是把模型默认的“尽量回答”切换成“有依据才回答”。这一条往往就能解决大量基础型幻觉问题。</p>
+<h3 id="2-强制溯源与依据输出"><a href="#2-强制溯源与依据输出" class="headerlink" title="2. 强制溯源与依据输出"></a>2. 强制溯源与依据输出</h3><p>如果要求所有结论都必须附带依据，模型杜撰内容的空间会明显缩小。</p>
+<p>例如可以加入：</p>
+<figure class="highlight text"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">所有回答必须基于给定上下文、已知事实或公开权威资料。</span><br><span class="line">所有数据、案例、结论必须标注依据；没有依据的内容不得输出。</span><br></pre></td></tr></tbody></table></figure>
+
+<p>在知识问答、文档解析、技术支持、企业客服等场景中，这类约束尤其重要。</p>
+<h3 id="3-限制回答边界，禁止过度拓展"><a href="#3-限制回答边界，禁止过度拓展" class="headerlink" title="3. 限制回答边界，禁止过度拓展"></a>3. 限制回答边界，禁止过度拓展</h3><p>大量幻觉并不是出现在“主问题”里，而是出现在模型顺手补充的延伸内容里。</p>
+<p>因此需要明确限定输出范围：</p>
+<figure class="highlight text"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">仅回答用户明确提出的问题，不延伸、不补充无关内容，不对未知信息做主观推演。</span><br></pre></td></tr></tbody></table></figure>
+
+<p>这对接口说明、制度解读、医疗法律咨询辅助等高风险场景非常有效。</p>
+<h3 id="4-复杂问题启用分步推理"><a href="#4-复杂问题启用分步推理" class="headerlink" title="4. 复杂问题启用分步推理"></a>4. 复杂问题启用分步推理</h3><p>在算法、数据分析、逻辑判断等任务里，直接一步到位给答案，容易出现跳步、漏条件和逻辑错位。</p>
+<p>更稳妥的方式是要求模型：</p>
+<ol>
+<li>先列出已知条件；</li>
+<li>再逐步推导；</li>
+<li>最后输出结论；</li>
+<li>如有不确定点，显式标注。</li>
+</ol>
+<p>这种分步推理方式并不能保证绝对正确，但能显著降低因跳跃式生成导致的逻辑幻觉。</p>
+<h2 id="三、第二层：模型推理参数调优"><a href="#三、第二层：模型推理参数调优" class="headerlink" title="三、第二层：模型推理参数调优"></a>三、第二层：模型推理参数调优</h2><p>即使提示词写得很严谨，参数如果设置得太“开放”，幻觉概率仍然会明显上升。参数调优的本质，是降低随机创作权重，提升事实拟合权重。</p>
+<h3 id="1-Temperature：最关键的随机度控制项"><a href="#1-Temperature：最关键的随机度控制项" class="headerlink" title="1. Temperature：最关键的随机度控制项"></a>1. Temperature：最关键的随机度控制项</h3><p>一般来说：</p>
+<ul>
+<li>温度越高，输出越发散，创意更强，但幻觉风险也更高；</li>
+<li>温度越低，输出越保守，更接近高概率事实表达。</li>
+</ul>
+<p>在需要精准、稳定、可复用输出的业务场景中，推荐将温度控制在：</p>
+<figure class="highlight text"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Temperature = 0.1 ~ 0.3</span><br></pre></td></tr></tbody></table></figure>
+
+<p>适用场景包括：</p>
+<ul>
+<li>数据抽取</li>
+<li>知识问答</li>
+<li>代码生成</li>
+<li>结构化输出</li>
+<li>事实核查</li>
+</ul>
+<p>如果是高精度业务，尽量避免使用 0.7 以上的温度，否则很容易出现“说得像真，但其实是编的”这种情况。</p>
+<h3 id="2-Top-p：收紧候选词分布"><a href="#2-Top-p：收紧候选词分布" class="headerlink" title="2. Top_p：收紧候选词分布"></a>2. Top_p：收紧候选词分布</h3><p>Top_p 控制的是候选 token 的概率覆盖范围。把它收紧，可以减少模型采样到低概率、离谱词汇的机会。</p>
+<p>推荐范围：</p>
+<figure class="highlight text"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Top_p = 0.8 ~ 0.9</span><br></pre></td></tr></tbody></table></figure>
+
+<p>如果直接放到 1.0，相当于把全部候选都打开，错误组合的概率会明显上升。</p>
+<h3 id="3-Frequency-Penalty：抑制冗余与错误拼接"><a href="#3-Frequency-Penalty：抑制冗余与错误拼接" class="headerlink" title="3. Frequency Penalty：抑制冗余与错误拼接"></a>3. Frequency Penalty：抑制冗余与错误拼接</h3><p>适当的重复惩罚有助于减少模型为了凑字数而重复描述、堆砌近义表达、拼接出逻辑不清的内容。</p>
+<p>推荐配置：</p>
+<figure class="highlight text"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Frequency Penalty = 0.1 ~ 0.2</span><br></pre></td></tr></tbody></table></figure>
+
+<p>它不能直接“消灭幻觉”，但能作为辅助项，减少无效扩写带来的错误信息。</p>
+<h2 id="四、第三层：业务规则与后处理兜底"><a href="#四、第三层：业务规则与后处理兜底" class="headerlink" title="四、第三层：业务规则与后处理兜底"></a>四、第三层：业务规则与后处理兜底</h2><p>提示词和参数都只能降低概率，不能做到 100% 消除。只要进入生产环境，就必须加入规则校验层。</p>
+<p>这层的作用不是“让模型更会答”，而是<strong>把不可信结果挡在系统外面</strong>。</p>
+<h3 id="1-字段与格式强校验"><a href="#1-字段与格式强校验" class="headerlink" title="1. 字段与格式强校验"></a>1. 字段与格式强校验</h3><p>对于 JSON、表格、键值对、表单等结构化输出，应该强制校验：</p>
+<ul>
+<li>字段是否齐全</li>
+<li>类型是否正确</li>
+<li>数值是否越界</li>
+<li>日期格式是否合规</li>
+<li>必填项是否缺失</li>
+</ul>
+<p>一旦不符合要求，就直接判定为失败并自动重试，而不是把错误结果交给用户。</p>
+<h3 id="2-敏感内容与异常值拦截"><a href="#2-敏感内容与异常值拦截" class="headerlink" title="2. 敏感内容与异常值拦截"></a>2. 敏感内容与异常值拦截</h3><p>工程里最常见的高频幻觉内容包括：</p>
+<ul>
+<li>不存在的论文、作者、人名</li>
+<li>错误的接口参数和字段名</li>
+<li>杜撰的时间、金额、配额、版本号</li>
+<li>并不存在的函数、SDK、URL 或命令</li>
+</ul>
+<p>对这些内容，应该建立黑名单规则、关键词拦截、枚举值校验或模式匹配策略。</p>
+<h3 id="3-上下文真实性校验"><a href="#3-上下文真实性校验" class="headerlink" title="3. 上下文真实性校验"></a>3. 上下文真实性校验</h3><p>在知识库问答、合同解析、企业文档问答、内部数据检索等场景里，最重要的一条规则是：<strong>输出必须可追溯到输入上下文</strong>。</p>
+<p>也就是说，如果某个结论在给定文档中不存在，就不能让模型把外部泛化知识混进来“补答案”。</p>
+<h3 id="4-增加二次自查机制"><a href="#4-增加二次自查机制" class="headerlink" title="4. 增加二次自查机制"></a>4. 增加二次自查机制</h3><p>在正式输出前，可以让模型进行一次自检：</p>
+<figure class="highlight text"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">请检查以上内容是否包含虚构数据、无依据结论、错误参数或与上下文不一致的信息。如存在，请修正后重新输出。</span><br></pre></td></tr></tbody></table></figure>
+
+<p>这种自查并不总是可靠，但作为低成本补充手段，通常值得加上。</p>
+<h2 id="五、小白可直接复用的防幻觉配置"><a href="#五、小白可直接复用的防幻觉配置" class="headerlink" title="五、小白可直接复用的防幻觉配置"></a>五、小白可直接复用的防幻觉配置</h2><p>如果你不想一开始就搭完整工程链路，至少可以先落地一套通用配置。</p>
+<h3 id="1-通用防幻觉-Prompt-模板"><a href="#1-通用防幻觉-Prompt-模板" class="headerlink" title="1. 通用防幻觉 Prompt 模板"></a>1. 通用防幻觉 Prompt 模板</h3><figure class="highlight text"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">本次回答严格遵守以下规则：</span><br><span class="line">1. 仅基于已知真实信息作答，严禁虚构数据、案例、参数、文献；</span><br><span class="line">2. 不确定、无依据的内容直接说明，禁止强行解释；</span><br><span class="line">3. 不做无关拓展，不做主观脑补；</span><br><span class="line">4. 所有结论必须保证客观、真实、准确。</span><br></pre></td></tr></tbody></table></figure>
+
+<h3 id="2-标准化参数组合"><a href="#2-标准化参数组合" class="headerlink" title="2. 标准化参数组合"></a>2. 标准化参数组合</h3><figure class="highlight text"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Temperature = 0.2</span><br><span class="line">Top_p = 0.9</span><br><span class="line">Frequency_Penalty = 0.1</span><br><span class="line">Max_tokens = 按业务需求设置</span><br></pre></td></tr></tbody></table></figure>
+
+<p>这套配置特别适合事实性要求强、可解释性要求高的任务。</p>
+<h2 id="六、总结"><a href="#六、总结" class="headerlink" title="六、总结"></a>六、总结</h2><p>大模型幻觉很难“彻底消失”，但完全可以通过工程手段被压到足够低。</p>
+<p>真正有效的路径不是迷信某个模型版本，也不是指望某个神奇提示词，而是建立三层治理框架：</p>
+<ul>
+<li><strong>提示词约束</strong>：控制模型态度，减少无依据补全；</li>
+<li><strong>推理参数调优</strong>：控制输出随机性，提升事实贴合度；</li>
+<li><strong>业务规则兜底</strong>：控制最终结果，把错误拦在系统之外。</li>
+</ul>
+<p>个人使用场景，仅靠提示词和低温参数，通常就能显著改善体验；企业级落地场景，则必须叠加规则校验与后处理机制，才能真正做到稳定、可信、可上线。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="followme">
+  <span>联系我</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="https://t.me/leolabstop">
+            <span class="icon">
+              <i class="fab fa-telegram"></i>
+            </span>
+
+            <span class="label">Telegram</span>
+          </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/AI/" rel="tag"># AI</a>
+              <a href="/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B/" rel="tag"># 大模型</a>
+              <a href="/tags/Prompt/" rel="tag"># Prompt</a>
+              <a href="/tags/%E5%B7%A5%E7%A8%8B%E5%AE%9E%E8%B7%B5/" rel="tag"># 工程实践</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2026/05/23/prompt-engineering-industrialization-sampling-and-output-standardization/" rel="prev" title="提示词工程工业化核心：采样参数调优与输出格式标准化全指南">
+                  <i class="fa fa-angle-left"></i> 提示词工程工业化核心：采样参数调优与输出格式标准化全指南
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">liuxiaoran</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

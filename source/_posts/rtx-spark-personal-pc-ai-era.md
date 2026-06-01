@@ -47,7 +47,7 @@ OpenClaw、Claude Code、Codex 这类产品的背后，本质上还是云端大�
 - **128GB LPDDR5X 统一内存**
 - 官方给出的定位，是可以在本地直接承载 **120B 级模型**
 
-![RTX Spark 芯片图](/images/2026/06/rtx-spark-original-chip.png)
+![RTX Spark 芯片图](/images/2026/06/rtx-spark-original-chip.jpg)
 
 这组参数最重要的意义，不在于看起来够不够猛，而在于它在个人消费级设备里，第一次比较明确地把“本地跑更大模型”这件事推到了主舞台上。
 

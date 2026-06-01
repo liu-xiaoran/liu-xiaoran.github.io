@@ -134,7 +134,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">25</span>
+          <span class="site-state-item-count">26</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -145,7 +145,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-count">44</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -170,6 +170,97 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://blog.leolabs.top/2021/11/09/hexo/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liuxiaoran">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="leo工作室">
+      <meta itemprop="description" content="You adored the light,so you will never fear the darkness">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | leo工作室">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/11/09/hexo/" class="post-title-link" itemprop="url">hexo+GitHub 搭建博客 1/119</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-11-09 18:36:45" itemprop="dateCreated datePublished" datetime="2021-11-09T18:36:45+08:00">2021-11-09</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="hexo-GitHub-搭建博客"><a href="#hexo-GitHub-搭建博客" class="headerlink" title="hexo+GitHub 搭建博客"></a>hexo+GitHub 搭建博客</h2><p>基础环境：nodejs</p>
+<p><em>本文用使用示例是github，同样的操作也可用于gitee，但我在实际操作的过程中发现gitee需要实名手持身份证拍照审核，觉得麻烦随之放弃</em></p>
+<h3 id="1-新建仓库"><a href="#1-新建仓库" class="headerlink" title="1, 新建仓库"></a>1, 新建仓库</h3><p>github上新建代码仓库，用来存储博客</p>
+<p><img src="../images/githubNewKu.png" alt="githubNewKu.png" title="githubNew"></p>
+<p>注意，项目名字使用 你的github名字加 <code>&lt;font color=red&gt;</code>.github.io <code>&lt;/font&gt;</code> 后缀，比如我的GitHub名称是<a target="_blank" rel="noopener" href="https://github.com/liu-xiaoran">liu-xiaoran</a>,n那么我的项目名字就是 liu-xiaoran.github.io 点击创建完成操作，注意不要勾选add Readme file 和其他选项，这个可以后续自行添加，空白的仓库库有助于git的第一次推送合并。</p>
+<h3 id="2-配置博客访问"><a href="#2-配置博客访问" class="headerlink" title="2, 配置博客访问"></a>2, 配置博客访问</h3><p>跳转到刚刚新建仓库首页，也厚点击上方菜单栏的 <code>&lt;font color=pink&gt;</code>Settings <code>&lt;/font&gt;</code>,再点击左边栏位的 <code>&lt;font color=pink&gt;</code>Pages <code>&lt;/font&gt;</code>, 填写对应的pages设置。</p>
+<p><img src="../images/setPage.png" alt="setPage.png" title="setPage"></p>
+<p>Source 那里默认是 root, 点击选择Theme Chooser，选择一个主体，点击保存。<br>此时你通过填写的仓库名，如 liu-xiaoran.github.io 就可以访问到该博客地址。</p>
+<h3 id="3-配置域名访问"><a href="#3-配置域名访问" class="headerlink" title="3, 配置域名访问"></a>3, 配置域名访问</h3><p>配置域名访问和配置https的方式，打开你的域名解析控制台，如我的阿里云域名配置页面。<br><img src="../images/DNS.png" alt="DNS.png" title="DNS"></p>
+<p>配置CNAME，指向你的博客访问地址，如liu-xiaoran.github.io。</p>
+<p>配置结束后，返回github的pages配置页面，填写上域名，自动生成CNAME文件，勾选启用https。保存后稍后即可使用域名访问博客。想使用GitHub自动博客功能的，到此处就可以结束了。</p>
+<h3 id="3-安装使用hexo"><a href="#3-安装使用hexo" class="headerlink" title="3, 安装使用hexo"></a>3, 安装使用hexo</h3><p>打开终端输入</p>
+<p><code>npm i hexo-cli -g</code></p>
+<p>安装hexo, 拉取我们的github上的博客库，到本地。清空内部GitHub博客配置的文件。在文件夹内使用终端，输入</p>
+<p><code>hexo init</code></p>
+<p>初始化文件夹，接着使用 <code>npm i</code> 安装依赖。</p>
+<p>这样hexo博客就配置好了，输入 <code>hexo g</code> 生成静态网页，然后输入 <code>hexo s</code> 打开本地服务器。可以写一个hello本地尝试一下。</p>
+<h3 id="4，配置GitHub默认路径"><a href="#4，配置GitHub默认路径" class="headerlink" title="4，配置GitHub默认路径"></a>4，配置GitHub默认路径</h3><p>本地写完博文，推送到github时，发现通过域名访问的并不去hexo博客地址，怎么办？<br>仔细看我的步骤2里的红框内的，GitHub上的默认博客根目录是固定，只有几个值可以选择，这里选择一个自己喜欢的值，不是root,比如我选的 <code>&lt;font color=pink&gt;</code>docs <code>&lt;/font&gt;</code> , 打开自己的hexo配置，_config.yml 将里面的public_dir值改成和GitHub选择的值一致，比如我的都是 <code>&lt;font color=pink&gt;</code>docs <code>&lt;/font&gt;</code> 。</p>
+<p><img src="../images/setpub.png" alt="setpub.png" title="setpub"></p>
+<p>重新生成静态文件，删除不需要的旧的生成目录，重新提交github。再次通过域名访问，就能看到效果了。</p>
+<h3 id="5，主题配置和hexo深入配置"><a href="#5，主题配置和hexo深入配置" class="headerlink" title="5，主题配置和hexo深入配置"></a>5，主题配置和hexo深入配置</h3><p>主题配置，想复用别人的主题很简单，以我使用的主题hexo-theme-matery为例，<a target="_blank" rel="noopener" href="https://github.com/blinkfox/hexo-theme-matery">https://github.com/blinkfox/hexo-theme-matery</a> 打开hexo-theme-matery项目地址，里面有详细的配置方式，其他开源主题可以自己搜索获得。由于hexo-theme-matery中文文档比较详细，这里就不再赘余了。</p>
+<p>hexo的深入配置也可以参考 <a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/">https://hexo.io/zh-cn/</a> 文档，根据自己的需求自定义配置。</p>
+<p>到此，hexo+GitHub 搭建博客 算是完成了。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 

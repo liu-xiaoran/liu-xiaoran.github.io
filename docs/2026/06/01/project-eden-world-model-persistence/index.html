@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.leolabs.top","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="世界模型第一次有了“存档”？VAST 想用 Project Eden 重写生成式世界的底层逻辑过去一年，世界模型成了 AI 圈最热的词之一。 很多团队都在说，模型已经不只是会生成视频，而是在朝“生成世界”迈进：一句话可以换来一段连续画面，一个动作或镜头也能触发人物、场景和物体的连贯变化。问题在于，今天大多数被冠以世界模型之名的方案，本质上仍然更像“会动的视频”，而不是真正可以持续存在、被改变、被多">
+<meta property="og:type" content="article">
+<meta property="og:title" content="世界模型第一次有了“存档”？VAST 想用 Project Eden 重写生成式世界的底层逻辑">
+<meta property="og:url" content="https://blog.leolabs.top/2026/06/01/project-eden-world-model-persistence/index.html">
+<meta property="og:site_name" content="leo工作室">
+<meta property="og:description" content="世界模型第一次有了“存档”？VAST 想用 Project Eden 重写生成式世界的底层逻辑过去一年，世界模型成了 AI 圈最热的词之一。 很多团队都在说，模型已经不只是会生成视频，而是在朝“生成世界”迈进：一句话可以换来一段连续画面，一个动作或镜头也能触发人物、场景和物体的连贯变化。问题在于，今天大多数被冠以世界模型之名的方案，本质上仍然更像“会动的视频”，而不是真正可以持续存在、被改变、被多">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.leolabs.top/private/tmp/project_eden_publish_images/project-eden-publish-1.png">
+<meta property="og:image" content="https://blog.leolabs.top/private/tmp/project_eden_publish_images/project-eden-publish-2.gif">
+<meta property="og:image" content="https://blog.leolabs.top/private/tmp/project_eden_publish_images/project-eden-publish-3.gif">
+<meta property="article:published_time" content="2026-05-31T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-05-31T16:00:00.000Z">
+<meta property="article:author" content="liuxiaoran">
+<meta property="article:tag" content="世界模型">
+<meta property="article:tag" content="VAST">
+<meta property="article:tag" content="Project Eden">
+<meta property="article:tag" content="3D生成">
+<meta property="article:tag" content="多智能体">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.leolabs.top/private/tmp/project_eden_publish_images/project-eden-publish-1.png">
+
+
+<link rel="canonical" href="https://blog.leolabs.top/2026/06/01/project-eden-world-model-persistence/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.leolabs.top/2026/06/01/project-eden-world-model-persistence/","path":"2026/06/01/project-eden-world-model-persistence/","title":"世界模型第一次有了“存档”？VAST 想用 Project Eden 重写生成式世界的底层逻辑"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>世界模型第一次有了“存档”？VAST 想用 Project Eden 重写生成式世界的底层逻辑 | leo工作室</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">leo工作室</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">hope</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%96%E7%95%8C%E6%A8%A1%E5%9E%8B%E7%AC%AC%E4%B8%80%E6%AC%A1%E6%9C%89%E4%BA%86%E2%80%9C%E5%AD%98%E6%A1%A3%E2%80%9D%EF%BC%9FVAST-%E6%83%B3%E7%94%A8-Project-Eden-%E9%87%8D%E5%86%99%E7%94%9F%E6%88%90%E5%BC%8F%E4%B8%96%E7%95%8C%E7%9A%84%E5%BA%95%E5%B1%82%E9%80%BB%E8%BE%91"><span class="nav-number">1.</span> <span class="nav-text">世界模型第一次有了“存档”？VAST 想用 Project Eden 重写生成式世界的底层逻辑</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BB%E6%B5%81%E4%B8%96%E7%95%8C%E6%A8%A1%E5%9E%8B%EF%BC%8C%E4%B8%BA%E4%BB%80%E4%B9%88%E6%9B%B4%E5%83%8F%E2%80%9C%E8%A7%86%E9%A2%91%E2%80%9D%E8%80%8C%E4%B8%8D%E6%98%AF%E2%80%9C%E4%B8%96%E7%95%8C%E2%80%9D"><span class="nav-number">1.1.</span> <span class="nav-text">主流世界模型，为什么更像“视频”而不是“世界”</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Project-Eden-%E7%9C%9F%E6%AD%A3%E7%9A%84%E6%96%B0%E6%84%8F%EF%BC%9A%E5%85%88%E6%9C%89%E4%B8%96%E7%95%8C%EF%BC%8C%E5%86%8D%E6%9C%89%E7%94%BB%E9%9D%A2"><span class="nav-number">1.2.</span> <span class="nav-text">Project Eden 真正的新意：先有世界，再有画面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%99%E5%A5%97%E6%9E%B6%E6%9E%84%EF%BC%8C%E7%9B%B4%E6%8E%A5%E6%8D%A2%E6%9D%A5%E4%BA%86%E4%B8%89%E7%A7%8D%E7%B3%BB%E7%BB%9F%E7%BA%A7%E8%83%BD%E5%8A%9B"><span class="nav-number">1.3.</span> <span class="nav-text">这套架构，直接换来了三种系统级能力</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9A%BE%E7%82%B9%E4%B8%8D%E5%8F%AA%E5%9C%A8%E6%9E%B6%E6%9E%84%EF%BC%8C%E6%9B%B4%E5%9C%A8%E6%95%B0%E6%8D%AE"><span class="nav-number">1.4.</span> <span class="nav-text">难点不只在架构，更在数据</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Project-Eden-%E6%9B%B4%E5%A4%A7%E7%9A%84%E6%83%B3%E8%B1%A1%E7%A9%BA%E9%97%B4%EF%BC%8C%E4%B8%8D%E5%8F%AA%E6%98%AF%E7%94%9F%E6%88%90%E5%86%85%E5%AE%B9"><span class="nav-number">1.5.</span> <span class="nav-text">Project Eden 更大的想象空间，不只是生成内容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%93%E5%B0%BE"><span class="nav-number">1.6.</span> <span class="nav-text">结尾</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">liuxiaoran</p>
+  <div class="site-description" itemprop="description">You adored the light,so you will never fear the darkness</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">29</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">60</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/liu-xiaoran" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;liu-xiaoran" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:liuxiaoranm@gmail.com" title="E-Mail → mailto:liuxiaoranm@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.leolabs.top/2026/06/01/project-eden-world-model-persistence/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liuxiaoran">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="leo工作室">
+      <meta itemprop="description" content="You adored the light,so you will never fear the darkness">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="世界模型第一次有了“存档”？VAST 想用 Project Eden 重写生成式世界的底层逻辑 | leo工作室">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          世界模型第一次有了“存档”？VAST 想用 Project Eden 重写生成式世界的底层逻辑
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2026-06-01 00:00:00" itemprop="dateCreated datePublished" datetime="2026-06-01T00:00:00+08:00">2026-06-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/AI%E5%89%8D%E6%B2%BF/" itemprop="url" rel="index"><span itemprop="name">AI前沿</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="世界模型第一次有了“存档”？VAST-想用-Project-Eden-重写生成式世界的底层逻辑"><a href="#世界模型第一次有了“存档”？VAST-想用-Project-Eden-重写生成式世界的底层逻辑" class="headerlink" title="世界模型第一次有了“存档”？VAST 想用 Project Eden 重写生成式世界的底层逻辑"></a>世界模型第一次有了“存档”？VAST 想用 Project Eden 重写生成式世界的底层逻辑</h1><p>过去一年，世界模型成了 AI 圈最热的词之一。</p>
+<p>很多团队都在说，模型已经不只是会生成视频，而是在朝“生成世界”迈进：一句话可以换来一段连续画面，一个动作或镜头也能触发人物、场景和物体的连贯变化。问题在于，今天大多数被冠以世界模型之名的方案，本质上仍然更像“会动的视频”，而不是真正可以持续存在、被改变、被多人进入的世界。</p>
+<p>VAST 最新发布的 Project Eden，想解决的正是这个根问题。它没有继续沿着“下一帧预测”往前卷，而是试图把世界状态推演和视觉呈现原生解耦，让模型先维护一个持续演化的底层世界，再根据视角、动作和交互需求把它渲染成画面。</p>
+<p><img src="/private/tmp/project_eden_publish_images/project-eden-publish-1.png"></p>
+<h2 id="主流世界模型，为什么更像“视频”而不是“世界”"><a href="#主流世界模型，为什么更像“视频”而不是“世界”" class="headerlink" title="主流世界模型，为什么更像“视频”而不是“世界”"></a>主流世界模型，为什么更像“视频”而不是“世界”</h2><p>要理解 Project Eden，先要看清行业里两条主流路径。</p>
+<p>第一类是动作条件视频生成。它根据文本、图像、动作指令或相机轨迹生成一段连续视频，优势是演示直观、交互感强，也最容易让用户产生“世界在响应我”的感觉。但问题也很明显：模型预测的仍然是 2D 像素轨迹，世界里到底有什么、物体在哪里、状态怎么变化，往往都被隐式压缩在最近几帧画面中。一旦物体离开视野，模型并没有一个独立的世界状态去保存它，镜头转回时只能根据上下文重新“幻想”。</p>
+<p>第二类是静态 3D 场景生成。相比视频生成，它确实更接近“空间”本身，但如果只有静态空间，没有时间维度、物理逻辑和状态转移机制，它依然很难被称为真正的世界模型。一个真正有用的世界，不只是能被看见，还应该能被改变、持续运行，并支持多个用户或多个智能体同时进入。</p>
+<p>VAST 的判断很直接：一套合格的世界模型，至少要同时解决两个问题——世界当下的客观状态是什么，以及这个状态如何随着动作、时间和交互持续演化。只有同时具备这两点，世界模型才可能从“生成内容”走向“生成环境”。</p>
+<h2 id="Project-Eden-真正的新意：先有世界，再有画面"><a href="#Project-Eden-真正的新意：先有世界，再有画面" class="headerlink" title="Project Eden 真正的新意：先有世界，再有画面"></a>Project Eden 真正的新意：先有世界，再有画面</h2><p>Project Eden 最关键的架构选择，是把“世界本身”和“世界看起来的样子”拆开。</p>
+<p>它的第一层是结构化状态层，负责维护一个跨时间持续存在、可被动作更新、可被任意相机位置查询的全局世界状态。这不是一个昂贵的 4D 点云，而是一种更紧凑、兼顾效率和语义丰富度的隐式表征，用来回答“世界里有什么、发生了什么”。</p>
+<p>第二层是条件接口层，把底层的全局世界状态转换成适合特定视角使用的局部条件，包括语义信息、几何线索和事件变化。不同玩家看到的不是彼此独立的视频历史，而是同一个世界在不同位置上的不同窗口。</p>
+<p>第三层是生成式渲染层。它不再承担完整的世界逻辑推演任务，而是在底层状态与中间条件的约束下，补全纹理、光照、材质和高频动态细节，生成最终画面。这样一来，模型解决问题的方式就从“预测下一帧”改写成了“先推演下一刻的世界状态，再从这个状态渲染当前画面”。前者更像视频续写，后者才更接近世界模拟。</p>
+<p><img src="/private/tmp/project_eden_publish_images/project-eden-publish-2.gif"></p>
+<h2 id="这套架构，直接换来了三种系统级能力"><a href="#这套架构，直接换来了三种系统级能力" class="headerlink" title="这套架构，直接换来了三种系统级能力"></a>这套架构，直接换来了三种系统级能力</h2><p>最直观的一项，是环境长程持久化。</p>
+<p>在 Project Eden 里，物体离开视野，并不意味着它从世界里消失。它依然存在于底层状态中，并继续按照世界逻辑运转。当用户转身离开再回来时，系统查询的还是同一个世界状态，而不是根据历史视频帧重新拼接一个相似画面。世界第一次有了接近“存档”的感觉。</p>
+<p>第二项能力，是场景自由复用与确定性控制。传统视频生成是一条一次性的时间线：生成过了就固定了，难以回退，也难以分支。但在解耦架构里，底层状态是可以被读写和干预的。用户造成的破坏、建造与修改，可以被真实写入世界；后续进入同一场景的其他用户，也会看到一致的结果。内容形态因此从一次性视频，变成了可编辑、可复用、可持续运营的互动空间。</p>
+<p>第三项能力，是原生多人和多智能体并发。传统视频世界模型最怕的就是多人同时在线，因为每个玩家都有自己的视角、动作和上下文，一旦每一路都依赖独立的视频历史来生成，算力和一致性就会迅速失控。而在 Project Eden 里，底层状态只有一份，被所有智能体共享；渲染层只需根据各自位置和视角生成画面。这不只是性能优化，更是商业落地的前提。</p>
+<h2 id="难点不只在架构，更在数据"><a href="#难点不只在架构，更在数据" class="headerlink" title="难点不只在架构，更在数据"></a>难点不只在架构，更在数据</h2><p>Project Eden 背后的数据策略，同样是这套方案能否成立的关键。</p>
+<p>VAST 提出了一套分层数据思路，核心是“双态对齐数据”：既包含底层推演态，也包含视觉渲染态。围绕这个目标，他们在数据端部署了两层策略。</p>
+<p>L1 是海量互联网视频自标注。VAST 依托自身 3D 基础模型能力，对无标注 2D 视频做反向解构，提取深度、相机位姿和几何轨迹，把单态视频尽量提炼为双态数据。这一层的价值在于覆盖广度和真实世界泛化。</p>
+<p>L2 是引擎合成数据。游戏引擎天然具备世界状态和渲染结果同步存在的特点，可以低成本批量生成带有精确 3D 状态标注、动作指令和环境变化的数据。这一层的价值在于逻辑精度与可控性。</p>
+<p>这种“互联网数据泛化 + 引擎数据精准化”的组合，说明 VAST 想做的并不是一个只靠 demo 出圈的视频模型，而是一套更接近底层系统的世界生成方案。</p>
+<p><img src="/private/tmp/project_eden_publish_images/project-eden-publish-3.gif"></p>
+<h2 id="Project-Eden-更大的想象空间，不只是生成内容"><a href="#Project-Eden-更大的想象空间，不只是生成内容" class="headerlink" title="Project Eden 更大的想象空间，不只是生成内容"></a>Project Eden 更大的想象空间，不只是生成内容</h2><p>如果只把 Project Eden 看成一个更强的 3D 生成工具，其实低估了它。</p>
+<p>它更大的意义，在于有机会成为下一代互动内容的底层基础设施。过去一个可玩、可交互、可多人进入的世界，通常需要美术、建模、动画、关卡、物理引擎和网络同步等复杂流程来搭建。生成式 AI 已经把 3D 资产生产的门槛压低了很多，但“生成一个模型”和“生成一个能持续运行的世界”之间，仍然隔着很大一段距离。Project Eden 想补的，就是这段距离。</p>
+<p>从更长远的角度看，它的潜力也不止于内容生产。因为它维护的是稳定的底层世界状态，而不是一次性视频画面，这让它天然适合作为智能体活动的环境底座。对智能体来说，关键从来不只是看到逼真的画面，而是环境能否按一致规则响应动作、保留变化并持续演化。</p>
+<p>所以，Project Eden 的价值不只是把 3D 生成推进到交互内容阶段，更在于为世界规则学习、仿真模拟、具身智能和多智能体协同提供一个可以被反复进入、持续实验的环境。</p>
+<h2 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h2><p>如果只看表面，Project Eden 像是在做一个更强的 3D 世界生成模型。但更值得关注的，是它把世界模型的问题重新写了一遍：不是继续预测画面，而是先维护世界本身。</p>
+<p>一旦这条路线成立，世界模型就不再只是“把视频做得更真”，而是第一次真正有机会从内容生成走向环境生成。从这个意义上说，Project Eden 最值得关注的地方，不是它又做出了一个惊艳 demo，而是它让世界模型第一次更像“世界”，而不只是“视频”。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="followme">
+  <span>联系我</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="https://t.me/leolabstop">
+            <span class="icon">
+              <i class="fab fa-telegram"></i>
+            </span>
+
+            <span class="label">Telegram</span>
+          </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E4%B8%96%E7%95%8C%E6%A8%A1%E5%9E%8B/" rel="tag"># 世界模型</a>
+              <a href="/tags/VAST/" rel="tag"># VAST</a>
+              <a href="/tags/Project-Eden/" rel="tag"># Project Eden</a>
+              <a href="/tags/3D%E7%94%9F%E6%88%90/" rel="tag"># 3D生成</a>
+              <a href="/tags/%E5%A4%9A%E6%99%BA%E8%83%BD%E4%BD%93/" rel="tag"># 多智能体</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2026/05/30/llm-hallucination-root-causes-and-mitigation/" rel="prev" title="大模型幻觉彻底复盘：根源、分类与全域规避方案深度汇总">
+                  <i class="fa fa-angle-left"></i> 大模型幻觉彻底复盘：根源、分类与全域规避方案深度汇总
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2026/06/01/apple-ai-glasses-delay-siri-bottleneck/" rel="next" title="苹果AI眼镜又跳票：问题不只是硬件，更是Siri还撑不起这副眼镜">
+                  苹果AI眼镜又跳票：问题不只是硬件，更是Siri还撑不起这副眼镜 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">liuxiaoran</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

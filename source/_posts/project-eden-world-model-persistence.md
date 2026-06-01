@@ -20,7 +20,7 @@ cover: /images/2026/06/project-eden-human-cover.png
 
 VAST 最新发布的 Project Eden，想解决的正是这个根问题。它没有继续沿着“下一帧预测”往前卷，而是试图把世界状态推演和视觉呈现原生解耦，让模型先维护一个持续演化的底层世界，再根据视角、动作和交互需求把它渲染成画面。
 
-![](/private/tmp/project_eden_publish_images/project-eden-publish-1.png)
+![](/images/2026/06/project-eden/project-eden-publish-1.png)
 
 ## 主流世界模型，为什么更像“视频”而不是“世界”
 
@@ -42,7 +42,7 @@ Project Eden 最关键的架构选择，是把“世界本身”和“世界看�
 
 第三层是生成式渲染层。它不再承担完整的世界逻辑推演任务，而是在底层状态与中间条件的约束下，补全纹理、光照、材质和高频动态细节，生成最终画面。这样一来，模型解决问题的方式就从“预测下一帧”改写成了“先推演下一刻的世界状态，再从这个状态渲染当前画面”。前者更像视频续写，后者才更接近世界模拟。
 
-![](/private/tmp/project_eden_publish_images/project-eden-publish-2.gif)
+![](/images/2026/06/project-eden/project-eden-publish-2.gif)
 
 ## 这套架构，直接换来了三种系统级能力
 
@@ -66,7 +66,7 @@ L2 是引擎合成数据。游戏引擎天然具备世界状态和渲染结果�
 
 这种“互联网数据泛化 + 引擎数据精准化”的组合，说明 VAST 想做的并不是一个只靠 demo 出圈的视频模型，而是一套更接近底层系统的世界生成方案。
 
-![](/private/tmp/project_eden_publish_images/project-eden-publish-3.gif)
+![](/images/2026/06/project-eden/project-eden-publish-3.gif)
 
 ## Project Eden 更大的想象空间，不只是生成内容
 

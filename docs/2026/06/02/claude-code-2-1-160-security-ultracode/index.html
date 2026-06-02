@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.leolabs.top","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="2.1.160 距离上一版只隔了 23 小时，但这次并不是走过场。 这一版最核心的动作，是给几类可能被拿来执行恶意代码的路径补上确认提示：shell 启动文件、构建工具配置、git 配置。另一处用户能直接感知的变化，是 dynamic workflow 的触发词从 workflow 改成了 ultracode，输入框里会以紫色高亮显示。 后台会话也修了一批稳定性问题，prompt tokens 则">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Claude Code 2.1.160：安全加固、ultracode 与后台会话修复">
+<meta property="og:url" content="https://blog.leolabs.top/2026/06/02/claude-code-2-1-160-security-ultracode/index.html">
+<meta property="og:site_name" content="leo工作室">
+<meta property="og:description" content="2.1.160 距离上一版只隔了 23 小时，但这次并不是走过场。 这一版最核心的动作，是给几类可能被拿来执行恶意代码的路径补上确认提示：shell 启动文件、构建工具配置、git 配置。另一处用户能直接感知的变化，是 dynamic workflow 的触发词从 workflow 改成了 ultracode，输入框里会以紫色高亮显示。 后台会话也修了一批稳定性问题，prompt tokens 则">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.leolabs.top/images/2026/06/claude-code-2-1-160/orig-cover.jpg">
+<meta property="article:published_time" content="2026-06-02T03:50:00.000Z">
+<meta property="article:modified_time" content="2026-06-02T03:50:00.000Z">
+<meta property="article:author" content="liuxiaoran">
+<meta property="article:tag" content="Claude Code">
+<meta property="article:tag" content="AI 编程">
+<meta property="article:tag" content="更新日志">
+<meta property="article:tag" content="Anthropic">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.leolabs.top/images/2026/06/claude-code-2-1-160/orig-cover.jpg">
+
+
+<link rel="canonical" href="https://blog.leolabs.top/2026/06/02/claude-code-2-1-160-security-ultracode/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.leolabs.top/2026/06/02/claude-code-2-1-160-security-ultracode/","path":"2026/06/02/claude-code-2-1-160-security-ultracode/","title":"Claude Code 2.1.160：安全加固、ultracode 与后台会话修复"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Claude Code 2.1.160：安全加固、ultracode 与后台会话修复 | leo工作室</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">leo工作室</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">hope</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E9%81%93%E5%AE%89%E5%85%A8%E9%98%B2%E7%BA%BF%EF%BC%9A%E5%85%88%E6%8A%8A%E9%97%A8%E9%94%81%E4%B8%8A"><span class="nav-number">1.</span> <span class="nav-text">三道安全防线：先把门锁上</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#workflow-%E6%94%B9%E6%88%90-ultracode%EF%BC%9A%E9%81%BF%E5%85%8D%E8%AF%AF%E8%A7%A6%EF%BC%8C%E4%B9%9F%E6%98%AF%E5%9C%A8%E8%85%BE%E4%BD%8D%E7%BD%AE"><span class="nav-number">2.</span> <span class="nav-text">workflow 改成 ultracode：避免误触，也是在腾位置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#grep-%E4%B9%8B%E5%90%8E%E4%B8%8D%E7%94%A8%E5%86%8D-Read%EF%BC%9A%E5%B0%8F%E6%94%B9%E5%8A%A8%EF%BC%8C%E4%BD%86%E5%BE%88%E9%A1%BA%E6%89%8B"><span class="nav-number">3.</span> <span class="nav-text">grep 之后不用再 Read：小改动，但很顺手</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%8E%E5%8F%B0%E4%BC%9A%E8%AF%9D%EF%BC%9A%E4%BF%AE%E7%9A%84%E9%83%BD%E6%98%AF%E6%97%A5%E5%B8%B8%E4%BC%9A%E8%B8%A9%E7%9A%84%E5%9D%91"><span class="nav-number">4.</span> <span class="nav-text">后台会话：修的都是日常会踩的坑</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Windows-%E5%92%8C%E8%BE%93%E5%85%A5%E4%BF%AE%E5%A4%8D%EF%BC%9A%E4%B8%AD%E6%96%87%E7%94%A8%E6%88%B7%E4%B9%9F%E8%83%BD%E6%84%9F%E5%88%B0%E5%8F%98%E5%8C%96"><span class="nav-number">5.</span> <span class="nav-text">Windows 和输入修复：中文用户也能感到变化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#prompt-tokens-%E7%A0%8D%E5%8D%8A%EF%BC%9A%E5%AE%98%E6%96%B9%E6%B2%A1%E5%BC%BA%E8%B0%83%EF%BC%8C%E4%BD%86%E5%BE%88%E5%80%BC%E9%92%B1"><span class="nav-number">6.</span> <span class="nav-text">prompt tokens 砍半：官方没强调，但很值钱</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%99%E4%B8%80%E7%89%88%E7%9A%84%E6%96%B9%E5%90%91"><span class="nav-number">7.</span> <span class="nav-text">这一版的方向</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">liuxiaoran</p>
+  <div class="site-description" itemprop="description">You adored the light,so you will never fear the darkness</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">30</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">64</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/liu-xiaoran" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;liu-xiaoran" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:liuxiaoranm@gmail.com" title="E-Mail → mailto:liuxiaoranm@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.leolabs.top/2026/06/02/claude-code-2-1-160-security-ultracode/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liuxiaoran">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="leo工作室">
+      <meta itemprop="description" content="You adored the light,so you will never fear the darkness">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Claude Code 2.1.160：安全加固、ultracode 与后台会话修复 | leo工作室">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Claude Code 2.1.160：安全加固、ultracode 与后台会话修复
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2026-06-02 11:50:00" itemprop="dateCreated datePublished" datetime="2026-06-02T11:50:00+08:00">2026-06-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/AI%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">AI工具</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>2.1.160 距离上一版只隔了 23 小时，但这次并不是走过场。</p>
+<p>这一版最核心的动作，是给几类可能被拿来执行恶意代码的路径补上确认提示：shell 启动文件、构建工具配置、git 配置。另一处用户能直接感知的变化，是 dynamic workflow 的触发词从 <code>workflow</code> 改成了 <code>ultracode</code>，输入框里会以紫色高亮显示。</p>
+<p>后台会话也修了一批稳定性问题，prompt tokens 则从约 11.6 万降到约 5.8 万，几乎砍半。表面看是一次常规迭代，但安全加固、后台可靠性和提示词瘦身，都是 Claude Code 这种工具越往深处走越绕不开的苦活。</p>
+<p><img src="/images/2026/06/claude-code-2-1-160/orig-cover.jpg" alt="Claude Code 2.1.160 原文配图"></p>
+<h2 id="三道安全防线：先把门锁上"><a href="#三道安全防线：先把门锁上" class="headerlink" title="三道安全防线：先把门锁上"></a>三道安全防线：先把门锁上</h2><p>2.1.160 最值得认真看的，是安全部分。</p>
+<p>这次不是修某一个已经暴露的具体漏洞，而是提前给高风险写入路径加确认。它堵的是同一类攻击模式：通过修改配置文件，把恶意命令持久化到用户环境里。</p>
+<p>第一道防线，是 shell 启动文件。</p>
+<p><code>.zshenv</code>、<code>.zlogin</code>、<code>.bash_login</code>，以及 <code>~/.config/git/</code> 这类路径，在终端启动或 git 操作时可能自动加载。如果某个 MCP server、skill，或者被污染的自动化流程，往这些地方塞进一行命令，下次打开终端或执行 git 时就可能直接跑起来。</p>
+<p>从 2.1.160 开始，Claude Code 写这些文件前会先弹确认。换句话说，不是不让写，而是把“静默写入高危启动项”变成“你想清楚了再让它写”。</p>
+<p>第二道防线，是构建工具配置。</p>
+<p>在 <code>acceptEdits</code> 模式下，Claude Code 现在写入 <code>.npmrc</code>、<code>.yarnrc*</code>、<code>bunfig.toml</code>、<code>.bazelrc</code>、<code>.pre-commit-config.yaml</code>、<code>.devcontainer/</code> 等文件前，也会提示确认。</p>
+<p>这些文件的危险点在于，它们经常和依赖安装、构建、提交、容器启动绑定。<code>.npmrc</code> 可能影响 install 行为，pre-commit 可以直接跑 shell，devcontainer 则可能在打开项目时触发一整套初始化动作。对于自动接受改动的模式来说，这类路径原本就应该被单独拎出来。</p>
+<p>这次加固的意义就在这里：它不是等攻击发生后补洞，而是提前把攻击面降下来。</p>
+<h2 id="workflow-改成-ultracode：避免误触，也是在腾位置"><a href="#workflow-改成-ultracode：避免误触，也是在腾位置" class="headerlink" title="workflow 改成 ultracode：避免误触，也是在腾位置"></a><code>workflow</code> 改成 <code>ultracode</code>：避免误触，也是在腾位置</h2><p>另一个很明显的变化，是 dynamic workflow 的触发关键词从 <code>workflow</code> 改成了 <code>ultracode</code>。</p>
+<p>这个改名看着小，其实很合理。</p>
+<p><code>workflow</code> 是一个太常见的自然语言词。用户说 “show me the workflow”，或者问“这个 workflow 怎么设计”，都有可能不小心触发 dynamic workflow。2.1.157 刚引入 dynamic workflow 时，Anthropic 还专门做过「Workflow keyword trigger」开关，让不想误触的人关掉。现在直接换成 <code>ultracode</code>，问题就简单多了：这个词几乎不会自然出现在日常句子里。</p>
+<p>更重要的是，它还能和 <code>/effort ultracode</code> 保持同一套命名。至于用自然语言描述来触发 workflow 的能力并没有消失，你说“帮我用多个 agent 一起处理这个任务”，仍然可以进入 dynamic workflow 流程。</p>
+<p>我更倾向于把这次改名理解为两层意思：一层是减少误触；另一层是给未来的 workflow 编排能力让路。毕竟 workflow 在 MCP、插件和自动化生态里都是常用概念，继续拿它当硬触发词，迟早会撞名。</p>
+<h2 id="grep-之后不用再-Read：小改动，但很顺手"><a href="#grep-之后不用再-Read：小改动，但很顺手" class="headerlink" title="grep 之后不用再 Read：小改动，但很顺手"></a>grep 之后不用再 Read：小改动，但很顺手</h2><p>这版还有一个体验改进很实用：单文件 <code>grep</code> / <code>egrep</code> / <code>fgrep</code> 现在可以满足 read-before-edit 校验。</p>
+<p>以前的流程经常是这样：先用 <code>grep "某函数" src/file.ts</code> 看到了目标位置，准备修改时，Claude Code 又提示“你还没读这个文件”，于是还得再 <code>Read</code> 一遍。现在单文件 grep 结果可以算作已经看过文件，省掉一步。</p>
+<p>这个改动只对单文件生效，多文件 grep 仍然不算。逻辑也说得通：单文件 grep 至少能确认上下文来自哪个文件；多文件搜索通常只是定位线索，还需要进一步明确要改哪一份。</p>
+<h2 id="后台会话：修的都是日常会踩的坑"><a href="#后台会话：修的都是日常会踩的坑" class="headerlink" title="后台会话：修的都是日常会踩的坑"></a>后台会话：修的都是日常会踩的坑</h2><p>后台会话这次修复不少，而且每一个都直接影响使用体验。</p>
+<p>最严重的是恢复已完成会话时，对话历史可能丢失，并重新执行原始 prompt。你从 <code>claude agents</code> 里打开一个已经跑完的后台任务，本来只是想看结果，结果它忘了前面的对话，又从头跑一遍，这基本等于白做。</p>
+<p>类似的问题还包括隔夜后的后台 session 重新 attach 时丢对话、重新执行原 prompt。对于让 agent 跑长任务的人来说，这种 bug 的杀伤力很大：任务不是不能跑，而是跑完之后结果不可靠。</p>
+<p>这次还修了 <code>claude --bg</code> 在高负载机器冷启动 daemon 时偶发 <code>socket missing</code> 的问题；修了 Windows 上 <code>claude rm</code> 后后台 daemon 没退出导致目录删不掉的问题；也修了后台 agent 恢复工作后被错误列在 Completed 下，以及退出 agents 列表时因自动更新检查导致界面冻结的问题。</p>
+<p>这些都不是炫技功能，但它们决定后台 agent 到底能不能成为日常工作流的一部分。</p>
+<h2 id="Windows-和输入修复：中文用户也能感到变化"><a href="#Windows-和输入修复：中文用户也能感到变化" class="headerlink" title="Windows 和输入修复：中文用户也能感到变化"></a>Windows 和输入修复：中文用户也能感到变化</h2><p>Windows 端这次也补了几处痛点。</p>
+<p>WSL 下选中复制不再依赖 OSC 52，而是改用 PowerShell interop 写入 Windows 剪贴板。对于 MobaXterm 这类不支持 OSC 52 的终端来说，这个修复很关键。</p>
+<p>高 CPU 负载下，附着到后台 session 或在 agent 视图里 Esc、方向键、输入无响应的问题也修了。这个大概率和事件循环被重任务堵住有关，Windows 用户跑大项目时很容易遇到。</p>
+<p>还有一个对中文用户很直接的修复：CJK 输入法候选窗不再跑到屏幕左下角，而是回到输入光标附近。候选窗位置不对，看似小 bug，实际会让中文输入几乎不可用。</p>
+<h2 id="prompt-tokens-砍半：官方没强调，但很值钱"><a href="#prompt-tokens-砍半：官方没强调，但很值钱" class="headerlink" title="prompt tokens 砍半：官方没强调，但很值钱"></a>prompt tokens 砍半：官方没强调，但很值钱</h2><p>这版最意外的数据，是 marckrenn 统计到的 prompt 变化：prompt tokens 从约 115,652 降到约 58,309，减少 57,343，降幅 49.6%。prompt 文件数也从 81 个降到 42 个，少了 39 个文件，降幅 48.1%。</p>
+<p>这个幅度不太像小修小补，更像做了一轮系统提示词合并、去重和压缩。</p>
+<p>Token 分布也有变化：tools 占比从 86.1% 升到 87.9%，system-reminder 从 8.2% 降到 7.2%，system 从 3.2% 降到 1.0%，system-data 从 1.1% 升到 2.3%。也就是说，真正被砍掉的主要是系统级指令和重复提示，工具定义本身并没有大幅减少。</p>
+<p>这件事 Anthropic 官方 changelog 没有重点提，但对 API 付费用户很实际。每次请求少掉约 58k tokens，用得频繁时就是直接省钱。原文按 Opus 4.8 估算，单次 request 大约能省 0.87 美元。对每天几十上百次调用的人来说，这比加一个小功能更有体感。</p>
+<h2 id="这一版的方向"><a href="#这一版的方向" class="headerlink" title="这一版的方向"></a>这一版的方向</h2><p>2.1.160 不是那种让人一眼“哇”的版本，但每条改动都落在关键位置。</p>
+<p>安全防护走的是预防性路线。现在未必已经有公开案例利用 shell 启动文件或构建配置攻击 Claude Code 用户，但先给这些路径加确认，总比等事后补丁强。上一次 Claude Code 比较密集地做安全加固，是 2.1.101 那次命令注入修复；那次更像修漏洞，这次更像压攻击面。</p>
+<p>后台会话的修复量也说明 Anthropic 在认真推进后台 agent 模式。它修的不只是 crash，还有目录锁、列表分类、会话恢复、界面冻结这些细节。只有这些细节稳定下来，多 agent、长任务、隔夜任务才有可能真正成为默认用法。</p>
+<p>至于 <code>workflow</code> 改名 <code>ultracode</code>，我不觉得只是换个触发词。它更像是在给后续的 workflow 编排能力留下语义空间：workflow 这个词应该属于更通用的流程系统，而不是一个容易误触的关键词。</p>
+<p>从 2.1.157 到 2.1.160 这几版连着看，节奏其实很清楚：插件体系铺底，云平台 auto mode 扩展，内部管线优化，然后补安全和可靠性。每版只做一两件事，但都在把 Claude Code 从“能用”往“可长期托付”推。</p>
+<p>升级方式也很简单：Native 安装一般会自动后台更新；如果想立刻应用，可以执行 <code>claude update</code>。Homebrew 用户则是 <code>brew upgrade claude-code</code>。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="followme">
+  <span>联系我</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="https://t.me/leolabstop">
+            <span class="icon">
+              <i class="fab fa-telegram"></i>
+            </span>
+
+            <span class="label">Telegram</span>
+          </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Claude-Code/" rel="tag"># Claude Code</a>
+              <a href="/tags/AI-%E7%BC%96%E7%A8%8B/" rel="tag"># AI 编程</a>
+              <a href="/tags/%E6%9B%B4%E6%96%B0%E6%97%A5%E5%BF%97/" rel="tag"># 更新日志</a>
+              <a href="/tags/Anthropic/" rel="tag"># Anthropic</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2026/06/01/llm-context-window-long-context-vs-rag/" rel="prev" title="大模型上下文窗口详解：超长上下文原理与工程取舍，小白也能看懂">
+                  <i class="fa fa-angle-left"></i> 大模型上下文窗口详解：超长上下文原理与工程取舍，小白也能看懂
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">liuxiaoran</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

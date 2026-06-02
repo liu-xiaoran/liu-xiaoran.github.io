@@ -134,18 +134,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">29</span>
+          <span class="site-state-item-count">30</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-count">9</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">60</span>
+        <span class="site-state-item-count">64</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -170,6 +170,123 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://blog.leolabs.top/2026/06/02/claude-code-2-1-160-security-ultracode/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liuxiaoran">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="leo工作室">
+      <meta itemprop="description" content="You adored the light,so you will never fear the darkness">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | leo工作室">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2026/06/02/claude-code-2-1-160-security-ultracode/" class="post-title-link" itemprop="url">Claude Code 2.1.160：安全加固、ultracode 与后台会话修复</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2026-06-02 11:50:00" itemprop="dateCreated datePublished" datetime="2026-06-02T11:50:00+08:00">2026-06-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/AI%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">AI工具</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>2.1.160 距离上一版只隔了 23 小时，但这次并不是走过场。</p>
+<p>这一版最核心的动作，是给几类可能被拿来执行恶意代码的路径补上确认提示：shell 启动文件、构建工具配置、git 配置。另一处用户能直接感知的变化，是 dynamic workflow 的触发词从 <code>workflow</code> 改成了 <code>ultracode</code>，输入框里会以紫色高亮显示。</p>
+<p>后台会话也修了一批稳定性问题，prompt tokens 则从约 11.6 万降到约 5.8 万，几乎砍半。表面看是一次常规迭代，但安全加固、后台可靠性和提示词瘦身，都是 Claude Code 这种工具越往深处走越绕不开的苦活。</p>
+<p><img src="/images/2026/06/claude-code-2-1-160/orig-cover.jpg" alt="Claude Code 2.1.160 原文配图"></p>
+<h2 id="三道安全防线：先把门锁上"><a href="#三道安全防线：先把门锁上" class="headerlink" title="三道安全防线：先把门锁上"></a>三道安全防线：先把门锁上</h2><p>2.1.160 最值得认真看的，是安全部分。</p>
+<p>这次不是修某一个已经暴露的具体漏洞，而是提前给高风险写入路径加确认。它堵的是同一类攻击模式：通过修改配置文件，把恶意命令持久化到用户环境里。</p>
+<p>第一道防线，是 shell 启动文件。</p>
+<p><code>.zshenv</code>、<code>.zlogin</code>、<code>.bash_login</code>，以及 <code>~/.config/git/</code> 这类路径，在终端启动或 git 操作时可能自动加载。如果某个 MCP server、skill，或者被污染的自动化流程，往这些地方塞进一行命令，下次打开终端或执行 git 时就可能直接跑起来。</p>
+<p>从 2.1.160 开始，Claude Code 写这些文件前会先弹确认。换句话说，不是不让写，而是把“静默写入高危启动项”变成“你想清楚了再让它写”。</p>
+<p>第二道防线，是构建工具配置。</p>
+<p>在 <code>acceptEdits</code> 模式下，Claude Code 现在写入 <code>.npmrc</code>、<code>.yarnrc*</code>、<code>bunfig.toml</code>、<code>.bazelrc</code>、<code>.pre-commit-config.yaml</code>、<code>.devcontainer/</code> 等文件前，也会提示确认。</p>
+<p>这些文件的危险点在于，它们经常和依赖安装、构建、提交、容器启动绑定。<code>.npmrc</code> 可能影响 install 行为，pre-commit 可以直接跑 shell，devcontainer 则可能在打开项目时触发一整套初始化动作。对于自动接受改动的模式来说，这类路径原本就应该被单独拎出来。</p>
+<p>这次加固的意义就在这里：它不是等攻击发生后补洞，而是提前把攻击面降下来。</p>
+<h2 id="workflow-改成-ultracode：避免误触，也是在腾位置"><a href="#workflow-改成-ultracode：避免误触，也是在腾位置" class="headerlink" title="workflow 改成 ultracode：避免误触，也是在腾位置"></a><code>workflow</code> 改成 <code>ultracode</code>：避免误触，也是在腾位置</h2><p>另一个很明显的变化，是 dynamic workflow 的触发关键词从 <code>workflow</code> 改成了 <code>ultracode</code>。</p>
+<p>这个改名看着小，其实很合理。</p>
+<p><code>workflow</code> 是一个太常见的自然语言词。用户说 “show me the workflow”，或者问“这个 workflow 怎么设计”，都有可能不小心触发 dynamic workflow。2.1.157 刚引入 dynamic workflow 时，Anthropic 还专门做过「Workflow keyword trigger」开关，让不想误触的人关掉。现在直接换成 <code>ultracode</code>，问题就简单多了：这个词几乎不会自然出现在日常句子里。</p>
+<p>更重要的是，它还能和 <code>/effort ultracode</code> 保持同一套命名。至于用自然语言描述来触发 workflow 的能力并没有消失，你说“帮我用多个 agent 一起处理这个任务”，仍然可以进入 dynamic workflow 流程。</p>
+<p>我更倾向于把这次改名理解为两层意思：一层是减少误触；另一层是给未来的 workflow 编排能力让路。毕竟 workflow 在 MCP、插件和自动化生态里都是常用概念，继续拿它当硬触发词，迟早会撞名。</p>
+<h2 id="grep-之后不用再-Read：小改动，但很顺手"><a href="#grep-之后不用再-Read：小改动，但很顺手" class="headerlink" title="grep 之后不用再 Read：小改动，但很顺手"></a>grep 之后不用再 Read：小改动，但很顺手</h2><p>这版还有一个体验改进很实用：单文件 <code>grep</code> / <code>egrep</code> / <code>fgrep</code> 现在可以满足 read-before-edit 校验。</p>
+<p>以前的流程经常是这样：先用 <code>grep "某函数" src/file.ts</code> 看到了目标位置，准备修改时，Claude Code 又提示“你还没读这个文件”，于是还得再 <code>Read</code> 一遍。现在单文件 grep 结果可以算作已经看过文件，省掉一步。</p>
+<p>这个改动只对单文件生效，多文件 grep 仍然不算。逻辑也说得通：单文件 grep 至少能确认上下文来自哪个文件；多文件搜索通常只是定位线索，还需要进一步明确要改哪一份。</p>
+<h2 id="后台会话：修的都是日常会踩的坑"><a href="#后台会话：修的都是日常会踩的坑" class="headerlink" title="后台会话：修的都是日常会踩的坑"></a>后台会话：修的都是日常会踩的坑</h2><p>后台会话这次修复不少，而且每一个都直接影响使用体验。</p>
+<p>最严重的是恢复已完成会话时，对话历史可能丢失，并重新执行原始 prompt。你从 <code>claude agents</code> 里打开一个已经跑完的后台任务，本来只是想看结果，结果它忘了前面的对话，又从头跑一遍，这基本等于白做。</p>
+<p>类似的问题还包括隔夜后的后台 session 重新 attach 时丢对话、重新执行原 prompt。对于让 agent 跑长任务的人来说，这种 bug 的杀伤力很大：任务不是不能跑，而是跑完之后结果不可靠。</p>
+<p>这次还修了 <code>claude --bg</code> 在高负载机器冷启动 daemon 时偶发 <code>socket missing</code> 的问题；修了 Windows 上 <code>claude rm</code> 后后台 daemon 没退出导致目录删不掉的问题；也修了后台 agent 恢复工作后被错误列在 Completed 下，以及退出 agents 列表时因自动更新检查导致界面冻结的问题。</p>
+<p>这些都不是炫技功能，但它们决定后台 agent 到底能不能成为日常工作流的一部分。</p>
+<h2 id="Windows-和输入修复：中文用户也能感到变化"><a href="#Windows-和输入修复：中文用户也能感到变化" class="headerlink" title="Windows 和输入修复：中文用户也能感到变化"></a>Windows 和输入修复：中文用户也能感到变化</h2><p>Windows 端这次也补了几处痛点。</p>
+<p>WSL 下选中复制不再依赖 OSC 52，而是改用 PowerShell interop 写入 Windows 剪贴板。对于 MobaXterm 这类不支持 OSC 52 的终端来说，这个修复很关键。</p>
+<p>高 CPU 负载下，附着到后台 session 或在 agent 视图里 Esc、方向键、输入无响应的问题也修了。这个大概率和事件循环被重任务堵住有关，Windows 用户跑大项目时很容易遇到。</p>
+<p>还有一个对中文用户很直接的修复：CJK 输入法候选窗不再跑到屏幕左下角，而是回到输入光标附近。候选窗位置不对，看似小 bug，实际会让中文输入几乎不可用。</p>
+<h2 id="prompt-tokens-砍半：官方没强调，但很值钱"><a href="#prompt-tokens-砍半：官方没强调，但很值钱" class="headerlink" title="prompt tokens 砍半：官方没强调，但很值钱"></a>prompt tokens 砍半：官方没强调，但很值钱</h2><p>这版最意外的数据，是 marckrenn 统计到的 prompt 变化：prompt tokens 从约 115,652 降到约 58,309，减少 57,343，降幅 49.6%。prompt 文件数也从 81 个降到 42 个，少了 39 个文件，降幅 48.1%。</p>
+<p>这个幅度不太像小修小补，更像做了一轮系统提示词合并、去重和压缩。</p>
+<p>Token 分布也有变化：tools 占比从 86.1% 升到 87.9%，system-reminder 从 8.2% 降到 7.2%，system 从 3.2% 降到 1.0%，system-data 从 1.1% 升到 2.3%。也就是说，真正被砍掉的主要是系统级指令和重复提示，工具定义本身并没有大幅减少。</p>
+<p>这件事 Anthropic 官方 changelog 没有重点提，但对 API 付费用户很实际。每次请求少掉约 58k tokens，用得频繁时就是直接省钱。原文按 Opus 4.8 估算，单次 request 大约能省 0.87 美元。对每天几十上百次调用的人来说，这比加一个小功能更有体感。</p>
+<h2 id="这一版的方向"><a href="#这一版的方向" class="headerlink" title="这一版的方向"></a>这一版的方向</h2><p>2.1.160 不是那种让人一眼“哇”的版本，但每条改动都落在关键位置。</p>
+<p>安全防护走的是预防性路线。现在未必已经有公开案例利用 shell 启动文件或构建配置攻击 Claude Code 用户，但先给这些路径加确认，总比等事后补丁强。上一次 Claude Code 比较密集地做安全加固，是 2.1.101 那次命令注入修复；那次更像修漏洞，这次更像压攻击面。</p>
+<p>后台会话的修复量也说明 Anthropic 在认真推进后台 agent 模式。它修的不只是 crash，还有目录锁、列表分类、会话恢复、界面冻结这些细节。只有这些细节稳定下来，多 agent、长任务、隔夜任务才有可能真正成为默认用法。</p>
+<p>至于 <code>workflow</code> 改名 <code>ultracode</code>，我不觉得只是换个触发词。它更像是在给后续的 workflow 编排能力留下语义空间：workflow 这个词应该属于更通用的流程系统，而不是一个容易误触的关键词。</p>
+<p>从 2.1.157 到 2.1.160 这几版连着看，节奏其实很清楚：插件体系铺底，云平台 auto mode 扩展，内部管线优化，然后补安全和可靠性。每版只做一两件事，但都在把 Claude Code 从“能用”往“可长期托付”推。</p>
+<p>升级方式也很简单：Native 安装一般会自动后台更新；如果想立刻应用，可以执行 <code>claude update</code>。Homebrew 用户则是 <code>brew upgrade claude-code</code>。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -2494,279 +2611,6 @@
 </ul>
 <p>这两件事合在一起，才构成生产级 Prompt Engineering 的底座。</p>
 <p>如果你正在把大模型从 Demo 推向业务系统，最值得优先补齐的，往往不是再堆更多技巧，而是先把参数基线和输出契约建立起来。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://blog.leolabs.top/2026/05/22/2026-05-22-llm-sampling-params/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="liuxiaoran">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="leo工作室">
-      <meta itemprop="description" content="You adored the light,so you will never fear the darkness">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | leo工作室">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2026/05/22/2026-05-22-llm-sampling-params/" class="post-title-link" itemprop="url">大模型采样参数通俗详解：Temperature、Top_p、Top_k 等核心参数一篇吃透</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2026-05-22 00:00:00" itemprop="dateCreated datePublished" datetime="2026-05-22T00:00:00+08:00">2026-05-22</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/AI/" itemprop="url" rel="index"><span itemprop="name">AI</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="大模型采样参数通俗详解：Temperature、Top-p、Top-k-等核心参数一篇吃透"><a href="#大模型采样参数通俗详解：Temperature、Top-p、Top-k-等核心参数一篇吃透" class="headerlink" title="大模型采样参数通俗详解：Temperature、Top_p、Top_k 等核心参数一篇吃透"></a>大模型采样参数通俗详解：Temperature、Top_p、Top_k 等核心参数一篇吃透</h1><p><img src="/images/2026/05/gpt-image-2-leo-request-v2-1779429926.jpg" alt="文章封面"></p>
-<p>很多人做提示词工程时，只专注写 Prompt 文本，却忽略了模型推理采样参数。</p>
-<p>同样的提示词、同样的大模型，参数设置不同，输出结果会截然不同：有的严谨精准、逻辑规整，有的天马行空、创意十足，甚至会出现更多幻觉。</p>
-<p>采样参数本质上是控制大模型输出风格、随机性、多样性、确定性的核心开关，也是提示词工程标准化、工业化落地时非常关键的一层配置。本文尝试用通俗方式，把最常见的几个参数一次讲明白。</p>
-<h2 id="为什么采样参数决定了输出风格"><a href="#为什么采样参数决定了输出风格" class="headerlink" title="为什么采样参数决定了输出风格"></a>为什么采样参数决定了输出风格</h2><p>大模型在生成每一个下一个 token 时，并不是只有一个唯一答案，而是会给一批候选 token 分配不同概率。</p>
-<p>采样参数的作用，就是决定模型到底：</p>
-<ul>
-<li>更偏向最稳妥的高概率答案；</li>
-<li>还是允许更多低概率但更有表现力的答案参与；</li>
-<li>是否限制候选池；</li>
-<li>是否抑制重复；</li>
-<li>是否控制输出长度。</li>
-</ul>
-<p>换句话说，Prompt 决定“往哪个方向回答”，采样参数决定“回答得有多稳、多活、多发散”。</p>
-<hr>
-<h2 id="一、Temperature：控制随机性与创造力"><a href="#一、Temperature：控制随机性与创造力" class="headerlink" title="一、Temperature：控制随机性与创造力"></a>一、Temperature：控制随机性与创造力</h2><h3 id="核心作用"><a href="#核心作用" class="headerlink" title="核心作用"></a>核心作用</h3><p><code>Temperature</code> 是最常用、也最重要的模型参数之一。</p>
-<p>它控制的是模型输出时的随机性。温度越低，模型越保守；温度越高，模型越开放。</p>
-<h3 id="通俗理解"><a href="#通俗理解" class="headerlink" title="通俗理解"></a>通俗理解</h3><p>可以把它理解成一个“创作开关”：</p>
-<ul>
-<li>低温度时，模型像一个谨慎的工程师；</li>
-<li>中等温度时，模型像一个表达自然的专业写手；</li>
-<li>高温度时，模型像一个脑洞很大的创意作者。</li>
-</ul>
-<h3 id="常见取值区间"><a href="#常见取值区间" class="headerlink" title="常见取值区间"></a>常见取值区间</h3><h4 id="1-0-0～0-3：极低温度"><a href="#1-0-0～0-3：极低温度" class="headerlink" title="1. 0.0～0.3：极低温度"></a>1. 0.0～0.3：极低温度</h4><p>特点：</p>
-<ul>
-<li>几乎总选概率最高的词；</li>
-<li>输出稳定；</li>
-<li>几乎不发散；</li>
-<li>可复现性高。</li>
-</ul>
-<p>适用场景：</p>
-<ul>
-<li>代码生成</li>
-<li>信息抽取</li>
-<li>结构化输出</li>
-<li>专业问答</li>
-<li>公式推导</li>
-</ul>
-<h4 id="2-0-4～0-7：中等温度"><a href="#2-0-4～0-7：中等温度" class="headerlink" title="2. 0.4～0.7：中等温度"></a>2. 0.4～0.7：中等温度</h4><p>特点：</p>
-<ul>
-<li>准确性和自然度平衡较好；</li>
-<li>文本流畅；</li>
-<li>有轻微变化，但不容易跑偏。</li>
-</ul>
-<p>适用场景：</p>
-<ul>
-<li>内容改写</li>
-<li>科普说明</li>
-<li>周报总结</li>
-<li>日常问答</li>
-</ul>
-<h4 id="3-0-8～1-2：高温度"><a href="#3-0-8～1-2：高温度" class="headerlink" title="3. 0.8～1.2：高温度"></a>3. 0.8～1.2：高温度</h4><p>特点：</p>
-<ul>
-<li>输出更丰富；</li>
-<li>句式更多样；</li>
-<li>更有创意；</li>
-<li>但也更容易冗余。</li>
-</ul>
-<p>适用场景：</p>
-<ul>
-<li>创意写作</li>
-<li>故事生成</li>
-<li>广告文案</li>
-<li>灵感脑暴</li>
-</ul>
-<h4 id="4-大于-1-2：超高温度"><a href="#4-大于-1-2：超高温度" class="headerlink" title="4. 大于 1.2：超高温度"></a>4. 大于 1.2：超高温度</h4><p>这个区间通常不适合正式业务。</p>
-<p>因为随机性过强后，模型更容易出现：</p>
-<ul>
-<li>逻辑跳跃</li>
-<li>语义混乱</li>
-<li>幻觉增加</li>
-<li>前后不一致</li>
-</ul>
-<p>更适合极致创意探索，而不是稳定输出。</p>
-<hr>
-<h2 id="二、Top-p：按概率截取候选池"><a href="#二、Top-p：按概率截取候选池" class="headerlink" title="二、Top_p：按概率截取候选池"></a>二、Top_p：按概率截取候选池</h2><h3 id="核心作用-1"><a href="#核心作用-1" class="headerlink" title="核心作用"></a>核心作用</h3><p><code>Top_p</code> 的全称是 <strong>Nucleus Sampling</strong>，通常翻译为“核采样”。</p>
-<p>它的作用，是先从候选词里筛出一个累计概率达到阈值的集合，然后模型只在这个集合里采样。</p>
-<h3 id="通俗理解-1"><a href="#通俗理解-1" class="headerlink" title="通俗理解"></a>通俗理解</h3><p>模型会把候选词按概率从高到低排列，并从前往后累加概率，直到达到 <code>Top_p</code> 指定数值。</p>
-<p>例如 <code>Top_p=0.9</code>，可以理解为：</p>
-<blockquote>
-<p>只从“累计概率前 90% 的候选词”里挑下一个词。</p>
-</blockquote>
-<p>这样能把很多低概率、离谱、容易导致跑偏的词先过滤掉。</p>
-<h3 id="常见取值逻辑"><a href="#常见取值逻辑" class="headerlink" title="常见取值逻辑"></a>常见取值逻辑</h3><ul>
-<li>接近 0：候选词非常少，输出很固定；</li>
-<li>0.7～0.9：稳定性与多样性平衡较好；</li>
-<li>1.0：不做概率筛选，所有候选词都可参与采样。</li>
-</ul>
-<h3 id="实用搭配建议"><a href="#实用搭配建议" class="headerlink" title="实用搭配建议"></a>实用搭配建议</h3><p>在很多实际场景中，一个很稳的方案是：</p>
-<figure class="highlight text"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Top_p = 0.9</span><br></pre></td></tr></tbody></table></figure>
-
-<p>然后通过调 <code>Temperature</code> 控制输出风格。</p>
-<p>这样做的好处是：</p>
-<ul>
-<li><code>Top_p</code> 负责稳住下限；</li>
-<li><code>Temperature</code> 负责控制创作空间。</li>
-</ul>
-<hr>
-<h2 id="三、Top-k：按数量限制候选词个数"><a href="#三、Top-k：按数量限制候选词个数" class="headerlink" title="三、Top_k：按数量限制候选词个数"></a>三、Top_k：按数量限制候选词个数</h2><h3 id="核心作用-2"><a href="#核心作用-2" class="headerlink" title="核心作用"></a>核心作用</h3><p>如果说 <code>Top_p</code> 是按概率总量筛选，那么 <code>Top_k</code> 就是按候选数量筛选。</p>
-<p>它表示每次只允许模型从概率排名前 K 的候选词里选择。</p>
-<h3 id="通俗理解-2"><a href="#通俗理解-2" class="headerlink" title="通俗理解"></a>通俗理解</h3><p>例如：</p>
-<ul>
-<li><code>Top_k=10</code>：只看前 10 个候选词；</li>
-<li><code>Top_k=50</code>：只看前 50 个候选词。</li>
-</ul>
-<h3 id="调参逻辑"><a href="#调参逻辑" class="headerlink" title="调参逻辑"></a>调参逻辑</h3><ul>
-<li>K 值越小：输出越稳定，但也越单一；</li>
-<li>K 值越大：输出越灵活，但也更容易发散；</li>
-<li>常见默认值通常是 <code>40</code> 或 <code>50</code>。</li>
-</ul>
-<h3 id="使用建议"><a href="#使用建议" class="headerlink" title="使用建议"></a>使用建议</h3><p>在日常业务里，<code>Top_k</code> 的优先级通常低于 <code>Temperature</code> 和 <code>Top_p</code>。</p>
-<p>多数情况下保持默认值即可，只有在需要精细控参或做生成实验时，才值得重点调整。</p>
-<hr>
-<h2 id="四、重复抑制参数：Presence-Penalty-与-Frequency-Penalty"><a href="#四、重复抑制参数：Presence-Penalty-与-Frequency-Penalty" class="headerlink" title="四、重复抑制参数：Presence Penalty 与 Frequency Penalty"></a>四、重复抑制参数：Presence Penalty 与 Frequency Penalty</h2><p>大模型在生成长文本时，经常会出现重复。</p>
-<p>这类重复通常分成两种：</p>
-<ul>
-<li>局部词汇和句式不断复读；</li>
-<li>整体内容反复围绕同一个表达方向打转。</li>
-</ul>
-<p>对应地，就有两个常见参数来处理。</p>
-<h3 id="1-Frequency-Penalty：频率惩罚"><a href="#1-Frequency-Penalty：频率惩罚" class="headerlink" title="1. Frequency Penalty：频率惩罚"></a>1. Frequency Penalty：频率惩罚</h3><p>这个参数针对高频出现的词进行惩罚。</p>
-<p>一个词出现得越多，后面再次出现的概率就越低。它主要解决的是：</p>
-<ul>
-<li>局部重复</li>
-<li>叠词啰嗦</li>
-<li>相似短句反复出现</li>
-</ul>
-<p>常见调节范围：</p>
-<figure class="highlight text"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0.1～0.3</span><br></pre></td></tr></tbody></table></figure>
-
-<p>通常已经足够。</p>
-<h3 id="2-Presence-Penalty：存在惩罚"><a href="#2-Presence-Penalty：存在惩罚" class="headerlink" title="2. Presence Penalty：存在惩罚"></a>2. Presence Penalty：存在惩罚</h3><p>这个参数关注的是“某类内容是否已经出现过”。</p>
-<p>只要内容出现过，就会被整体轻度压制，从而鼓励模型去拓展新的表达方向。</p>
-<p>它更适合：</p>
-<ul>
-<li>长文生成</li>
-<li>多段落内容写作</li>
-<li>希望覆盖更多维度的话题展开</li>
-</ul>
-<h3 id="一句话区分"><a href="#一句话区分" class="headerlink" title="一句话区分"></a>一句话区分</h3><ul>
-<li><code>Frequency Penalty</code>：防止“同样的话说太多次”；</li>
-<li><code>Presence Penalty</code>：鼓励“去说点新的内容”。</li>
-</ul>
-<hr>
-<h2 id="五、Max-tokens：控制输出长度上限"><a href="#五、Max-tokens：控制输出长度上限" class="headerlink" title="五、Max_tokens：控制输出长度上限"></a>五、Max_tokens：控制输出长度上限</h2><h3 id="核心作用-3"><a href="#核心作用-3" class="headerlink" title="核心作用"></a>核心作用</h3><p><code>Max_tokens</code> 用于限制模型单次最多输出多少 token。</p>
-<p>你可以把它理解为一个“回答长度上限”。达到上限后，模型就会停止继续生成。</p>
-<h3 id="为什么它重要"><a href="#为什么它重要" class="headerlink" title="为什么它重要"></a>为什么它重要</h3><p>如果这个值太小：</p>
-<ul>
-<li>回答可能被截断；</li>
-<li>代码可能写到一半；</li>
-<li>长文章可能突然中止。</li>
-</ul>
-<p>如果这个值太大：</p>
-<ul>
-<li>会增加冗余内容；</li>
-<li>推理成本更高；</li>
-<li>响应时间更长。</li>
-</ul>
-<h3 id="粗略理解-token"><a href="#粗略理解-token" class="headerlink" title="粗略理解 token"></a>粗略理解 token</h3><p>不同模型的分词方式不完全相同，但可以做一个粗略直觉：</p>
-<ul>
-<li>1 token 不等于 1 个汉字；</li>
-<li>中文场景里，1 token 常常可以粗略理解为约 0.75 个中文字符左右。</li>
-</ul>
-<p>因此：</p>
-<ul>
-<li>长文、长报告、代码生成要适当调大；</li>
-<li>摘要、短问答、结构化回复可以设小一些。</li>
-</ul>
-<hr>
-<h2 id="六、小白可直接复用的参数搭配"><a href="#六、小白可直接复用的参数搭配" class="headerlink" title="六、小白可直接复用的参数搭配"></a>六、小白可直接复用的参数搭配</h2><p>如果不想反复试错，可以先从下面三组开始。</p>
-<h3 id="1-精准业务场景"><a href="#1-精准业务场景" class="headerlink" title="1. 精准业务场景"></a>1. 精准业务场景</h3><p>适用：代码、抽取、问答、结构化输出</p>
-<figure class="highlight text"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Temperature = 0.2</span><br><span class="line">Top_p = 0.9</span><br><span class="line">Presence Penalty = 0</span><br><span class="line">Frequency Penalty = 0</span><br></pre></td></tr></tbody></table></figure>
-
-<h3 id="2-通用日常场景"><a href="#2-通用日常场景" class="headerlink" title="2. 通用日常场景"></a>2. 通用日常场景</h3><p>适用：总结、改写、科普、普通写作</p>
-<figure class="highlight text"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Temperature = 0.6</span><br><span class="line">Top_p = 0.9</span><br><span class="line">Frequency Penalty = 0.2</span><br></pre></td></tr></tbody></table></figure>
-
-<h3 id="3-创意创作场景"><a href="#3-创意创作场景" class="headerlink" title="3. 创意创作场景"></a>3. 创意创作场景</h3><p>适用：文案、故事、灵感发散</p>
-<figure class="highlight text"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Temperature = 1.0</span><br><span class="line">Top_p = 0.95</span><br><span class="line">Presence Penalty = 0.3</span><br></pre></td></tr></tbody></table></figure>
-
-<hr>
-<h2 id="七、总结"><a href="#七、总结" class="headerlink" title="七、总结"></a>七、总结</h2><p>提示词工程不只是写提示词，参数调优同样是标准化落地的核心部分。</p>
-<p>可以把这几个参数的作用记成一句话：</p>
-<ul>
-<li><code>Temperature</code> 控制创造力；</li>
-<li><code>Top_p</code> 稳住输出下限；</li>
-<li><code>Top_k</code> 精细控制候选池；</li>
-<li>惩罚参数解决重复；</li>
-<li><code>Max_tokens</code> 控制长度。</li>
-</ul>
-<p>当这套参数逻辑真正掌握之后，大模型输出就不再是“时好时坏”的玄学，而会逐渐变得：</p>
-<ul>
-<li>可控</li>
-<li>可复用</li>
-<li>可标准化</li>
-</ul>
-<p>这也是大模型从“能用”走向“好用”和“稳定可落地”的关键一步。</p>
 
       
     </div>

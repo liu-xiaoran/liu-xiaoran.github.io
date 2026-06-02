@@ -16,6 +16,8 @@ categories:
 
 后台会话也修了一批稳定性问题，prompt tokens 则从约 11.6 万降到约 5.8 万，几乎砍半。表面看是一次常规迭代，但安全加固、后台可靠性和提示词瘦身，都是 Claude Code 这种工具越往深处走越绕不开的苦活。
 
+![文章首图](/images/2026/06/claude-code-2-1-160/cover.jpg)
+
 ![Claude Code 2.1.160 原文配图](/images/2026/06/claude-code-2-1-160/orig-cover.jpg)
 
 ## 三道安全防线：先把门锁上

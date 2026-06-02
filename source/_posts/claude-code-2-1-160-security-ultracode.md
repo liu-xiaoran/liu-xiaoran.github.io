@@ -8,7 +8,6 @@ tags:
   - Anthropic
 categories:
   - AI工具
-cover: /images/2026/06/claude-code-2-1-160/cover.jpg
 ---
 
 2.1.160 距离上一版只隔了 23 小时，但这次并不是走过场。

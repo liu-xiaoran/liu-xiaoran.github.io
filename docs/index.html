@@ -134,18 +134,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">30</span>
+          <span class="site-state-item-count">31</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-count">10</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">64</span>
+        <span class="site-state-item-count">66</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -170,6 +170,128 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://blog.leolabs.top/2026/06/03/microsoft-mai-thinking-1-zero-distillation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liuxiaoran">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="leo工作室">
+      <meta itemprop="description" content="You adored the light,so you will never fear the darkness">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | leo工作室">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2026/06/03/microsoft-mai-thinking-1-zero-distillation/" class="post-title-link" itemprop="url">微软自研 MAI-Thinking-1：拒绝蒸馏，追平 Claude Opus 4.6</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2026-06-03 16:45:00" itemprop="dateCreated datePublished" datetime="2026-06-03T16:45:00+08:00">2026-06-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/AI%E8%A7%82%E5%AF%9F/" itemprop="url" rel="index"><span itemprop="name">AI观察</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p><img src="/images/2026/06/microsoft-mai-thinking-1-zero-distillation/cover.png" alt="文章封面"></p>
+<p>“我们现在已经基本追平了几个月前的最先进水平。”</p>
+<p>Build 大会前夕，微软 AI 执行副总裁兼 CEO Mustafa Suleyman 用这句话，给微软最新一轮自研模型发布定了调。</p>
+<p>这次微软在 Build 上一次性推出多款 MAI 系列模型。对一家过去几年深度依赖 OpenAI 的公司来说，这不是普通的产品更新，而是一次很清晰的战略转身：微软正在从“AI 应用整合者”，进一步走向“全栈 AI 基础设施与模型提供者”。</p>
+<p>外界把这场大会称作微软的“AI 独立日”，并不夸张。</p>
+<h2 id="首个高级推理模型：MAI-Thinking-1"><a href="#首个高级推理模型：MAI-Thinking-1" class="headerlink" title="首个高级推理模型：MAI-Thinking-1"></a>首个高级推理模型：MAI-Thinking-1</h2><p>这次发布中最受关注的，是微软首个高级推理模型 <strong>MAI-Thinking-1</strong>。</p>
+<p>据微软介绍，MAI-Thinking-1 是一款“中等规模模型”，拥有 <strong>350 亿活跃参数</strong>、<strong>128K 上下文窗口</strong>，总参数规模约 <strong>1 万亿</strong>。它的设计重点不是单纯堆大，而是在推理能力、效率和低 token 成本之间取得平衡。</p>
+<p>微软开发者市场负责人、GitHub 首席运营官 Kyle Daigle 表示，MAI-Thinking-1 主要面向复杂多步骤指令、长上下文推理以及代码生成任务。</p>
+<p>过去一年，推理模型赛道基本由 OpenAI o 系列、Google Gemini 推理版本、Anthropic Claude 的扩展思考模式主导。开源阵营里，DeepSeek R1 也曾在 2025 年初明显撼动这一格局。</p>
+<p>现在，微软正式入场。</p>
+<p><img src="/images/2026/06/microsoft-mai-thinking-1-zero-distillation/benchmark.jpg" alt="MAI-Thinking-1 基准表现"></p>
+<p>从公开信息看，MAI-Thinking-1 在关键软件工程基准中已经可以对标领先模型；在 <strong>SWE Bench Pro</strong> 上，其表现与 <strong>Claude Opus 4.6</strong> 持平。</p>
+<p>数学推理方面，它在 <strong>AIME 2025</strong> 中达到 **97.0%**，在 <strong>AIME 2026</strong> 中达到 **94.5%**。微软还称，在盲测人工对比评估里，用户对 MAI-Thinking-1 的偏好甚至超过 Claude Sonnet 4.6。</p>
+<h2 id="真正被强调的是“从零训练”"><a href="#真正被强调的是“从零训练”" class="headerlink" title="真正被强调的是“从零训练”"></a>真正被强调的是“从零训练”</h2><p>相比跑分，微软这次更想强调的是另一件事：<strong>MAI-Thinking-1 不靠蒸馏。</strong></p>
+<p>微软明确表示，该模型训练数据中不包含任何其他已训练 AI 系统的概率分布或输出序列，也没有使用来自第三方模型的蒸馏数据。</p>
+<p>换句话说，它不是靠学习别家模型输出追上来的，而是从预训练阶段就排除 AI 生成内容，使用企业级、干净、具备合规商业授权的数据训练。</p>
+<p>微软的说法是，这会迫使模型真正学会任务本身，而不是模仿另一个模型的回答风格。</p>
+<p>这件事对普通开发者可能只是一个技术标签，但对企业客户，尤其是医疗、金融、国防以及高监管行业来说，意义会更大。</p>
+<p>这些场景采购 AI 时，不只会问模型能不能用，还会问训练数据从哪里来、知识产权是否干净、能不能通过合规审查。</p>
+<p>所以，“不使用第三方模型输出”“不碰蒸馏”，很可能会成为微软面向企业客户的一张关键牌。</p>
+<h2 id="MAI-模型家族补齐多模态版图"><a href="#MAI-模型家族补齐多模态版图" class="headerlink" title="MAI 模型家族补齐多模态版图"></a>MAI 模型家族补齐多模态版图</h2><p>除了 MAI-Thinking-1，微软还发布了另外六款 MAI 系列模型，覆盖图像生成、图像编辑、语音转写、语音合成和编程等方向。</p>
+<p><strong>MAI-Code-1-Flash</strong> 是一款高效率智能体编程模型，参数规模为 <strong>5B</strong>，目标是深度集成到 GitHub Copilot、Visual Studio Code 以及微软整体技术栈中。微软称其性能可对标 Haiku，但成本更低。</p>
+<p>图像方向，<strong>MAI-Image-2.5</strong> 及其 Flash 版本支持文生图和图像编辑，Arena 评分已超过 Nano Banana Pro。</p>
+<p>语音方向，<strong>MAI Transcribe-1.5</strong> 被称为当前最强语音转录模型之一，速度是同类模型的 <strong>5 倍</strong>，并内置支持 <strong>43 种语言</strong>的领域专有术语。</p>
+<p>语音生成方面，<strong>MAI-Voice-2</strong> 支持 <strong>15 种语言</strong>的自然语音生成，可通过短语音样本进行声音适配，并加入滥用防护。更高性价比的 MAI-Voice-2-Flash 也即将推出。</p>
+<p>这些模型未来都将接入 Azure AI Foundry，以及新的 MAI Playground。微软还表示，开发者将首次可以对部分模型权重进行自定义调优。</p>
+<p>这说明微软并不是只补一个推理模型，而是在搭建从基础模型、多模态能力到开发者平台的完整 MAI 生态。</p>
+<h2 id="Scout：把模型塞进-Microsoft-365-工作流"><a href="#Scout：把模型塞进-Microsoft-365-工作流" class="headerlink" title="Scout：把模型塞进 Microsoft 365 工作流"></a>Scout：把模型塞进 Microsoft 365 工作流</h2><p>模型之外，微软还推出了新的企业智能体 <strong>Scout</strong>。</p>
+<p>Scout 基于 OpenClaw 框架构建，可以在 Microsoft 365 应用之间全天候自主运行，独立完成任务。它能够连接 Teams、Outlook、OneDrive、SharePoint 等应用，并访问聊天、邮件、日历和联系人数据。</p>
+<p>用户可以通过 Teams 调用 Scout，它也可以与浏览器交互，并通过 MCP 连接外部应用。微软称，该工具可在云端、桌面端和网页端运行。</p>
+<p>微软企业副总裁 Omar Shahine 表示，这类智能体会在后台持续理解用户在各种应用和系统中的工作方式，并在不需要每次提示的情况下主动采取行动。</p>
+<p>例如，它可以帮助办公人员协调会议时间、根据后续安排预留日历空档，也可以提前发现决策停滞等风险，让用户在问题变成阻碍前处理。</p>
+<p>不过，OpenClaw 此前曾因安全漏洞受到审查。微软这次特别强调，Scout 具备企业级安全与控制能力，“从第一天起就可以在组织中被信任使用”。</p>
+<p>目前，Scout 以实验性版本向 Frontier 项目客户开放，需要通过 Intune 策略配置以及主动选择确认。定价暂未公布，也不清楚它未来会纳入 Microsoft 365 Copilot 订阅，还是单独收费。</p>
+<h2 id="微软想拿回-AI-底座主动权"><a href="#微软想拿回-AI-底座主动权" class="headerlink" title="微软想拿回 AI 底座主动权"></a>微软想拿回 AI 底座主动权</h2><p>过去几年，微软在 AI 领域的优势很大程度来自 OpenAI。Azure、Copilot、GitHub Copilot、Microsoft 365 Copilot，都受益于这段合作关系。</p>
+<p>但底层模型高度依赖外部伙伴，也意味着微软在成本、节奏、产品差异化和企业合规上会受到限制。</p>
+<p>MAI 系列的发布，正是在补这块短板。</p>
+<p>MAI-Thinking-1 代表微软开始拥有自己的高级推理模型；MAI-Image、MAI-Voice、MAI Transcribe 代表多模态能力成型；Scout 则说明微软希望把这些模型真正嵌入企业工作流。</p>
+<p>微软不想只做 AI 应用入口，也不想永远只是 OpenAI 时代的最大渠道商。它要把模型、平台、工具链和企业智能体重新握在自己手里。</p>
+<p>这也是“AI 独立日”这个说法真正成立的原因。</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>MAI-Thinking-1 追平 Claude Opus 4.6，是一个醒目的能力信号。</p>
+<p>但更值得关注的是，微软正在把模型能力从外部依赖变成内部资产。</p>
+<p>从零训练、不使用第三方模型蒸馏、强调企业级干净数据，这些听起来没有跑分那么刺激，却可能正是企业客户最在意的部分。</p>
+<p>当企业开始真正采购 AI，它们不会只问“哪个模型最强”，还会问：这个模型从哪里来？数据是否合规？知识产权是否干净？能不能被纳入企业治理体系？</p>
+<p>微软这次给出的答案很明确：它要成为一个真正拥有自研模型底座的 AI 平台公司。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -2376,242 +2498,6 @@
 <li><strong>业务规则兜底</strong>：控制最终结果，把错误拦在系统之外。</li>
 </ul>
 <p>个人使用场景，仅靠提示词和低温参数，通常就能显著改善体验；企业级落地场景，则必须叠加规则校验与后处理机制，才能真正做到稳定、可信、可上线。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://blog.leolabs.top/2026/05/23/prompt-engineering-industrialization-sampling-and-output-standardization/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="liuxiaoran">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="leo工作室">
-      <meta itemprop="description" content="You adored the light,so you will never fear the darkness">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | leo工作室">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2026/05/23/prompt-engineering-industrialization-sampling-and-output-standardization/" class="post-title-link" itemprop="url">提示词工程工业化核心：采样参数调优与输出格式标准化全指南</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2026-05-23 00:00:00" itemprop="dateCreated datePublished" datetime="2026-05-23T00:00:00+08:00">2026-05-23</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/AI%E5%B7%A5%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">AI工程</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="提示词工程工业化核心：采样参数调优与输出格式标准化全指南"><a href="#提示词工程工业化核心：采样参数调优与输出格式标准化全指南" class="headerlink" title="提示词工程工业化核心：采样参数调优与输出格式标准化全指南"></a>提示词工程工业化核心：采样参数调优与输出格式标准化全指南</h1><p><img src="/images/2026/05/prompt-engineering-industrialization-cover.jpg" alt="文章封面"></p>
-<p>当大模型应用从 Demo 走向生产环境，真正决定系统是否稳定可控的，往往不是一句 Prompt 写得有多花哨，而是两件更底层的事：<strong>采样参数调优</strong>与<strong>输出格式标准化</strong>。</p>
-<p>前者决定模型生成内容时到底有多稳、多活、多发散；后者决定模型输出能不能被系统可靠接住、解析、校验和复用。工业化场景里，Prompt 不再只是“跟模型聊天”，而是在定义一份输入输出契约。</p>
-<p>本文从工程化视角，把这两块最核心的能力拆开讲清楚，并给出一套可以直接复用的参数与格式设计范式。</p>
-<h2 id="为什么工业级-Prompt-需要“参数-格式”双标准化"><a href="#为什么工业级-Prompt-需要“参数-格式”双标准化" class="headerlink" title="为什么工业级 Prompt 需要“参数 + 格式”双标准化"></a>为什么工业级 Prompt 需要“参数 + 格式”双标准化</h2><p>自由式对话可以容忍风格波动，也能接受偶尔不够结构化的回答。但在生产系统里，波动意味着风险：</p>
-<ul>
-<li>同一输入在不同时间返回不同口径</li>
-<li>输出结构不稳定，导致下游解析失败</li>
-<li>长文本复读、发散，影响质量与成本</li>
-<li>模型升级后，业务逻辑和自动化流程一起被冲击</li>
-</ul>
-<p>所以，工业级 Prompt 的目标不是“让模型更会说”，而是：</p>
-<ul>
-<li><strong>让输出质量更稳定</strong></li>
-<li><strong>让结果结构更一致</strong></li>
-<li><strong>让系统更容易测试、监控和维护</strong></li>
-</ul>
-<p>这也是为什么采样参数和输出格式必须一起设计，而不是分开补救。</p>
-<hr>
-<h2 id="一、采样参数体系：决定模型输出的稳定性边界"><a href="#一、采样参数体系：决定模型输出的稳定性边界" class="headerlink" title="一、采样参数体系：决定模型输出的稳定性边界"></a>一、采样参数体系：决定模型输出的稳定性边界</h2><p>采样参数控制的是模型生成 token 时的选择策略。相同的 Prompt、相同的模型，如果参数不同，结果风格可能完全不同。</p>
-<h3 id="1-Temperature：控制随机性与创造性"><a href="#1-Temperature：控制随机性与创造性" class="headerlink" title="1. Temperature：控制随机性与创造性"></a>1. Temperature：控制随机性与创造性</h3><p><code>Temperature</code> 是最核心的生成参数，本质上是在调节概率分布的“尖锐程度”。</p>
-<ul>
-<li><strong>温度越低</strong>：模型越倾向选择最高概率 token，输出更稳定、更可复现</li>
-<li><strong>温度越高</strong>：模型更愿意尝试低概率 token，输出更灵活、更有创造性</li>
-</ul>
-<p>推荐区间：</p>
-<ul>
-<li><code>0.0 ~ 0.3</code>：代码生成、信息抽取、专业问答、结构化输出</li>
-<li><code>0.4 ~ 0.7</code>：总结归纳、科普说明、内容改写、日报周报</li>
-<li><code>0.8 ~ 1.2</code>：文案创作、故事生成、灵感发散</li>
-<li><code>&gt; 1.2</code>：仅适合实验性创意探索，不建议正式业务使用</li>
-</ul>
-<p>如果你的任务目标是<strong>准确、稳定、低波动</strong>，先把 Temperature 压低，通常就能明显改善结果一致性。</p>
-<h3 id="2-Top-p：从概率维度筛选候选池"><a href="#2-Top-p：从概率维度筛选候选池" class="headerlink" title="2. Top_p：从概率维度筛选候选池"></a>2. Top_p：从概率维度筛选候选池</h3><p><code>Top_p</code>（核采样）会先把候选 token 按概率从高到低排序，只保留累计概率达到阈值的一组词，然后模型只在这组词里采样。</p>
-<p>工程上它的意义是：<strong>把明显离谱的低概率候选提前挡在门外</strong>。</p>
-<p>常见经验：</p>
-<ul>
-<li>接近 <code>0</code>：候选极少，输出很固定</li>
-<li><code>0.7 ~ 0.9</code>：稳定性和多样性平衡较好</li>
-<li><code>1.0</code>：不做筛选，全部候选都可参与生成</li>
-</ul>
-<p>工业实践中，一个很稳的基线组合是：</p>
-<figure class="highlight text"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Top_p = 0.9</span><br></pre></td></tr></tbody></table></figure>
-
-<p>然后主要通过 Temperature 控制风格。这种分工最稳定，也最不容易出错。</p>
-<h3 id="3-Top-k：从数量维度限制候选词数"><a href="#3-Top-k：从数量维度限制候选词数" class="headerlink" title="3. Top_k：从数量维度限制候选词数"></a>3. Top_k：从数量维度限制候选词数</h3><p>如果说 Top_p 是“按概率总量截断”，Top_k 就是“按候选个数截断”。</p>
-<ul>
-<li><code>Top_k</code> 越小：输出更稳，但更容易单一</li>
-<li><code>Top_k</code> 越大：输出更灵活，但更容易发散</li>
-</ul>
-<p>在很多商业 API 中，Top_k 并不是最常调的参数。即使可配置，它的优先级通常也低于 Temperature 和 Top_p。多数场景保持默认值（如 40 或 50）即可。</p>
-<h3 id="4-Frequency-Penalty-Presence-Penalty：抑制重复"><a href="#4-Frequency-Penalty-Presence-Penalty：抑制重复" class="headerlink" title="4. Frequency Penalty / Presence Penalty：抑制重复"></a>4. Frequency Penalty / Presence Penalty：抑制重复</h3><p>长文本生成常见问题不是“不会说”，而是“说太多重复的话”。</p>
-<ul>
-<li><code>Frequency Penalty</code>：针对高频重复词做惩罚，适合解决局部复读、叠词、相似短句反复出现</li>
-<li><code>Presence Penalty</code>：只要内容已经出现过，就轻度压制，鼓励模型拓展新的表达方向</li>
-</ul>
-<p>推荐经验：</p>
-<ul>
-<li>日常改写、总结：<code>Frequency Penalty = 0.1 ~ 0.3</code></li>
-<li>长文创作、维度拓展：<code>Presence Penalty = 0.2 ~ 0.4</code></li>
-</ul>
-<h3 id="5-Max-tokens：控制输出长度与成本"><a href="#5-Max-tokens：控制输出长度与成本" class="headerlink" title="5. Max_tokens：控制输出长度与成本"></a>5. Max_tokens：控制输出长度与成本</h3><p><code>Max_tokens</code> 决定单次输出的上限，不只是篇幅控制工具，也是成本和稳定性控制工具。</p>
-<p>工程化使用时要同时考虑：</p>
-<ul>
-<li>回答是否会被截断</li>
-<li>是否会产生无效冗长内容</li>
-<li>输入 token 与输出 token 之和是否超出上下文窗口</li>
-</ul>
-<p>短问答、摘要类任务应尽量收紧；长报告、代码生成、复杂说明类任务则要适当放宽。</p>
-<h3 id="6-三组可直接复用的参数模板"><a href="#6-三组可直接复用的参数模板" class="headerlink" title="6. 三组可直接复用的参数模板"></a>6. 三组可直接复用的参数模板</h3><h4 id="精准业务场景"><a href="#精准业务场景" class="headerlink" title="精准业务场景"></a>精准业务场景</h4><p>适用于代码生成、数据抽取、专业问答：</p>
-<figure class="highlight text"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Temperature = 0.2</span><br><span class="line">Top_p = 0.9</span><br><span class="line">Frequency Penalty = 0</span><br><span class="line">Presence Penalty = 0</span><br></pre></td></tr></tbody></table></figure>
-
-<h4 id="通用内容场景"><a href="#通用内容场景" class="headerlink" title="通用内容场景"></a>通用内容场景</h4><p>适用于总结、改写、科普说明：</p>
-<figure class="highlight text"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Temperature = 0.6</span><br><span class="line">Top_p = 0.9</span><br><span class="line">Frequency Penalty = 0.2</span><br></pre></td></tr></tbody></table></figure>
-
-<h4 id="创意生成场景"><a href="#创意生成场景" class="headerlink" title="创意生成场景"></a>创意生成场景</h4><p>适用于文案、故事、灵感延展：</p>
-<figure class="highlight text"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Temperature = 1.0</span><br><span class="line">Top_p = 0.95</span><br><span class="line">Presence Penalty = 0.3</span><br></pre></td></tr></tbody></table></figure>
-
-<hr>
-<h2 id="二、输出格式标准化：把自然语言变成系统契约"><a href="#二、输出格式标准化：把自然语言变成系统契约" class="headerlink" title="二、输出格式标准化：把自然语言变成系统契约"></a>二、输出格式标准化：把自然语言变成系统契约</h2><p>工业化 Prompt 的第二个核心，不是让模型“说得更漂亮”，而是让模型<strong>说得更可解析、可验证、可复用</strong>。</p>
-<h3 id="1-为什么格式标准化是基础设施"><a href="#1-为什么格式标准化是基础设施" class="headerlink" title="1. 为什么格式标准化是基础设施"></a>1. 为什么格式标准化是基础设施</h3><p>如果模型输出的结构每次都不一样，下游系统就必须靠字符串规则、正则或人工兜底去理解内容。这种链路非常脆弱。</p>
-<p>输出格式标准化的工程价值主要体现在四点：</p>
-<ol>
-<li><strong>机器可解析性</strong>：结果可以直接进入 API、数据库或自动化脚本</li>
-<li><strong>结果可预测性</strong>：结构稳定，便于测试与回归验证</li>
-<li><strong>组件可复用性</strong>：同一套 Prompt 模板能迁移到不同模型或业务场景</li>
-<li><strong>错误可定位性</strong>：结构异常更容易被监控和报警系统识别</li>
-</ol>
-<h3 id="2-基础格式控制范式"><a href="#2-基础格式控制范式" class="headerlink" title="2. 基础格式控制范式"></a>2. 基础格式控制范式</h3><h4 id="文体与结构约束"><a href="#文体与结构约束" class="headerlink" title="文体与结构约束"></a>文体与结构约束</h4><p>与其说“请条理清晰”，不如明确指定层级结构，例如：</p>
-<figure class="highlight text"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">请严格按以下结构输出：</span><br><span class="line"># 一级标题</span><br><span class="line">## 二级标题</span><br><span class="line">### 三级标题</span><br><span class="line">- 无序列表</span><br><span class="line">1. 有序列表</span><br></pre></td></tr></tbody></table></figure>
-
-<p>结构描述越具体，模型自由发挥的空间越小，结果越稳定。</p>
-<h4 id="长度与详略约束"><a href="#长度与详略约束" class="headerlink" title="长度与详略约束"></a>长度与详略约束</h4><p>对于生产环境，信息量也应受控，例如：</p>
-<figure class="highlight text"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">输出约束：</span><br><span class="line">- 总字数控制在 500-600 字</span><br><span class="line">- 每个要点不超过 3 句话</span><br><span class="line">- 只输出结论，不展示推导过程</span><br><span class="line">- 不要添加开场白和结束语</span><br></pre></td></tr></tbody></table></figure>
-
-<h4 id="语言风格约束"><a href="#语言风格约束" class="headerlink" title="语言风格约束"></a>语言风格约束</h4><p>技术、法务、客服、运营场景对语言风格要求完全不同，必须显式声明：</p>
-<figure class="highlight text"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">语言风格要求：</span><br><span class="line">- 使用技术文档风格</span><br><span class="line">- 客观、严谨、准确</span><br><span class="line">- 避免口语化表达和第一人称</span><br><span class="line">- 专业术语采用行业标准定义</span><br></pre></td></tr></tbody></table></figure>
-
-<h3 id="3-结构化输出：工业级-Prompt-的核心要求"><a href="#3-结构化输出：工业级-Prompt-的核心要求" class="headerlink" title="3. 结构化输出：工业级 Prompt 的核心要求"></a>3. 结构化输出：工业级 Prompt 的核心要求</h3><h4 id="JSON-输出"><a href="#JSON-输出" class="headerlink" title="JSON 输出"></a>JSON 输出</h4><p>最常见，也最适合系统集成：</p>
-<figure class="highlight text"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">结果严格以 JSON 输出，只返回 JSON，不返回任何解释文字。</span><br><span class="line">Schema：</span><br><span class="line">{</span><br><span class="line">  "code": "integer",</span><br><span class="line">  "message": "string",</span><br><span class="line">  "data": {</span><br><span class="line">    "id": "string",</span><br><span class="line">    "name": "string",</span><br><span class="line">    "description": "string",</span><br><span class="line">    "tags": ["string"]</span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
-
-<p>最佳实践：</p>
-<ul>
-<li>明确字段类型与含义</li>
-<li>规定必填项与可选项</li>
-<li>禁止返回 JSON 以外的解释文本</li>
-<li>对复杂结构使用嵌套对象表达层级</li>
-</ul>
-<h4 id="Markdown-表格输出"><a href="#Markdown-表格输出" class="headerlink" title="Markdown 表格输出"></a>Markdown 表格输出</h4><p>适合需要同时兼顾可读性与结构性的二维信息展示：</p>
-<figure class="highlight text"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">结果以 Markdown 表格输出，列定义如下：</span><br><span class="line">| 字段名 | 类型 | 说明 |</span><br><span class="line">|---|---|---|</span><br><span class="line">| id | string | 唯一标识 |</span><br><span class="line">| name | string | 名称 |</span><br><span class="line">| value | number | 数值 |</span><br></pre></td></tr></tbody></table></figure>
-
-<h4 id="键值对输出"><a href="#键值对输出" class="headerlink" title="键值对输出"></a>键值对输出</h4><p>适合字段简单且解析逻辑固定的任务：</p>
-<figure class="highlight text"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">每行输出一个键值对，格式为：</span><br><span class="line">name: 值</span><br><span class="line">age: 值</span><br><span class="line">gender: 值</span><br></pre></td></tr></tbody></table></figure>
-
-<h3 id="4-三个高级格式控制技巧"><a href="#4-三个高级格式控制技巧" class="headerlink" title="4. 三个高级格式控制技巧"></a>4. 三个高级格式控制技巧</h3><h4 id="模板驱动生成"><a href="#模板驱动生成" class="headerlink" title="模板驱动生成"></a>模板驱动生成</h4><p>先定义模板，再让模型只填变量位：</p>
-<figure class="highlight text"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">请填充以下模板，不要修改模板其他内容：</span><br><span class="line"># {title}</span><br><span class="line">## 核心优势</span><br><span class="line">{advantages}</span><br><span class="line">## 适用场景</span><br><span class="line">{scenarios}</span><br></pre></td></tr></tbody></table></figure>
-
-<h4 id="Few-shot-格式对齐"><a href="#Few-shot-格式对齐" class="headerlink" title="Few-shot 格式对齐"></a>Few-shot 格式对齐</h4><p>给少量标准样例，让模型学习输出口径：</p>
-<figure class="highlight text"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">示例输入：什么是 Python？</span><br><span class="line">示例输出：{"name":"Python","type":"编程语言","description":"一种解释型高级语言"}</span><br></pre></td></tr></tbody></table></figure>
-
-<h4 id="输出验证与纠错"><a href="#输出验证与纠错" class="headerlink" title="输出验证与纠错"></a>输出验证与纠错</h4><p>把“自检”写进 Prompt：</p>
-<figure class="highlight text"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">生成结果后，请检查：</span><br><span class="line">1. JSON 语法是否正确</span><br><span class="line">2. 必填字段是否完整</span><br><span class="line">3. 字段类型是否符合要求</span><br><span class="line">4. 如有错误，修正后再输出</span><br></pre></td></tr></tbody></table></figure>
-
-<hr>
-<h2 id="三、工程化落地建议：从-Prompt-到生产系统"><a href="#三、工程化落地建议：从-Prompt-到生产系统" class="headerlink" title="三、工程化落地建议：从 Prompt 到生产系统"></a>三、工程化落地建议：从 Prompt 到生产系统</h2><p>真正上线后，参数和格式都不应散落在业务代码里，而应该成为可管理的配置资产。</p>
-<p>建议从以下六个方向落地：</p>
-<h3 id="1-模块化设计"><a href="#1-模块化设计" class="headerlink" title="1. 模块化设计"></a>1. 模块化设计</h3><p>把 Prompt 模板、采样参数、输出 Schema、业务规则分层管理，避免耦合在一段自然语言中。</p>
-<h3 id="2-版本化管理"><a href="#2-版本化管理" class="headerlink" title="2. 版本化管理"></a>2. 版本化管理</h3><p>对 Prompt、参数、输出格式统一做版本控制。模型升级、业务规则变更时，才能做差异追踪与回滚。</p>
-<h3 id="3-自动化测试"><a href="#3-自动化测试" class="headerlink" title="3. 自动化测试"></a>3. 自动化测试</h3><p>针对典型输入建立测试集，验证：</p>
-<ul>
-<li>输出格式是否合法</li>
-<li>关键字段是否齐全</li>
-<li>结果质量是否稳定</li>
-<li>参数调整是否引入副作用</li>
-</ul>
-<h3 id="4-错误处理机制"><a href="#4-错误处理机制" class="headerlink" title="4. 错误处理机制"></a>4. 错误处理机制</h3><p>为格式错误、内容不达标、字段缺失设计降级方案，例如：</p>
-<ul>
-<li>自动重试</li>
-<li>切换保守参数</li>
-<li>返回默认值</li>
-<li>触发人工审核</li>
-</ul>
-<h3 id="5-跨模型兼容性"><a href="#5-跨模型兼容性" class="headerlink" title="5. 跨模型兼容性"></a>5. 跨模型兼容性</h3><p>尽量使用通用的格式与指令约束，减少对单一模型专有特性的依赖，方便未来迁移。</p>
-<h3 id="6-效果监控闭环"><a href="#6-效果监控闭环" class="headerlink" title="6. 效果监控闭环"></a>6. 效果监控闭环</h3><p>上线后持续观察：</p>
-<ul>
-<li>格式错误率</li>
-<li>输出时延与成本</li>
-<li>下游解析成功率</li>
-<li>用户侧质量反馈</li>
-</ul>
-<p>只有监控闭环建立起来，参数调优和 Prompt 优化才不是一次性工作，而是持续工程。</p>
-<hr>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>提示词工程真正进入工业化阶段后，核心不再只是“如何把话说给模型听”，而是“如何让模型稳定、规范、可验证地把结果交付回来”。</p>
-<ul>
-<li><strong>采样参数调优</strong>，决定输出的稳定性、创造性与一致性边界</li>
-<li><strong>输出格式标准化</strong>，决定结果能否被系统可靠消费与维护</li>
-</ul>
-<p>这两件事合在一起，才构成生产级 Prompt Engineering 的底座。</p>
-<p>如果你正在把大模型从 Demo 推向业务系统，最值得优先补齐的，往往不是再堆更多技巧，而是先把参数基线和输出契约建立起来。</p>
 
       
     </div>

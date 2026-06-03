@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.leolabs.top","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="“我们现在已经基本追平了几个月前的最先进水平。” Build 大会前夕，微软 AI 执行副总裁兼 CEO Mustafa Suleyman 用这句话，给微软最新一轮自研模型发布定了调。 这次微软在 Build 上一次性推出多款 MAI 系列模型。对一家过去几年深度依赖 OpenAI 的公司来说，这不是普通的产品更新，而是一次很清晰的战略转身：微软正在从“AI 应用整合者”，进一步走向“全栈 AI">
+<meta property="og:type" content="article">
+<meta property="og:title" content="微软自研 MAI-Thinking-1：拒绝蒸馏，追平 Claude Opus 4.6">
+<meta property="og:url" content="https://blog.leolabs.top/2026/06/03/microsoft-mai-thinking-1-zero-distillation/index.html">
+<meta property="og:site_name" content="leo工作室">
+<meta property="og:description" content="“我们现在已经基本追平了几个月前的最先进水平。” Build 大会前夕，微软 AI 执行副总裁兼 CEO Mustafa Suleyman 用这句话，给微软最新一轮自研模型发布定了调。 这次微软在 Build 上一次性推出多款 MAI 系列模型。对一家过去几年深度依赖 OpenAI 的公司来说，这不是普通的产品更新，而是一次很清晰的战略转身：微软正在从“AI 应用整合者”，进一步走向“全栈 AI">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.leolabs.top/images/2026/06/microsoft-mai-thinking-1-zero-distillation/cover.png">
+<meta property="og:image" content="https://blog.leolabs.top/images/2026/06/microsoft-mai-thinking-1-zero-distillation/benchmark.jpg">
+<meta property="article:published_time" content="2026-06-03T08:45:00.000Z">
+<meta property="article:modified_time" content="2026-06-03T08:45:00.000Z">
+<meta property="article:author" content="liuxiaoran">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="大模型">
+<meta property="article:tag" content="微软">
+<meta property="article:tag" content="企业智能体">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.leolabs.top/images/2026/06/microsoft-mai-thinking-1-zero-distillation/cover.png">
+
+
+<link rel="canonical" href="https://blog.leolabs.top/2026/06/03/microsoft-mai-thinking-1-zero-distillation/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.leolabs.top/2026/06/03/microsoft-mai-thinking-1-zero-distillation/","path":"2026/06/03/microsoft-mai-thinking-1-zero-distillation/","title":"微软自研 MAI-Thinking-1：拒绝蒸馏，追平 Claude Opus 4.6"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>微软自研 MAI-Thinking-1：拒绝蒸馏，追平 Claude Opus 4.6 | leo工作室</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">leo工作室</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">hope</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A6%96%E4%B8%AA%E9%AB%98%E7%BA%A7%E6%8E%A8%E7%90%86%E6%A8%A1%E5%9E%8B%EF%BC%9AMAI-Thinking-1"><span class="nav-number">1.</span> <span class="nav-text">首个高级推理模型：MAI-Thinking-1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9C%9F%E6%AD%A3%E8%A2%AB%E5%BC%BA%E8%B0%83%E7%9A%84%E6%98%AF%E2%80%9C%E4%BB%8E%E9%9B%B6%E8%AE%AD%E7%BB%83%E2%80%9D"><span class="nav-number">2.</span> <span class="nav-text">真正被强调的是“从零训练”</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MAI-%E6%A8%A1%E5%9E%8B%E5%AE%B6%E6%97%8F%E8%A1%A5%E9%BD%90%E5%A4%9A%E6%A8%A1%E6%80%81%E7%89%88%E5%9B%BE"><span class="nav-number">3.</span> <span class="nav-text">MAI 模型家族补齐多模态版图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Scout%EF%BC%9A%E6%8A%8A%E6%A8%A1%E5%9E%8B%E5%A1%9E%E8%BF%9B-Microsoft-365-%E5%B7%A5%E4%BD%9C%E6%B5%81"><span class="nav-number">4.</span> <span class="nav-text">Scout：把模型塞进 Microsoft 365 工作流</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BE%AE%E8%BD%AF%E6%83%B3%E6%8B%BF%E5%9B%9E-AI-%E5%BA%95%E5%BA%A7%E4%B8%BB%E5%8A%A8%E6%9D%83"><span class="nav-number">5.</span> <span class="nav-text">微软想拿回 AI 底座主动权</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%93%E8%AF%AD"><span class="nav-number">6.</span> <span class="nav-text">结语</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">liuxiaoran</p>
+  <div class="site-description" itemprop="description">You adored the light,so you will never fear the darkness</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">66</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/liu-xiaoran" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;liu-xiaoran" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:liuxiaoranm@gmail.com" title="E-Mail → mailto:liuxiaoranm@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.leolabs.top/2026/06/03/microsoft-mai-thinking-1-zero-distillation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liuxiaoran">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="leo工作室">
+      <meta itemprop="description" content="You adored the light,so you will never fear the darkness">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="微软自研 MAI-Thinking-1：拒绝蒸馏，追平 Claude Opus 4.6 | leo工作室">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          微软自研 MAI-Thinking-1：拒绝蒸馏，追平 Claude Opus 4.6
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2026-06-03 16:45:00" itemprop="dateCreated datePublished" datetime="2026-06-03T16:45:00+08:00">2026-06-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/AI%E8%A7%82%E5%AF%9F/" itemprop="url" rel="index"><span itemprop="name">AI观察</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p><img src="/images/2026/06/microsoft-mai-thinking-1-zero-distillation/cover.png" alt="文章封面"></p>
+<p>“我们现在已经基本追平了几个月前的最先进水平。”</p>
+<p>Build 大会前夕，微软 AI 执行副总裁兼 CEO Mustafa Suleyman 用这句话，给微软最新一轮自研模型发布定了调。</p>
+<p>这次微软在 Build 上一次性推出多款 MAI 系列模型。对一家过去几年深度依赖 OpenAI 的公司来说，这不是普通的产品更新，而是一次很清晰的战略转身：微软正在从“AI 应用整合者”，进一步走向“全栈 AI 基础设施与模型提供者”。</p>
+<p>外界把这场大会称作微软的“AI 独立日”，并不夸张。</p>
+<h2 id="首个高级推理模型：MAI-Thinking-1"><a href="#首个高级推理模型：MAI-Thinking-1" class="headerlink" title="首个高级推理模型：MAI-Thinking-1"></a>首个高级推理模型：MAI-Thinking-1</h2><p>这次发布中最受关注的，是微软首个高级推理模型 <strong>MAI-Thinking-1</strong>。</p>
+<p>据微软介绍，MAI-Thinking-1 是一款“中等规模模型”，拥有 <strong>350 亿活跃参数</strong>、<strong>128K 上下文窗口</strong>，总参数规模约 <strong>1 万亿</strong>。它的设计重点不是单纯堆大，而是在推理能力、效率和低 token 成本之间取得平衡。</p>
+<p>微软开发者市场负责人、GitHub 首席运营官 Kyle Daigle 表示，MAI-Thinking-1 主要面向复杂多步骤指令、长上下文推理以及代码生成任务。</p>
+<p>过去一年，推理模型赛道基本由 OpenAI o 系列、Google Gemini 推理版本、Anthropic Claude 的扩展思考模式主导。开源阵营里，DeepSeek R1 也曾在 2025 年初明显撼动这一格局。</p>
+<p>现在，微软正式入场。</p>
+<p><img src="/images/2026/06/microsoft-mai-thinking-1-zero-distillation/benchmark.jpg" alt="MAI-Thinking-1 基准表现"></p>
+<p>从公开信息看，MAI-Thinking-1 在关键软件工程基准中已经可以对标领先模型；在 <strong>SWE Bench Pro</strong> 上，其表现与 <strong>Claude Opus 4.6</strong> 持平。</p>
+<p>数学推理方面，它在 <strong>AIME 2025</strong> 中达到 **97.0%**，在 <strong>AIME 2026</strong> 中达到 **94.5%**。微软还称，在盲测人工对比评估里，用户对 MAI-Thinking-1 的偏好甚至超过 Claude Sonnet 4.6。</p>
+<h2 id="真正被强调的是“从零训练”"><a href="#真正被强调的是“从零训练”" class="headerlink" title="真正被强调的是“从零训练”"></a>真正被强调的是“从零训练”</h2><p>相比跑分，微软这次更想强调的是另一件事：<strong>MAI-Thinking-1 不靠蒸馏。</strong></p>
+<p>微软明确表示，该模型训练数据中不包含任何其他已训练 AI 系统的概率分布或输出序列，也没有使用来自第三方模型的蒸馏数据。</p>
+<p>换句话说，它不是靠学习别家模型输出追上来的，而是从预训练阶段就排除 AI 生成内容，使用企业级、干净、具备合规商业授权的数据训练。</p>
+<p>微软的说法是，这会迫使模型真正学会任务本身，而不是模仿另一个模型的回答风格。</p>
+<p>这件事对普通开发者可能只是一个技术标签，但对企业客户，尤其是医疗、金融、国防以及高监管行业来说，意义会更大。</p>
+<p>这些场景采购 AI 时，不只会问模型能不能用，还会问训练数据从哪里来、知识产权是否干净、能不能通过合规审查。</p>
+<p>所以，“不使用第三方模型输出”“不碰蒸馏”，很可能会成为微软面向企业客户的一张关键牌。</p>
+<h2 id="MAI-模型家族补齐多模态版图"><a href="#MAI-模型家族补齐多模态版图" class="headerlink" title="MAI 模型家族补齐多模态版图"></a>MAI 模型家族补齐多模态版图</h2><p>除了 MAI-Thinking-1，微软还发布了另外六款 MAI 系列模型，覆盖图像生成、图像编辑、语音转写、语音合成和编程等方向。</p>
+<p><strong>MAI-Code-1-Flash</strong> 是一款高效率智能体编程模型，参数规模为 <strong>5B</strong>，目标是深度集成到 GitHub Copilot、Visual Studio Code 以及微软整体技术栈中。微软称其性能可对标 Haiku，但成本更低。</p>
+<p>图像方向，<strong>MAI-Image-2.5</strong> 及其 Flash 版本支持文生图和图像编辑，Arena 评分已超过 Nano Banana Pro。</p>
+<p>语音方向，<strong>MAI Transcribe-1.5</strong> 被称为当前最强语音转录模型之一，速度是同类模型的 <strong>5 倍</strong>，并内置支持 <strong>43 种语言</strong>的领域专有术语。</p>
+<p>语音生成方面，<strong>MAI-Voice-2</strong> 支持 <strong>15 种语言</strong>的自然语音生成，可通过短语音样本进行声音适配，并加入滥用防护。更高性价比的 MAI-Voice-2-Flash 也即将推出。</p>
+<p>这些模型未来都将接入 Azure AI Foundry，以及新的 MAI Playground。微软还表示，开发者将首次可以对部分模型权重进行自定义调优。</p>
+<p>这说明微软并不是只补一个推理模型，而是在搭建从基础模型、多模态能力到开发者平台的完整 MAI 生态。</p>
+<h2 id="Scout：把模型塞进-Microsoft-365-工作流"><a href="#Scout：把模型塞进-Microsoft-365-工作流" class="headerlink" title="Scout：把模型塞进 Microsoft 365 工作流"></a>Scout：把模型塞进 Microsoft 365 工作流</h2><p>模型之外，微软还推出了新的企业智能体 <strong>Scout</strong>。</p>
+<p>Scout 基于 OpenClaw 框架构建，可以在 Microsoft 365 应用之间全天候自主运行，独立完成任务。它能够连接 Teams、Outlook、OneDrive、SharePoint 等应用，并访问聊天、邮件、日历和联系人数据。</p>
+<p>用户可以通过 Teams 调用 Scout，它也可以与浏览器交互，并通过 MCP 连接外部应用。微软称，该工具可在云端、桌面端和网页端运行。</p>
+<p>微软企业副总裁 Omar Shahine 表示，这类智能体会在后台持续理解用户在各种应用和系统中的工作方式，并在不需要每次提示的情况下主动采取行动。</p>
+<p>例如，它可以帮助办公人员协调会议时间、根据后续安排预留日历空档，也可以提前发现决策停滞等风险，让用户在问题变成阻碍前处理。</p>
+<p>不过，OpenClaw 此前曾因安全漏洞受到审查。微软这次特别强调，Scout 具备企业级安全与控制能力，“从第一天起就可以在组织中被信任使用”。</p>
+<p>目前，Scout 以实验性版本向 Frontier 项目客户开放，需要通过 Intune 策略配置以及主动选择确认。定价暂未公布，也不清楚它未来会纳入 Microsoft 365 Copilot 订阅，还是单独收费。</p>
+<h2 id="微软想拿回-AI-底座主动权"><a href="#微软想拿回-AI-底座主动权" class="headerlink" title="微软想拿回 AI 底座主动权"></a>微软想拿回 AI 底座主动权</h2><p>过去几年，微软在 AI 领域的优势很大程度来自 OpenAI。Azure、Copilot、GitHub Copilot、Microsoft 365 Copilot，都受益于这段合作关系。</p>
+<p>但底层模型高度依赖外部伙伴，也意味着微软在成本、节奏、产品差异化和企业合规上会受到限制。</p>
+<p>MAI 系列的发布，正是在补这块短板。</p>
+<p>MAI-Thinking-1 代表微软开始拥有自己的高级推理模型；MAI-Image、MAI-Voice、MAI Transcribe 代表多模态能力成型；Scout 则说明微软希望把这些模型真正嵌入企业工作流。</p>
+<p>微软不想只做 AI 应用入口，也不想永远只是 OpenAI 时代的最大渠道商。它要把模型、平台、工具链和企业智能体重新握在自己手里。</p>
+<p>这也是“AI 独立日”这个说法真正成立的原因。</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>MAI-Thinking-1 追平 Claude Opus 4.6，是一个醒目的能力信号。</p>
+<p>但更值得关注的是，微软正在把模型能力从外部依赖变成内部资产。</p>
+<p>从零训练、不使用第三方模型蒸馏、强调企业级干净数据，这些听起来没有跑分那么刺激，却可能正是企业客户最在意的部分。</p>
+<p>当企业开始真正采购 AI，它们不会只问“哪个模型最强”，还会问：这个模型从哪里来？数据是否合规？知识产权是否干净？能不能被纳入企业治理体系？</p>
+<p>微软这次给出的答案很明确：它要成为一个真正拥有自研模型底座的 AI 平台公司。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="followme">
+  <span>联系我</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="https://t.me/leolabstop">
+            <span class="icon">
+              <i class="fab fa-telegram"></i>
+            </span>
+
+            <span class="label">Telegram</span>
+          </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/AI/" rel="tag"># AI</a>
+              <a href="/tags/%E5%A4%A7%E6%A8%A1%E5%9E%8B/" rel="tag"># 大模型</a>
+              <a href="/tags/%E5%BE%AE%E8%BD%AF/" rel="tag"># 微软</a>
+              <a href="/tags/%E4%BC%81%E4%B8%9A%E6%99%BA%E8%83%BD%E4%BD%93/" rel="tag"># 企业智能体</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2026/06/02/claude-code-2-1-160-security-ultracode/" rel="prev" title="Claude Code 2.1.160：安全加固、ultracode 与后台会话修复">
+                  <i class="fa fa-angle-left"></i> Claude Code 2.1.160：安全加固、ultracode 与后台会话修复
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">liuxiaoran</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

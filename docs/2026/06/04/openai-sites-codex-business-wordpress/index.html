@@ -20,13 +20,14 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"blog.leolabs.top","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
 
-    <meta name="description" content="摘要：OpenAI 新推出的 Sites，让 Codex 不再只是写代码的助手，而是开始变成一个企业内部建站与轻应用生成工具。你只要用自然语言描述需求，它就能生成可交互、可托管、可分享的网站。这不是又一个 AI demo，更像是 OpenAI 把 Codex 从开发者工具推向企业基础设施的一次跳步。 昨天刷 X 的时候，看到 OpenAI 发了一条推文：Building apps has neve">
+    <meta name="description" content="摘要：OpenAI 新推出的 Sites，让 Codex 不再只是写代码的助手，而是开始变成一个企业内部建站与轻应用生成工具。你只要用自然语言描述需求，它就能生成可交互、可托管、可分享的网站。这不是又一个 AI demo，更像是 OpenAI 把 Codex 从开发者工具推向企业基础设施的一次跳步。  昨天刷 X 的时候，看到 OpenAI 发了一条推文：Building apps has nev">
 <meta property="og:type" content="article">
 <meta property="og:title" content="OpenAI Sites：Codex 开始变成“打工人版 WordPress”">
 <meta property="og:url" content="https://blog.leolabs.top/2026/06/04/openai-sites-codex-business-wordpress/index.html">
 <meta property="og:site_name" content="leo工作室">
-<meta property="og:description" content="摘要：OpenAI 新推出的 Sites，让 Codex 不再只是写代码的助手，而是开始变成一个企业内部建站与轻应用生成工具。你只要用自然语言描述需求，它就能生成可交互、可托管、可分享的网站。这不是又一个 AI demo，更像是 OpenAI 把 Codex 从开发者工具推向企业基础设施的一次跳步。 昨天刷 X 的时候，看到 OpenAI 发了一条推文：Building apps has neve">
+<meta property="og:description" content="摘要：OpenAI 新推出的 Sites，让 Codex 不再只是写代码的助手，而是开始变成一个企业内部建站与轻应用生成工具。你只要用自然语言描述需求，它就能生成可交互、可托管、可分享的网站。这不是又一个 AI demo，更像是 OpenAI 把 Codex 从开发者工具推向企业基础设施的一次跳步。  昨天刷 X 的时候，看到 OpenAI 发了一条推文：Building apps has nev">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.leolabs.top/images/2026/06/openai-sites-codex-business-wordpress/cover.png">
 <meta property="og:image" content="https://blog.leolabs.top/images/2026/06/openai-sites-codex-business-wordpress/sites-example.png">
 <meta property="og:image" content="https://blog.leolabs.top/images/2026/06/openai-sites-codex-business-wordpress/sites-overview.png">
 <meta property="og:image" content="https://blog.leolabs.top/images/2026/06/openai-sites-codex-business-wordpress/business-plugins.png">
@@ -40,7 +41,7 @@
 <meta property="article:tag" content="AI Agent">
 <meta property="article:tag" content="无代码">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://blog.leolabs.top/images/2026/06/openai-sites-codex-business-wordpress/sites-example.png">
+<meta name="twitter:image" content="https://blog.leolabs.top/images/2026/06/openai-sites-codex-business-wordpress/cover.png">
 
 
 <link rel="canonical" href="https://blog.leolabs.top/2026/06/04/openai-sites-codex-business-wordpress/">
@@ -244,6 +245,7 @@
     
     
     <div class="post-body" itemprop="articleBody"><p>摘要：OpenAI 新推出的 Sites，让 Codex 不再只是写代码的助手，而是开始变成一个企业内部建站与轻应用生成工具。你只要用自然语言描述需求，它就能生成可交互、可托管、可分享的网站。这不是又一个 AI demo，更像是 OpenAI 把 Codex 从开发者工具推向企业基础设施的一次跳步。</p>
+<p><img src="/images/2026/06/openai-sites-codex-business-wordpress/cover.png" alt="文章首图"></p>
 <p>昨天刷 X 的时候，看到 OpenAI 发了一条推文：Building apps has never been easier。</p>
 <p>配套视频不到 1 分钟，演示的是 Codex 如何把一个想法直接变成一个可以分享的交互式网站。第一眼看，很容易觉得这不就是 Vercel v0 加 Replit 的合体吗？</p>
 <p>但把 “Intelligence at Work” 发布会和开发者文档看完以后，事情没那么简单。OpenAI 这步棋，表面是建站，底层瞄准的是企业 AI Agent 的工作流入口。</p>

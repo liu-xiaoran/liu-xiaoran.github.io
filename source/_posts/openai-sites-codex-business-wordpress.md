@@ -14,6 +14,8 @@ cover: /images/2026/06/openai-sites-codex-business-wordpress/cover.png
 
 摘要：OpenAI 新推出的 Sites，让 Codex 不再只是写代码的助手，而是开始变成一个企业内部建站与轻应用生成工具。你只要用自然语言描述需求，它就能生成可交互、可托管、可分享的网站。这不是又一个 AI demo，更像是 OpenAI 把 Codex 从开发者工具推向企业基础设施的一次跳步。
 
+![文章首图](/images/2026/06/openai-sites-codex-business-wordpress/cover.png)
+
 昨天刷 X 的时候，看到 OpenAI 发了一条推文：Building apps has never been easier。
 
 配套视频不到 1 分钟，演示的是 Codex 如何把一个想法直接变成一个可以分享的交互式网站。第一眼看，很容易觉得这不就是 Vercel v0 加 Replit 的合体吗？

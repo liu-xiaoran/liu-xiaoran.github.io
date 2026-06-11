@@ -8,10 +8,10 @@ tags:
   - 大模型
 categories:
   - AI观察
-cover: /images/2026/06/fable5-agent-loop-memory/cover.png
+cover: /images/2026/06/fable5-agent-loop-memory/cover-new-gpt-image-2.png
 ---
 
-![文章封面](/images/2026/06/fable5-agent-loop-memory/cover.png)
+![文章封面](/images/2026/06/fable5-agent-loop-memory/cover-new-gpt-image-2.png)
 
 最近读到一条关于 Claude Fable 5 的长帖，里面没有继续重复“模型又变聪明了多少”这种叙事，而是把问题往前推了一步：当模型能力继续上升之后，我们使用模型的方式，也必须跟着变。
 

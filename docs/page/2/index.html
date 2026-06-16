@@ -134,7 +134,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">33</span>
+          <span class="site-state-item-count">34</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -170,6 +170,206 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://blog.leolabs.top/2026/05/28/emergent-ability-llm-scale/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liuxiaoran">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="leo工作室">
+      <meta itemprop="description" content="You adored the light,so you will never fear the darkness">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | leo工作室">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2026/05/28/emergent-ability-llm-scale/" class="post-title-link" itemprop="url">大模型涌现能力详解：为什么模型越大越强？</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2026-05-28 18:00:00" itemprop="dateCreated datePublished" datetime="2026-05-28T18:00:00+08:00">2026-05-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/AI%E5%B7%A5%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">AI工程</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="大模型涌现能力详解：为什么模型越大越强？"><a href="#大模型涌现能力详解：为什么模型越大越强？" class="headerlink" title="大模型涌现能力详解：为什么模型越大越强？"></a>大模型涌现能力详解：为什么模型越大越强？</h1><p><img src="/images/2026/05/emergent-ability-cover.png" alt="文章封面"></p>
+<p>很多人第一次接触大模型时，都会产生一个共同疑问：为什么小模型看起来只能机械执行单一任务，而模型规模一旦上去，就突然能写作、推理、做题、拆解任务，甚至展现出类似“理解”的能力？</p>
+<p>这个现象背后，对应的是大模型最关键的底层特性之一：<strong>涌现能力（Emergent Ability）</strong>。</p>
+<p>它解释了为什么 Prompt 工程、格式控制、参数调优、幻觉规避这些上层技巧能够成立，也解释了为什么大模型与传统小模型之间并不是简单的“更快一点”或“更准一点”，而是能力层级上的变化。</p>
+<p>本文用尽量通俗但不失专业的方式，把“涌现能力”讲清楚。</p>
+<h2 id="什么是涌现能力"><a href="#什么是涌现能力" class="headerlink" title="什么是涌现能力"></a>什么是涌现能力</h2><p>所谓涌现能力，是指当模型参数规模、训练数据规模、上下文处理能力增长到某个临界点之后，模型会表现出一类此前小模型完全不具备的新能力。</p>
+<p>这类能力往往不是线性增长的，而是带有明显的“跃迁”特征：</p>
+<ul>
+<li>在小模型阶段，能力几乎看不出来；</li>
+<li>一旦跨过某个阈值，能力会突然变得可用；</li>
+<li>继续扩大规模后，这些能力又会不断增强。</li>
+</ul>
+<p>如果用更生活化的方式理解：</p>
+<ul>
+<li>小模型更像背题库的学生，见过的会做，没见过的容易失效；</li>
+<li>大模型跨过临界点后，更像具备通用理解能力的人，能够结合上下文推理、迁移和组织知识。</li>
+</ul>
+<p>这里的关键不是“记住更多内容”，而是<strong>内部表示能力发生了变化</strong>。</p>
+<hr>
+<h2 id="为什么小模型没有，大模型才会出现涌现"><a href="#为什么小模型没有，大模型才会出现涌现" class="headerlink" title="为什么小模型没有，大模型才会出现涌现"></a>为什么小模型没有，大模型才会出现涌现</h2><p>小参数量模型本质上更擅长做局部模式拟合。</p>
+<p>它们可以学到：</p>
+<ul>
+<li>哪些词经常一起出现；</li>
+<li>哪些表达经常跟着某些问题出现；</li>
+<li>某些固定任务的输入输出模板。</li>
+</ul>
+<p>但这类模型通常存在明显局限：</p>
+<ul>
+<li>只能抓住浅层统计规律；</li>
+<li>对复杂语义关系建模不足；</li>
+<li>很难在新任务上稳定泛化；</li>
+<li>面对复杂约束时容易失真。</li>
+</ul>
+<p>当模型持续扩大后，会发生至少三类重要变化。</p>
+<h3 id="1-知识压缩能力增强"><a href="#1-知识压缩能力增强" class="headerlink" title="1. 知识压缩能力增强"></a>1. 知识压缩能力增强</h3><p>海量文本中的事实、模式、结构和共性，被压缩进更高维、更丰富的参数空间中。模型不再只是记住片段，而是能在更大范围内形成稳定表示。</p>
+<h3 id="2-语义关联能力增强"><a href="#2-语义关联能力增强" class="headerlink" title="2. 语义关联能力增强"></a>2. 语义关联能力增强</h3><p>随着规模增长，模型更容易学到词语、句子、概念、因果关系之间的深层联系。它处理的就不再只是“字面相邻”，而是“语义相关”。</p>
+<h3 id="3-通用推理结构逐渐形成"><a href="#3-通用推理结构逐渐形成" class="headerlink" title="3. 通用推理结构逐渐形成"></a>3. 通用推理结构逐渐形成</h3><p>当训练数据足够丰富、模型容量足够大时，模型会在内部形成一些可以迁移到不同任务的通用模式，例如分步分析、约束理解、任务拆解和模式归纳。</p>
+<p>也正因为如此，大模型在很多场景中表现得不像“查表工具”，而更像“会思考的生成系统”。</p>
+<hr>
+<h2 id="大模型最典型的四类涌现能力"><a href="#大模型最典型的四类涌现能力" class="headerlink" title="大模型最典型的四类涌现能力"></a>大模型最典型的四类涌现能力</h2><p>很多上层 AI 应用能力，本质上都来自以下几类核心涌现现象。</p>
+<h2 id="1-上下文学习能力（In-Context-Learning）"><a href="#1-上下文学习能力（In-Context-Learning）" class="headerlink" title="1. 上下文学习能力（In-Context Learning）"></a>1. 上下文学习能力（In-Context Learning）</h2><p>这是 Prompt 工程得以成立的根本原因。</p>
+<p>大模型不一定需要重新训练，只凭当前对话中的任务说明、示例和约束，就能临时学会一种新的执行方式。</p>
+<p>也就是说：</p>
+<ul>
+<li>你给它一个规则；</li>
+<li>你给它几个示例；</li>
+<li>它就能按这个模式继续输出。</li>
+</ul>
+<p>这就是 Zero-Shot、Few-Shot 等提示范式之所以有效的底层支撑。</p>
+<p>小模型通常只能执行训练中见过的固定任务，而大模型能够在当前上下文里“即时适配”。</p>
+<h2 id="2-分步推理能力（Chain-of-Thought-支撑能力）"><a href="#2-分步推理能力（Chain-of-Thought-支撑能力）" class="headerlink" title="2. 分步推理能力（Chain of Thought 支撑能力）"></a>2. 分步推理能力（Chain of Thought 支撑能力）</h2><p>很多复杂任务不能一步直接得出结果，而需要先列条件、再分析、再推导、再得结论。</p>
+<p>大模型之所以能在数学、逻辑判断、代码排查、复杂分析里表现更好，核心就是它具备了较强的分步推理潜力。</p>
+<p>这也是为什么 CoT（Chain of Thought）提示能够显著提升效果：模型本身已经具备了相关潜能，提示词只是把这部分能力调动出来。</p>
+<h2 id="3-强指令跟随能力"><a href="#3-强指令跟随能力" class="headerlink" title="3. 强指令跟随能力"></a>3. 强指令跟随能力</h2><p>真正可用于工程落地的大模型，必须不仅“会回答”，还要“会按要求回答”。</p>
+<p>例如：</p>
+<ul>
+<li>指定输出格式；</li>
+<li>限定字段数量；</li>
+<li>限制语气风格；</li>
+<li>遵守边界与规则；</li>
+<li>按给定步骤执行。</li>
+</ul>
+<p>这类能力在小模型上通常不稳定，但大模型往往可以较好地理解复杂约束并执行。工业化 Prompt 设计的大量方法，本质上都依赖这一点。</p>
+<h2 id="4-跨任务泛化能力"><a href="#4-跨任务泛化能力" class="headerlink" title="4. 跨任务泛化能力"></a>4. 跨任务泛化能力</h2><p>传统模型往往是“一任务一模型”，而大模型能在同一套参数下完成写作、翻译、分类、分析、问答、编程等大量不同任务。</p>
+<p>这说明它掌握的不是某个任务的死规则，而是更抽象、更通用的表达与推理框架。</p>
+<p>换句话说，大模型不是只会做“某一类事”，而是具备了较强的任务迁移能力。</p>
+<hr>
+<h2 id="涌现能力带来的正反两面"><a href="#涌现能力带来的正反两面" class="headerlink" title="涌现能力带来的正反两面"></a>涌现能力带来的正反两面</h2><p>涌现能力并不只带来好处，它同时也解释了为什么大模型强大但不稳定。</p>
+<h2 id="正面：AI-工业化成为可能"><a href="#正面：AI-工业化成为可能" class="headerlink" title="正面：AI 工业化成为可能"></a>正面：AI 工业化成为可能</h2><p>涌现能力让大模型具备了通用性，因此很多业务不再需要为每一个场景重新训练模型，而是可以通过 Prompt、参数和规则直接适配。</p>
+<p>这带来了几个非常重要的工程价值：</p>
+<ul>
+<li>无需频繁微调，降低应用门槛；</li>
+<li>一个模型可以覆盖多类任务；</li>
+<li>支持复杂推理与结构化输出；</li>
+<li>更容易快速搭建原型并进入业务验证。</li>
+</ul>
+<h2 id="负面：幻觉和不确定性同时增强"><a href="#负面：幻觉和不确定性同时增强" class="headerlink" title="负面：幻觉和不确定性同时增强"></a>负面：幻觉和不确定性同时增强</h2><p>但正因为模型具备了更强的自发推理和补全能力，它也更容易：</p>
+<ul>
+<li>在信息不足时主动脑补；</li>
+<li>在开放问题上给出貌似合理但不真实的答案；</li>
+<li>因上下文变化而出现较大输出波动；</li>
+<li>在复杂任务中表现出不稳定性。</li>
+</ul>
+<p>所以，涌现能力并不等于绝对可靠。它提供的是“能力上限”，不是“正确性保证”。</p>
+<p>这也正好解释了为什么实际开发中必须引入：</p>
+<ul>
+<li>参数调优；</li>
+<li>输出格式约束；</li>
+<li>CoT 推理控制；</li>
+<li>幻觉规避策略；</li>
+<li>业务规则兜底。</li>
+</ul>
+<hr>
+<h2 id="涌现能力与-Prompt-工程到底是什么关系"><a href="#涌现能力与-Prompt-工程到底是什么关系" class="headerlink" title="涌现能力与 Prompt 工程到底是什么关系"></a>涌现能力与 Prompt 工程到底是什么关系</h2><p>如果把整个大模型应用体系串起来，可以得到一条非常清晰的逻辑链。</p>
+<h3 id="传统模型阶段"><a href="#传统模型阶段" class="headerlink" title="传统模型阶段"></a>传统模型阶段</h3><p>神经网络、CNN、聚类等传统模型，本质上更偏向于特定任务拟合。它们可以很强，但通常没有通用语言理解与通用任务迁移能力。</p>
+<h3 id="大模型阶段"><a href="#大模型阶段" class="headerlink" title="大模型阶段"></a>大模型阶段</h3><p>当模型规模突破临界值后，开始出现通用理解、上下文学习、推理和泛化能力，也就是所谓的涌现能力。</p>
+<h3 id="Prompt-工程阶段"><a href="#Prompt-工程阶段" class="headerlink" title="Prompt 工程阶段"></a>Prompt 工程阶段</h3><p>Prompt 工程并不是“凭空制造智能”，而是在已有涌现能力的基础上，通过输入设计去调用、约束、放大和驯服这些能力。</p>
+<p>所以可以用一句话概括：</p>
+<p><strong>涌现能力是大模型的天赋，Prompt 工程是驾驭这份天赋的技术。</strong></p>
+<p>也正因为有了涌现能力，我们才能通过提示词去完成角色设定、任务拆解、格式控制、风格约束和防幻觉设计。</p>
+<hr>
+<h2 id="一个更工程化的理解方式"><a href="#一个更工程化的理解方式" class="headerlink" title="一个更工程化的理解方式"></a>一个更工程化的理解方式</h2><p>从工程实践看，理解“涌现能力”最有价值的地方，不只是知道一个概念，而是知道如何据此设计系统。</p>
+<p>如果你知道模型已经具备：</p>
+<ul>
+<li>上下文学习能力；</li>
+<li>指令跟随能力；</li>
+<li>分步推理能力；</li>
+<li>跨任务泛化能力；</li>
+</ul>
+<p>那么你在设计 AI 系统时，就会自然考虑：</p>
+<ul>
+<li>用 Few-Shot 而不是一上来就微调；</li>
+<li>用结构化输出而不是自由文本；</li>
+<li>用明确规则而不是模糊要求；</li>
+<li>用推理链约束和后处理校验来降低幻觉风险。</li>
+</ul>
+<p>换句话说，理解涌现能力，能帮助你从“会用模型”走向“会设计基于模型的系统”。</p>
+<hr>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>涌现能力不是玄学，也不是营销概念。</p>
+<p>它指的是：当模型规模、数据规模和上下文能力增长到一定程度后，模型从单纯的数据拟合系统，逐步跨越到具备通用理解、推理、学习和泛化能力的阶段。</p>
+<p>它让大模型拥有了很多过去难以想象的能力，同时也带来了幻觉、波动和不确定性。</p>
+<p>因此，今天所有围绕大模型的工程方法——包括 Prompt 设计、参数调优、结构化输出和规则兜底——本质上都在做同一件事：</p>
+<p><strong>放大涌现能力的优势，抑制涌现能力的缺陷，让大模型真正变成可控、可用、可落地的工业化能力。</strong></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -2213,109 +2413,6 @@
 <li><strong>高效建议</strong>：多让 Agent 处理重复任务，鼓励它生成技能文件。</li>
 </ul>
 <p>目前 Hermes Agent 已更新到 v0.10.0 版本，后续还会持续迭代。如果你在安装或使用过程中遇到其他问题，欢迎在评论区留言探讨！</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://blog.leolabs.top/2026/04/19/2026-04-19-hermes-architecture/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="liuxiaoran">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="leo工作室">
-      <meta itemprop="description" content="You adored the light,so you will never fear the darkness">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | leo工作室">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2026/04/19/2026-04-19-hermes-architecture/" class="post-title-link" itemprop="url">Hermes Agent 架构解析：从一次性工具到自进化系统</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2026-04-19 21:30:00" itemprop="dateCreated datePublished" datetime="2026-04-19T21:30:00+08:00">2026-04-19</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="Hermes-Agent-架构解析：从一次性工具到自进化系统"><a href="#Hermes-Agent-架构解析：从一次性工具到自进化系统" class="headerlink" title="Hermes Agent 架构解析：从一次性工具到自进化系统"></a>Hermes Agent 架构解析：从一次性工具到自进化系统</h1><p>先给出结论：Hermes 强，不是因为模型强，而是因为它把“AI 从一次性工具，变成了可积累的系统”。</p>
-<p>以下从“架构层级”拆解其核心设计逻辑。</p>
-<h2 id="一、解决行业级痛点：AI“失忆”问题"><a href="#一、解决行业级痛点：AI“失忆”问题" class="headerlink" title="一、解决行业级痛点：AI“失忆”问题"></a>一、解决行业级痛点：AI“失忆”问题</h2><p>传统 AI 交互面临的最大问题是“无状态”：每次对话重新开始，上下文依赖拼接。Hermes 通过<strong>持久记忆（Structured Memory）</strong>，结构化地存储项目上下文与个人习惯。</p>
-<h2 id="二、核心差异化：自进化闭环"><a href="#二、核心差异化：自进化闭环" class="headerlink" title="二、核心差异化：自进化闭环"></a>二、核心差异化：自进化闭环</h2><p>Hermes 构建了闭环：<strong>任务 -&gt; 执行 -&gt; 评估 -&gt; 抽象 -&gt; 生成 Skill -&gt; 下次复用</strong>。系统将“过程”转化为“固有能力”，下次直接调用。</p>
-<h2 id="三、Agent-Operating-System-Agent-OS"><a href="#三、Agent-Operating-System-Agent-OS" class="headerlink" title="三、Agent Operating System (Agent OS)"></a>三、Agent Operating System (Agent OS)</h2><p>Hermes 是一个 Agent Runtime，架构分三层：</p>
-<ul>
-<li><strong>Agent 执行层</strong>：推理、工具调用。</li>
-<li><strong>平台层</strong>：CLI / Gateway、调度。</li>
-<li><strong>持久层</strong>（核心）：Memory、Skills、Profile。</li>
-</ul>
-<h2 id="四、模型无关-Model-Agnostic"><a href="#四、模型无关-Model-Agnostic" class="headerlink" title="四、模型无关 (Model Agnostic)"></a>四、模型无关 (Model Agnostic)</h2><p>支持 OpenAI, Claude, GLM, Ollama 等 200+ 模型，将“模型”变为可替换组件。</p>
-<h2 id="五、从“认知系统”升级为“行动系统”"><a href="#五、从“认知系统”升级为“行动系统”" class="headerlink" title="五、从“认知系统”升级为“行动系统”"></a>五、从“认知系统”升级为“行动系统”</h2><p>普通 AI：你问 -&gt; 它答。<br>Hermes：你说目标 -&gt; 它执行（写代码、调终端、操作文件）。</p>
-<h2 id="六、能力公式与复利效应"><a href="#六、能力公式与复利效应" class="headerlink" title="六、能力公式与复利效应"></a>六、能力公式与复利效应</h2><p><code>能力 = 模型 × (记忆 + 技能 + 工具 + 时间)</code></p>
-<p>随着使用时间增长，系统呈现复利效应。</p>
-<h2 id="七、针对技术团队的落地价值"><a href="#七、针对技术团队的落地价值" class="headerlink" title="七、针对技术团队的落地价值"></a>七、针对技术团队的落地价值</h2><ol>
-<li><strong>流程资产化</strong>：将流程变成可复用的 Skill。</li>
-<li><strong>系统拥有者</strong>：从工具使用者变为 Agent 拥有者。</li>
-<li><strong>落地架构</strong>：构建”AI 提案自动评审系统”。</li>
-</ol>
-<h2 id="八、局限性与冷思考"><a href="#八、局限性与冷思考" class="headerlink" title="八、局限性与冷思考"></a>八、局限性与冷思考</h2><ul>
-<li>初期较弱（缺乏积累）。</li>
-<li>依赖高质量流程引导。</li>
-<li>LLM 本质（幻觉风险）。</li>
-</ul>
-<hr>
-<p><strong>总结</strong>：Hermes Agent 的本质，是将 AI 从“函数调用”升级成“长期运行的状态系统”。</p>
 
       
     </div>

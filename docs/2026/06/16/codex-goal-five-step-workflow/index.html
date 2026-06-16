@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.leolabs.top","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="很多人用 AI 写代码，真正卡住的地方往往不是模型不够强，而是任务交代得太散。 一句“帮我做完这个功能”丢出去，后面就开始反复补充、纠偏、救火。短任务还行，任务一长，模型很容易只抓住最显眼的部分，后面的约束、边界和验收标准慢慢就散了。 这篇原文讲的 &#x2F;goal 方法，本质不是偷懒少写几个字，而是让 Codex 在开工前，先把“目标、范围、拆解、风险、验收”整理成一份可以执行的工作协议。 换句话说">
+<meta property="og:type" content="article">
+<meta property="og:title" content="让 Codex 先写 &#x2F;goal：复杂任务更稳的五步工作流">
+<meta property="og:url" content="https://blog.leolabs.top/2026/06/16/codex-goal-five-step-workflow/index.html">
+<meta property="og:site_name" content="leo工作室">
+<meta property="og:description" content="很多人用 AI 写代码，真正卡住的地方往往不是模型不够强，而是任务交代得太散。 一句“帮我做完这个功能”丢出去，后面就开始反复补充、纠偏、救火。短任务还行，任务一长，模型很容易只抓住最显眼的部分，后面的约束、边界和验收标准慢慢就散了。 这篇原文讲的 &#x2F;goal 方法，本质不是偷懒少写几个字，而是让 Codex 在开工前，先把“目标、范围、拆解、风险、验收”整理成一份可以执行的工作协议。 换句话说">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.leolabs.top/images/2026/06/codex-goal-five-step-workflow/cover-gpt-image-2-20260616.png">
+<meta property="og:image" content="https://blog.leolabs.top/images/2026/06/codex-goal-five-step-workflow/workflow.png">
+<meta property="og:image" content="https://blog.leolabs.top/images/2026/06/codex-goal-five-step-workflow/agents-goal.jpg">
+<meta property="og:image" content="https://blog.leolabs.top/images/2026/06/codex-goal-five-step-workflow/subagents.jpg">
+<meta property="article:published_time" content="2026-06-16T06:45:00.000Z">
+<meta property="article:modified_time" content="2026-06-16T06:45:00.000Z">
+<meta property="article:author" content="liuxiaoran">
+<meta property="article:tag" content="提示词">
+<meta property="article:tag" content="Codex">
+<meta property="article:tag" content="AI Agent">
+<meta property="article:tag" content="智能体">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.leolabs.top/images/2026/06/codex-goal-five-step-workflow/cover-gpt-image-2-20260616.png">
+
+
+<link rel="canonical" href="https://blog.leolabs.top/2026/06/16/codex-goal-five-step-workflow/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.leolabs.top/2026/06/16/codex-goal-five-step-workflow/","path":"2026/06/16/codex-goal-five-step-workflow/","title":"让 Codex 先写 /goal：复杂任务更稳的五步工作流"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>让 Codex 先写 /goal：复杂任务更稳的五步工作流 | leo工作室</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">leo工作室</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">hope</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#goal-%E7%9C%9F%E6%AD%A3%E8%A7%A3%E5%86%B3%E7%9A%84%E4%B8%8D%E6%98%AF-prompt%EF%BC%8C%E8%80%8C%E6%98%AF%E4%BB%BB%E5%8A%A1%E5%AE%9A%E4%B9%89"><span class="nav-number">1.</span> <span class="nav-text">&#x2F;goal 真正解决的不是 prompt，而是任务定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E6%AD%A5%E5%B7%A5%E4%BD%9C%E6%B5%81%EF%BC%9A%E5%85%88%E5%AE%9A%E4%B9%89%E7%9B%AE%E6%A0%87%EF%BC%8C%E5%86%8D%E8%AE%A9-agent-%E5%BC%80%E5%B7%A5"><span class="nav-number">2.</span> <span class="nav-text">五步工作流：先定义目标，再让 agent 开工</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%93%AA%E4%BA%9B%E4%BB%BB%E5%8A%A1%E9%80%82%E5%90%88%EF%BC%8C%E5%93%AA%E4%BA%9B%E4%BB%BB%E5%8A%A1%E5%88%AB%E6%8A%98%E8%85%BE"><span class="nav-number">3.</span> <span class="nav-text">哪些任务适合，哪些任务别折腾</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E6%AE%B5%E5%8F%AF%E4%BB%A5%E7%9B%B4%E6%8E%A5%E5%A4%8D%E5%88%B6%E7%9A%84%E6%A8%A1%E6%9D%BF"><span class="nav-number">4.</span> <span class="nav-text">一段可以直接复制的模板</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E5%90%8E%EF%BC%8C%E4%BA%BA%E7%9A%84%E8%A7%92%E8%89%B2%E4%B8%8D%E6%98%AF%E6%B6%88%E5%A4%B1%EF%BC%8C%E8%80%8C%E6%98%AF%E5%89%8D%E7%A7%BB"><span class="nav-number">5.</span> <span class="nav-text">最后，人的角色不是消失，而是前移</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">liuxiaoran</p>
+  <div class="site-description" itemprop="description">You adored the light,so you will never fear the darkness</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">34</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">72</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/liu-xiaoran" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;liu-xiaoran" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:liuxiaoranm@gmail.com" title="E-Mail → mailto:liuxiaoranm@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.leolabs.top/2026/06/16/codex-goal-five-step-workflow/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liuxiaoran">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="leo工作室">
+      <meta itemprop="description" content="You adored the light,so you will never fear the darkness">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="让 Codex 先写 &#x2F;goal：复杂任务更稳的五步工作流 | leo工作室">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          让 Codex 先写 /goal：复杂任务更稳的五步工作流
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2026-06-16 14:45:00" itemprop="dateCreated datePublished" datetime="2026-06-16T14:45:00+08:00">2026-06-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/AI%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">AI工具</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p><img src="/images/2026/06/codex-goal-five-step-workflow/cover-gpt-image-2-20260616.png" alt="文章封面"></p>
+<p>很多人用 AI 写代码，真正卡住的地方往往不是模型不够强，而是任务交代得太散。</p>
+<p>一句“帮我做完这个功能”丢出去，后面就开始反复补充、纠偏、救火。短任务还行，任务一长，模型很容易只抓住最显眼的部分，后面的约束、边界和验收标准慢慢就散了。</p>
+<p>这篇原文讲的 <code>/goal</code> 方法，本质不是偷懒少写几个字，而是让 Codex 在开工前，先把“目标、范围、拆解、风险、验收”整理成一份可以执行的工作协议。</p>
+<p>换句话说：不要急着让 Codex 干活，先让它写清楚自己准备怎么干活。</p>
+<h2 id="goal-真正解决的不是-prompt，而是任务定义"><a href="#goal-真正解决的不是-prompt，而是任务定义" class="headerlink" title="/goal 真正解决的不是 prompt，而是任务定义"></a>/goal 真正解决的不是 prompt，而是任务定义</h2><p>过去我们写 prompt，经常把需求描述、执行步骤、注意事项和验收标准揉在一段话里。简单问题没什么影响，但复杂任务里，这种写法很容易让模型跑偏。</p>
+<p>更稳的做法，是先让 Codex 给自己写一个新的 <code>/goal</code>。</p>
+<p>这个 goal 要把你的意图改写成明确目标，并列出范围、约束、子任务、风险和验收标准。人负责给方向，agent 先把方向翻译成任务。</p>
+<p><img src="/images/2026/06/codex-goal-five-step-workflow/workflow.png" alt="让 Codex 自己写 goal 的工作流"></p>
+<p>这和普通 prompt 的差别很大。</p>
+<p>普通 prompt 像是“我给你一串指令，你照着做”。而 <code>/goal</code> 更像一次小型项目会：你说想要什么，Codex 先把任务定义、拆解方式、子任务边界和验收标准讲清楚，然后再开始执行。</p>
+<p>所以，<code>/goal</code> 不是魔法咒语，它更像 agent 的工作协议。</p>
+<p>真正有价值的地方，也不是“让 AI 自己决定一切”，而是让 AI 先把人的模糊意图，整理成可执行、可检查、可更新的计划。</p>
+<h2 id="五步工作流：先定义目标，再让-agent-开工"><a href="#五步工作流：先定义目标，再让-agent-开工" class="headerlink" title="五步工作流：先定义目标，再让 agent 开工"></a>五步工作流：先定义目标，再让 agent 开工</h2><p>这套方法可以压缩成五步。</p>
+<p><strong>第一步，只写意图，不要急着写完整计划。</strong></p>
+<p>比如你想做一个 Three.js 第一视角过山车 demo，不需要一上来就把所有实现细节写死。先说清楚最终体验、约束和交付物就够了：循环轨道、下坠、倾斜转弯、倒挂、速度感、地形、天空盒、音效，以及最终交付一个单 HTML 文件。</p>
+<p>这一步的重点，是让你先描述“想要什么”，而不是替 agent 过早规定“每一步怎么做”。</p>
+<p><strong>第二步，要求 Codex 先给自己写 goal。</strong></p>
+<p>这是核心动作。不要直接说“开始做”，而是让它先把任务转换成可执行目标。</p>
+<p>可以直接这样写：</p>
+<blockquote>
+<p>For this task, write yourself a new goal first. Turn my request into a concrete objective with scope, constraints, subtasks, and acceptance criteria. Then execute against that goal.</p>
+</blockquote>
+<p>中文也可以更直白：</p>
+<blockquote>
+<p>先不要急着实现。请先为你自己写一个新的 /goal：把我的需求改写成清晰目标，列出范围、约束、子任务、风险和验收标准。确认这个 goal 后，再按它执行。</p>
+</blockquote>
+<p>这一步看起来慢，其实是在减少后面的返工。</p>
+<p><strong>第三步，如果任务够大，让它派生子 agent。</strong></p>
+<p>长任务往往不是一个线程能顺滑做完的。研究、实现、测试、审查，可以拆成相互独立的部分。</p>
+<p>关键不是简单说“并行处理”，而是要求每个子 agent 都带着自己的 dedicated <code>/goal</code> 出发，明确自己负责什么、交付什么、不要碰什么。</p>
+<p><img src="/images/2026/06/codex-goal-five-step-workflow/agents-goal.jpg" alt="要求每个 agent 都有独立 goal"></p>
+<p>可以补上这句：</p>
+<blockquote>
+<p>If this benefits from parallel work, spawn agents for independent pieces. Give each agent its own dedicated /goal, make their deliverables explicit, and synthesize the results when they return.</p>
+</blockquote>
+<p>这样拆出去的不是一堆松散任务，而是一组边界清楚的小工作单元。</p>
+<p><strong>第四步，主线程负责汇总，而不是让子 agent 抢方向。</strong></p>
+<p>并行 agent 最大的坑，是每个子任务看起来都做了，但最后拼不起来。</p>
+<p>所以主线程必须保留“总编”角色：收集子结果，判断冲突，合并方案，决定下一步。子 agent 负责研究、补丁、测试和发现，主线程负责最终取舍。</p>
+<p>这句话可以直接加进 prompt：</p>
+<blockquote>
+<p>Keep the main path responsible for coordination. Subagents should return findings or patches, but the main agent must synthesize and make final decisions.</p>
+</blockquote>
+<p><strong>第五步，把 goal 当成可更新对象。</strong></p>
+<p>长任务最怕目标漂移。好的做法不是禁止修改目标，而是要求任何修改都必须显式说明。</p>
+<blockquote>
+<p>If the goal needs to change, update it explicitly and explain what changed before continuing.</p>
+</blockquote>
+<p>这样一来，agent 如果发现原目标不完整，可以调整；但它不能悄悄换题。你能看到目标为什么变、变成了什么、后续会按什么标准验收。</p>
+<p><img src="/images/2026/06/codex-goal-five-step-workflow/subagents.jpg" alt="Codex 运行中派生出 subagents"></p>
+<h2 id="哪些任务适合，哪些任务别折腾"><a href="#哪些任务适合，哪些任务别折腾" class="headerlink" title="哪些任务适合，哪些任务别折腾"></a>哪些任务适合，哪些任务别折腾</h2><p>这套方法特别适合三类任务。</p>
+<p>第一类是长代码任务。只要任务会持续超过 20 分钟，或者你预感中途要补充需求，就值得先让 Codex 写 goal。</p>
+<p>第二类是多模块改造。比如前端、后端、测试、文档都要动，最好把研究、实现和验证拆开，让不同 agent 各自带目标工作。</p>
+<p>第三类是探索型项目。你并不完全确定技术路线时，先让 agent 把范围、风险和验收标准整理出来，会比直接开写更稳。</p>
+<p>不适合的场景也很明确：小修小补、单文件改一行、你已经有非常精确的实现方案。这种时候再写 <code>/goal</code>，反而会多一层仪式感。</p>
+<p>我的判断是：任务越长、越复杂，<code>/goal</code> 的收益越明显；任务越短、越确定，它就越容易变成流程负担。</p>
+<h2 id="一段可以直接复制的模板"><a href="#一段可以直接复制的模板" class="headerlink" title="一段可以直接复制的模板"></a>一段可以直接复制的模板</h2><p>以后做复杂代码任务，可以把第一段换成你的真实需求，后面这段基本保留：</p>
+<figure class="highlight text"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">I want to accomplish the following task:</span><br><span class="line">[在这里写你的真实需求]</span><br><span class="line"></span><br><span class="line">Before implementing, write yourself a new /goal. Turn my intent into a concrete objective with scope, constraints, subtasks, risks, and acceptance criteria.</span><br><span class="line"></span><br><span class="line">If the work can be parallelized, spawn agents for independent pieces. Give each agent its own dedicated /goal and explicit deliverable.</span><br><span class="line"></span><br><span class="line">Keep the main path responsible for coordination and final synthesis. If the goal needs to change, update it explicitly and explain why before continuing.</span><br></pre></td></tr></tbody></table></figure>
+
+<p>如果是代码任务，建议再补三条：</p>
+<figure class="highlight text"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Read the existing codebase first and follow local patterns.</span><br><span class="line">Do not make unrelated refactors.</span><br><span class="line">Verify the result with the most relevant tests or checks before finishing.</span><br></pre></td></tr></tbody></table></figure>
+
+<p>这三条很朴素，但很管用。它们把 agent 从“自由发挥”拉回到工程现场：先看项目现状，只做相关修改，最后用测试或检查验证结果。</p>
+<h2 id="最后，人的角色不是消失，而是前移"><a href="#最后，人的角色不是消失，而是前移" class="headerlink" title="最后，人的角色不是消失，而是前移"></a>最后，人的角色不是消失，而是前移</h2><p><code>/goal</code> 这类用法会让 agent 更像一个能维护上下文的合作者，但它不会自动替你完成产品判断。</p>
+<p>你仍然要负责意图：要做什么，为什么做，哪些东西不能碰，结果怎么算完成。</p>
+<p>Codex 负责把这些意图整理成工作目标，再把目标拆给合适的执行单元。人的角色不是从流程里消失，而是从“逐字写指令”变成“定义方向和验收”。</p>
+<p>可以把这套方法记成一句话：不要只让 Codex 干活，先让它写清楚自己要怎么干活。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="followme">
+  <span>联系我</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="https://t.me/leolabstop">
+            <span class="icon">
+              <i class="fab fa-telegram"></i>
+            </span>
+
+            <span class="label">Telegram</span>
+          </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E6%8F%90%E7%A4%BA%E8%AF%8D/" rel="tag"># 提示词</a>
+              <a href="/tags/Codex/" rel="tag"># Codex</a>
+              <a href="/tags/AI-Agent/" rel="tag"># AI Agent</a>
+              <a href="/tags/%E6%99%BA%E8%83%BD%E4%BD%93/" rel="tag"># 智能体</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2026/06/11/fable5-agent-loop-memory/" rel="prev" title="重新理解智能体系统：Claude Fable 5 提醒我们的两件事">
+                  <i class="fa fa-angle-left"></i> 重新理解智能体系统：Claude Fable 5 提醒我们的两件事
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">liuxiaoran</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

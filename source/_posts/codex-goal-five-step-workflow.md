@@ -29,7 +29,7 @@ cover: /images/2026/06/codex-goal-five-step-workflow/cover-gpt-image-2-20260616.
 
 这个 goal 要把你的意图改写成明确目标，并列出范围、约束、子任务、风险和验收标准。人负责给方向，agent 先把方向翻译成任务。
 
-![让 Codex 自己写 goal 的工作流](/images/2026/06/codex-goal-five-step-workflow/workflow.png)
+![让 Codex 自己写 goal 的工作流](/images/2026/06/codex-goal-five-step-workflow/workflow-redraw-20260616.png)
 
 这和普通 prompt 的差别很大。
 
@@ -69,7 +69,7 @@ cover: /images/2026/06/codex-goal-five-step-workflow/cover-gpt-image-2-20260616.
 
 关键不是简单说“并行处理”，而是要求每个子 agent 都带着自己的 dedicated `/goal` 出发，明确自己负责什么、交付什么、不要碰什么。
 
-![要求每个 agent 都有独立 goal](/images/2026/06/codex-goal-five-step-workflow/agents-goal.jpg)
+![要求每个 agent 都有独立 goal](/images/2026/06/codex-goal-five-step-workflow/agents-goal-redraw-20260616.png)
 
 可以补上这句：
 
@@ -95,7 +95,7 @@ cover: /images/2026/06/codex-goal-five-step-workflow/cover-gpt-image-2-20260616.
 
 这样一来，agent 如果发现原目标不完整，可以调整；但它不能悄悄换题。你能看到目标为什么变、变成了什么、后续会按什么标准验收。
 
-![Codex 运行中派生出 subagents](/images/2026/06/codex-goal-five-step-workflow/subagents.jpg)
+![Codex 运行中派生出 subagents](/images/2026/06/codex-goal-five-step-workflow/subagents-redraw-20260616.png)
 
 ## 哪些任务适合，哪些任务别折腾
 

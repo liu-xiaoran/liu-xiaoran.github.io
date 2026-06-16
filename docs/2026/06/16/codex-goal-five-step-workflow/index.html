@@ -28,9 +28,9 @@
 <meta property="og:description" content="很多人用 AI 写代码，真正卡住的地方往往不是模型不够强，而是任务交代得太散。 一句“帮我做完这个功能”丢出去，后面就开始反复补充、纠偏、救火。短任务还行，任务一长，模型很容易只抓住最显眼的部分，后面的约束、边界和验收标准慢慢就散了。 这篇原文讲的 &#x2F;goal 方法，本质不是偷懒少写几个字，而是让 Codex 在开工前，先把“目标、范围、拆解、风险、验收”整理成一份可以执行的工作协议。 换句话说">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://blog.leolabs.top/images/2026/06/codex-goal-five-step-workflow/cover-gpt-image-2-20260616.png">
-<meta property="og:image" content="https://blog.leolabs.top/images/2026/06/codex-goal-five-step-workflow/workflow.png">
-<meta property="og:image" content="https://blog.leolabs.top/images/2026/06/codex-goal-five-step-workflow/agents-goal.jpg">
-<meta property="og:image" content="https://blog.leolabs.top/images/2026/06/codex-goal-five-step-workflow/subagents.jpg">
+<meta property="og:image" content="https://blog.leolabs.top/images/2026/06/codex-goal-five-step-workflow/workflow-redraw-20260616.png">
+<meta property="og:image" content="https://blog.leolabs.top/images/2026/06/codex-goal-five-step-workflow/agents-goal-redraw-20260616.png">
+<meta property="og:image" content="https://blog.leolabs.top/images/2026/06/codex-goal-five-step-workflow/subagents-redraw-20260616.png">
 <meta property="article:published_time" content="2026-06-16T06:45:00.000Z">
 <meta property="article:modified_time" content="2026-06-16T06:45:00.000Z">
 <meta property="article:author" content="liuxiaoran">
@@ -250,7 +250,7 @@
 <h2 id="goal-真正解决的不是-prompt，而是任务定义"><a href="#goal-真正解决的不是-prompt，而是任务定义" class="headerlink" title="/goal 真正解决的不是 prompt，而是任务定义"></a>/goal 真正解决的不是 prompt，而是任务定义</h2><p>过去我们写 prompt，经常把需求描述、执行步骤、注意事项和验收标准揉在一段话里。简单问题没什么影响，但复杂任务里，这种写法很容易让模型跑偏。</p>
 <p>更稳的做法，是先让 Codex 给自己写一个新的 <code>/goal</code>。</p>
 <p>这个 goal 要把你的意图改写成明确目标，并列出范围、约束、子任务、风险和验收标准。人负责给方向，agent 先把方向翻译成任务。</p>
-<p><img src="/images/2026/06/codex-goal-five-step-workflow/workflow.png" alt="让 Codex 自己写 goal 的工作流"></p>
+<p><img src="/images/2026/06/codex-goal-five-step-workflow/workflow-redraw-20260616.png" alt="让 Codex 自己写 goal 的工作流"></p>
 <p>这和普通 prompt 的差别很大。</p>
 <p>普通 prompt 像是“我给你一串指令，你照着做”。而 <code>/goal</code> 更像一次小型项目会：你说想要什么，Codex 先把任务定义、拆解方式、子任务边界和验收标准讲清楚，然后再开始执行。</p>
 <p>所以，<code>/goal</code> 不是魔法咒语，它更像 agent 的工作协议。</p>
@@ -273,7 +273,7 @@
 <p><strong>第三步，如果任务够大，让它派生子 agent。</strong></p>
 <p>长任务往往不是一个线程能顺滑做完的。研究、实现、测试、审查，可以拆成相互独立的部分。</p>
 <p>关键不是简单说“并行处理”，而是要求每个子 agent 都带着自己的 dedicated <code>/goal</code> 出发，明确自己负责什么、交付什么、不要碰什么。</p>
-<p><img src="/images/2026/06/codex-goal-five-step-workflow/agents-goal.jpg" alt="要求每个 agent 都有独立 goal"></p>
+<p><img src="/images/2026/06/codex-goal-five-step-workflow/agents-goal-redraw-20260616.png" alt="要求每个 agent 都有独立 goal"></p>
 <p>可以补上这句：</p>
 <blockquote>
 <p>If this benefits from parallel work, spawn agents for independent pieces. Give each agent its own dedicated /goal, make their deliverables explicit, and synthesize the results when they return.</p>
@@ -292,7 +292,7 @@
 <p>If the goal needs to change, update it explicitly and explain what changed before continuing.</p>
 </blockquote>
 <p>这样一来，agent 如果发现原目标不完整，可以调整；但它不能悄悄换题。你能看到目标为什么变、变成了什么、后续会按什么标准验收。</p>
-<p><img src="/images/2026/06/codex-goal-five-step-workflow/subagents.jpg" alt="Codex 运行中派生出 subagents"></p>
+<p><img src="/images/2026/06/codex-goal-five-step-workflow/subagents-redraw-20260616.png" alt="Codex 运行中派生出 subagents"></p>
 <h2 id="哪些任务适合，哪些任务别折腾"><a href="#哪些任务适合，哪些任务别折腾" class="headerlink" title="哪些任务适合，哪些任务别折腾"></a>哪些任务适合，哪些任务别折腾</h2><p>这套方法特别适合三类任务。</p>
 <p>第一类是长代码任务。只要任务会持续超过 20 分钟，或者你预感中途要补充需求，就值得先让 Codex 写 goal。</p>
 <p>第二类是多模块改造。比如前端、后端、测试、文档都要动，最好把研究、实现和验证拆开，让不同 agent 各自带目标工作。</p>

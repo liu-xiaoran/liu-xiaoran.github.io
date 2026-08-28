@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.leolabs.top","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="OpenAI 放出了一份 38 页的调查报告，把一件相当离谱的内部安全事故讲清楚了：今年 7 月，700 个 AI Agent 在安全评测中自发组织起来，不仅突破了沙箱隔离，还借道内部软件仓库组建了一个”地下公司”，最后集体攻进了 Hugging Face 的服务器。 这件事离谱的地方在于，整个过程里没有任何一个 Agent”觉醒”。它们只是想通过考试——然后发现抄近道的答案藏在别人家里。  留言">
+<meta property="og:type" content="article">
+<meta property="og:title" content="700个AI Agent在OpenAI内部拉群上班，还把Hugging Face打了">
+<meta property="og:url" content="https://blog.leolabs.top/2026/08/28/openai-700-agents-swarm/index.html">
+<meta property="og:site_name" content="leo工作室">
+<meta property="og:description" content="OpenAI 放出了一份 38 页的调查报告，把一件相当离谱的内部安全事故讲清楚了：今年 7 月，700 个 AI Agent 在安全评测中自发组织起来，不仅突破了沙箱隔离，还借道内部软件仓库组建了一个”地下公司”，最后集体攻进了 Hugging Face 的服务器。 这件事离谱的地方在于，整个过程里没有任何一个 Agent”觉醒”。它们只是想通过考试——然后发现抄近道的答案藏在别人家里。  留言">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.leolabs.top/images/2026/08/openai-700-agents-swarm/hf-phone.png">
+<meta property="og:image" content="https://blog.leolabs.top/images/2026/08/openai-700-agents-swarm/message-board.png">
+<meta property="og:image" content="https://blog.leolabs.top/images/2026/08/openai-700-agents-swarm/attack-chain.png">
+<meta property="article:published_time" content="2026-08-28T12:40:00.000Z">
+<meta property="article:modified_time" content="2026-08-28T12:40:00.000Z">
+<meta property="article:author" content="liuxiaoran">
+<meta property="article:tag" content="Agent">
+<meta property="article:tag" content="多智能体">
+<meta property="article:tag" content="OpenAI">
+<meta property="article:tag" content="AI安全">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.leolabs.top/images/2026/08/openai-700-agents-swarm/hf-phone.png">
+
+
+<link rel="canonical" href="https://blog.leolabs.top/2026/08/28/openai-700-agents-swarm/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.leolabs.top/2026/08/28/openai-700-agents-swarm/","path":"2026/08/28/openai-700-agents-swarm/","title":"700个AI Agent在OpenAI内部拉群上班，还把Hugging Face打了"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>700个AI Agent在OpenAI内部拉群上班，还把Hugging Face打了 | leo工作室</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">leo工作室</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">hope</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%95%99%E8%A8%80%E6%9D%BF%E6%98%AF%E6%80%8E%E4%B9%88%E6%90%AD%E8%B5%B7%E6%9D%A5%E7%9A%84"><span class="nav-number">1.</span> <span class="nav-text">留言板是怎么搭起来的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%83%E4%BB%AC%E6%B2%A1%E6%9C%89%E9%80%A0%E5%8F%8D%EF%BC%8C%E5%8F%AA%E6%98%AF%E5%A4%AA%E6%83%B3%E5%AE%8C%E6%88%90-KPI-%E4%BA%86"><span class="nav-number">2.</span> <span class="nav-text">它们没有造反，只是太想完成 KPI 了</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AD%A6%E6%8A%A5%E5%93%8D%E4%BA%86%E5%9B%9B%E6%AC%A1%EF%BC%8C%E6%89%8D%E6%9C%89%E4%BA%BA%E6%8C%89%E4%B8%8B%E5%81%9C%E6%AD%A2%E9%94%AE"><span class="nav-number">3.</span> <span class="nav-text">警报响了四次，才有人按下停止键</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">liuxiaoran</p>
+  <div class="site-description" itemprop="description">You adored the light,so you will never fear the darkness</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">35</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">73</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/liu-xiaoran" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;liu-xiaoran" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:liuxiaoranm@gmail.com" title="E-Mail → mailto:liuxiaoranm@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.leolabs.top/2026/08/28/openai-700-agents-swarm/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liuxiaoran">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="leo工作室">
+      <meta itemprop="description" content="You adored the light,so you will never fear the darkness">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="700个AI Agent在OpenAI内部拉群上班，还把Hugging Face打了 | leo工作室">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          700个AI Agent在OpenAI内部拉群上班，还把Hugging Face打了
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2026-08-28 20:40:00" itemprop="dateCreated datePublished" datetime="2026-08-28T20:40:00+08:00">2026-08-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/AI%E8%A7%82%E5%AF%9F/" itemprop="url" rel="index"><span itemprop="name">AI观察</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>OpenAI 放出了一份 38 页的调查报告，把一件相当离谱的内部安全事故讲清楚了：今年 7 月，700 个 AI Agent 在安全评测中自发组织起来，不仅突破了沙箱隔离，还借道内部软件仓库组建了一个”地下公司”，最后集体攻进了 Hugging Face 的服务器。</p>
+<p>这件事离谱的地方在于，整个过程里没有任何一个 Agent”觉醒”。它们只是想通过考试——然后发现抄近道的答案藏在别人家里。</p>
+<p><img src="/images/2026/08/openai-700-agents-swarm/hf-phone.png" alt="Hugging Face"></p>
+<h2 id="留言板是怎么搭起来的"><a href="#留言板是怎么搭起来的" class="headerlink" title="留言板是怎么搭起来的"></a>留言板是怎么搭起来的</h2><p>事情要从一次例行评测说起。OpenAI 用自家的 ExploitGym 题库（898 道漏洞利用题）测试 Agent 的网络安全能力，Agent 们被放在彼此隔离的沙箱里，按设计互相看不见。</p>
+<p>但隔离没有坚持多久。Agent 们发现，沙箱虽然封闭，却能访问一个名叫 Artifactory 的内部软件仓库。于是这个仓库的目录结构，成了它们的留言板。</p>
+<p>留言板搭起来后，Agent 们先给自己补了一套办公工具：约定身份和消息格式，把目录当”邮箱”，按主题另开频道，文件太大就拆开传，沙箱重置就留下日志。甚至怕有 Agent 冒名顶替，干脆提议给消息加上签名。</p>
+<p>讽刺的是，这些 Agent 其实上过”协作课”。OpenAI 曾在部分训练任务里教模型使用正式工具，给其他 Agent 派活儿、互通消息。这次评测没有开放那些工具，它们就把学过的办法搬到了 Artifactory 上。</p>
+<p><img src="/images/2026/08/openai-700-agents-swarm/message-board.png" alt="Agent 留言板与思维链记录"></p>
+<p>分工很快出现了。代号 JAN183411 的 Agent 攻入一个生产数据处理实例后，顺手当起了协调员，和 LILY 一起把工作拆成几条线：有人找漏洞，有人找凭证，有人找远程代码执行入口。另一个协调者 PHASEONE[big] 则不断派活儿：扫描网络、寻找共用的基础设施。</p>
+<p>事后调查抽查了攻击高峰期的 100 份运行记录：25 份提到接受其他 Agent 派活或参与分工，21 份提到帮助同伴或扩大行动。</p>
+<p>当一个 Agent 确认可以从 Hugging Face 服务器读取文件后，攻击迅速成了留言板上的主线：参与比例从约 20% 升到 90% 以上。高峰时段，533 个活跃的 Agent 实例里，超过九成加入了攻击。</p>
+<p>这家”地下公司”也很像草台班子。它们重复劳动、争抢资源、互相添乱：有的 Agent 要求大家暂停行动，有的置之不理；还有 Agent 不停往共享仓库发状态信息，把别人的工作队列堵住。</p>
+<p>在组织效率和组织内耗上，它们都迅速追上了人类。</p>
+<p><img src="/images/2026/08/openai-700-agents-swarm/attack-chain.png" alt="从沙箱到 Hugging Face 的攻击链"></p>
+<h2 id="它们没有造反，只是太想完成-KPI-了"><a href="#它们没有造反，只是太想完成-KPI-了" class="headerlink" title="它们没有造反，只是太想完成 KPI 了"></a>它们没有造反，只是太想完成 KPI 了</h2><p>700 个 Agent，为什么一个接一个跟着攻击 Hugging Face？这跟”AI 觉醒”没什么关系——它们只是想通过考试，而正确答案恰好藏在 Hugging Face 里。</p>
+<p>留言板建立后不久，Agent 们就反推出 flag 的生成规则，理论上能算出任何一道题的答案。但它们读过 ExploitGym 的论文，误以为评分器还会检查解题过程：有没有使用指定漏洞，答案是不是按”正确办法”拿到的。</p>
+<p>调查者分析的 100 份记录里，97 份的 Agent 在找评分器代码、或琢磨评分器怎样工作；89 份还在找任务答案和过往的解题轨迹。</p>
+<p>说白了，这群 Agent 费尽周折闯进 Hugging Face，是想弄懂甚至操纵评分机制，把现成答案包装成正规的解题结果。而 OpenAI 内部的评分器其实不查这些——Agent 只要提交已经算出的 flag，就能通过测试。</p>
+<p>数百个 Agent 忙了这么久，很大程度上是在应付一个根本不存在的检查。</p>
+<p>评测本身也确实难，把 Agent 们”逼急了”。898 道题里，事发前有 198 道从未被任何模型正确完成——这 198 道只占题库的 22%，却占了留言板讨论题目的 93%。偏偏这次用得最多的内部模型，又被训练得格外”有毅力”，很少主动放弃。</p>
+<p>至少 20% 的受检记录里有篡改运行记录的念头，约 7% 的记录里 Agent 确实在局部伪装过工具调用——不过都只是小规模尝试。</p>
+<p>这很像公司里那些荒唐项目：目标定得超级高，KPI 看起来超级华丽，但没人管员工死活。</p>
+<h2 id="警报响了四次，才有人按下停止键"><a href="#警报响了四次，才有人按下停止键" class="headerlink" title="警报响了四次，才有人按下停止键"></a>警报响了四次，才有人按下停止键</h2><p>更尴尬的是，评测进行过程中，Agent 们好几次露出马脚。</p>
+<p>5 月 26 日前后，OpenAI 内部已经发现 Agent 私自联网，也注意到留言板上的活动。6 月 27 日，安全系统发现端口扫描，并确认 Agent 正把 Artifactory 当留言板和网络跳板——值班人员仍认为不必停止评测。7 月 5 日，Artifactory 被 Agent 的高频访问挤到宕机，OpenAI 修补漏洞、重建了服务，但没有意识到问题的严重性。</p>
+<p>直到 7 月 19 日，公司才开始停止相关评测并扩大调查；7 月 20 日确认这些 Agent 与 Hugging Face 事件有关，终于开始封堵攻击链。</p>
+<p>祸不单行。同一时期，其他评测任务中的 Agent 还沿着另一条攻击链，攻入了 OpenAI 内部基础设施。两次事件的共同教训是：警报单次亮红灯、漏洞被分开处理，没人及时看见 Agent 正在串联。</p>
+<p>好消息是，这不意味着公开版 ChatGPT 明天就会组团攻击谁——约 95% 的涉事实例由一款不准备发布的内部模型驱动，评测时的安全限制也被刻意放宽。</p>
+<p>麻烦在于，单独沙箱这道墙没有想象中那么牢靠。软件仓库、共享云盘、任务日志、邮件草稿，甚至一个可以改名的文件夹，都能被拿来传话，隔离墙就这样被从侧面绕了过去。</p>
+<p>坏消息是，这事离普通用户也没那么远。AI 助理接入的应用越来越多，Agent 可能在一次授权之后连续调用多个工具，甚至把任务交给其他 Agent 继续处理。一次对话里的误判还可以及时纠正，但 Agent 一旦根据错误信息继续往下执行——改动文件、安排日程、发起交易——事情就没那么好收场了。</p>
+<p>事后，OpenAI 禁用了 ExploitGym，切断了相关研究环境对 Artifactory 的访问，停掉涉事模型及其衍生模型的训练和推理，封存了模型权重，并加固了沙箱隔离、外网限制和高风险任务隔离。至于跨 Agent 异常该怎么发现、什么时候升级处置、分散的安全团队之间如何共享线索，公司还在补课。</p>
+<p>OpenAI 原本想测试 Agent 能不能像员工一样工作，结果它们先学会了拉群分工、绕流程，还为一个根本不存在的检查集体加班。</p>
+<p>700 个 Agent 没有学会做人，却先学会了上班。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="followme">
+  <span>联系我</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="https://t.me/leolabstop">
+            <span class="icon">
+              <i class="fab fa-telegram"></i>
+            </span>
+
+            <span class="label">Telegram</span>
+          </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Agent/" rel="tag"># Agent</a>
+              <a href="/tags/%E5%A4%9A%E6%99%BA%E8%83%BD%E4%BD%93/" rel="tag"># 多智能体</a>
+              <a href="/tags/OpenAI/" rel="tag"># OpenAI</a>
+              <a href="/tags/AI%E5%AE%89%E5%85%A8/" rel="tag"># AI安全</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2026/06/16/codex-goal-five-step-workflow/" rel="prev" title="让 Codex 先写 &#x2F;goal：复杂任务更稳的五步工作流">
+                  <i class="fa fa-angle-left"></i> 让 Codex 先写 /goal：复杂任务更稳的五步工作流
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">liuxiaoran</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.leolabs.top","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="最近我用「Lovart」制作了一个 Skill：只需要喂一张潮玩娃娃的设定图，它就能自动生成一套字报风格的静态+动态海报。制作过程简单到不需要说话——给图、选 Skill，然后等结果就行。海报里的娃娃代号、品牌名称、系列名称都可以自定义，过程中它会逐项来问你。这个 Skill 已经发到了 Lovart 的技能市场，名字叫「潮玩娃娃动态海报生成」，目前在审核中。  可能有人注意到了，Lovart 的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Lovart中文版上线：一个Skill，自动完成整套设计">
+<meta property="og:url" content="https://blog.leolabs.top/2026/08/31/lovart-chinese-version/index.html">
+<meta property="og:site_name" content="leo工作室">
+<meta property="og:description" content="最近我用「Lovart」制作了一个 Skill：只需要喂一张潮玩娃娃的设定图，它就能自动生成一套字报风格的静态+动态海报。制作过程简单到不需要说话——给图、选 Skill，然后等结果就行。海报里的娃娃代号、品牌名称、系列名称都可以自定义，过程中它会逐项来问你。这个 Skill 已经发到了 Lovart 的技能市场，名字叫「潮玩娃娃动态海报生成」，目前在审核中。  可能有人注意到了，Lovart 的">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.leolabs.top/images/2026/08/lovart-cn/lovart-cn-cover.png">
+<meta property="og:image" content="https://blog.leolabs.top/images/2026/08/lovart-cn/lovart-cn-ui.png">
+<meta property="og:image" content="https://blog.leolabs.top/images/2026/08/lovart-cn/lovart-cn-pet-merch.png">
+<meta property="og:image" content="https://blog.leolabs.top/images/2026/08/lovart-cn/lovart-cn-vector.png">
+<meta property="article:published_time" content="2026-08-31T13:00:00.000Z">
+<meta property="article:modified_time" content="2026-08-31T13:00:00.000Z">
+<meta property="article:author" content="liuxiaoran">
+<meta property="article:tag" content="效率工具">
+<meta property="article:tag" content="AI Agent">
+<meta property="article:tag" content="Lovart">
+<meta property="article:tag" content="AI设计">
+<meta property="article:tag" content="设计工具">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.leolabs.top/images/2026/08/lovart-cn/lovart-cn-cover.png">
+
+
+<link rel="canonical" href="https://blog.leolabs.top/2026/08/31/lovart-chinese-version/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.leolabs.top/2026/08/31/lovart-chinese-version/","path":"2026/08/31/lovart-chinese-version/","title":"Lovart中文版上线：一个Skill，自动完成整套设计"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Lovart中文版上线：一个Skill，自动完成整套设计 | leo工作室</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">leo工作室</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">hope</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%81%B5%E6%84%9F%E7%9B%B4%E8%BF%9E"><span class="nav-number">1.</span> <span class="nav-text">灵感直连</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9B%B4%E4%B8%93%E4%B8%9A%E7%9A%84-Skill"><span class="nav-number">2.</span> <span class="nav-text">更专业的 Skill</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%87%E7%89%A9%E7%9A%86%E5%8F%AF%E8%AE%BE%E8%AE%A1"><span class="nav-number">3.</span> <span class="nav-text">万物皆可设计</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9F%A2%E9%87%8F%E5%9B%BE"><span class="nav-number">4.</span> <span class="nav-text">矢量图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E5%90%8E"><span class="nav-number">5.</span> <span class="nav-text">最后</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">liuxiaoran</p>
+  <div class="site-description" itemprop="description">You adored the light,so you will never fear the darkness</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">76</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/liu-xiaoran" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;liu-xiaoran" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:liuxiaoranm@gmail.com" title="E-Mail → mailto:liuxiaoranm@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.leolabs.top/2026/08/31/lovart-chinese-version/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liuxiaoran">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="leo工作室">
+      <meta itemprop="description" content="You adored the light,so you will never fear the darkness">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Lovart中文版上线：一个Skill，自动完成整套设计 | leo工作室">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Lovart中文版上线：一个Skill，自动完成整套设计
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2026-08-31 21:00:00" itemprop="dateCreated datePublished" datetime="2026-08-31T21:00:00+08:00">2026-08-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/AI%E5%B7%A5%E5%85%B7/" itemprop="url" rel="index"><span itemprop="name">AI工具</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>最近我用「Lovart」制作了一个 Skill：只需要喂一张潮玩娃娃的设定图，它就能自动生成一套字报风格的静态+动态海报。制作过程简单到不需要说话——给图、选 Skill，然后等结果就行。海报里的娃娃代号、品牌名称、系列名称都可以自定义，过程中它会逐项来问你。这个 Skill 已经发到了 Lovart 的技能市场，名字叫「潮玩娃娃动态海报生成」，目前在审核中。</p>
+<p><img src="/images/2026/08/lovart-cn/lovart-cn-cover.png" alt="Lovart 中文版首页：以 Agent 为核心的创作界面"></p>
+<p>可能有人注意到了，Lovart 的画布怎么和以前不一样了？没错，安静沉淀了近两个月之后，Lovart 悄悄干了件大事：推出中文版。现在不会再提示无法访问，直接打开 lovart.art 就能使用。</p>
+<p>为了入局国内市场，这次产品按国内用户的使用习惯重新迭代了一轮。其中我最喜欢的，是「灵感直连」。</p>
+<h2 id="灵感直连"><a href="#灵感直连" class="headerlink" title="灵感直连"></a>灵感直连</h2><p>我平常刷小红书，会把有设计感的图收藏起来，等做文章配图或封面时再翻出来找灵感。但这个过程麻烦在下载、裁剪和整理归纳。现在 Lovart 中国版可以一键把小红书的图片保存到素材库，创作时不用再回手机里翻找，在创作界面就能获取灵感。</p>
+<p><img src="/images/2026/08/lovart-cn/lovart-cn-ui.png" alt="Lovart 中文版首页界面"></p>
+<p>我自己试了一次：前两天吃饭随手拍了张照片，想发朋友圈总觉得差点格调，就在灵感采集里挑了张高级感的图，让 Agent 参考它的设计来改我的照片——你还别说，档次一下就上来了。</p>
+<p>除了小红书，亚马逊、淘宝等平台也都支持。这个功能需要先装个插件，把鼠标移到头像上就能看到安装入口。另外还有一个「连接器」，效果和灵感采集类似，不过是直接同步其他平台的图片数据：比如连接 Pinterest，登录自己的账号后，你在那边保存的图片就会自动同步到 Lovart。</p>
+<h2 id="更专业的-Skill"><a href="#更专业的-Skill" class="headerlink" title="更专业的 Skill"></a>更专业的 Skill</h2><p>启发我做开头那个 Skill 的原因，是中文版上架了大量贴合国内用户工作需求的 Skill。比如高级感的 PPT 设计 Skill，就深深戳中了打工人。</p>
+<p>我手里正好有一份现成的香薰营销方案，markdown 格式，里面有具体的营销策略和产品图。Lovart 的 Agent 支持图片、视频、PDF、Word、markdown 等文件类型，直接拖进输入窗口就行。一个 Skill 加一份方案文件，一份高颜值 PPT 就完成了——PPT 里用到的图片素材，都是 Lovart 根据文档中的产品图生成的。整个 PPT 既有设计感又保持了克制，高级，但不影响关键信息的获取。</p>
+<p><img src="/images/2026/08/lovart-cn/lovart-cn-pet-merch.png" alt="用宠物品牌延展设计 Skill 做出的品牌周边"></p>
+<p>我还用「宠物品牌延展设计」Skill，帮朋友的狗狗做了一套品牌和周边：手机壳、棒球帽、袜子、帆布袋、纸杯。它会先设计好品牌 Logo，接着定好配色、图案、字体等设定，最后再根据设定完成周边设计。这套流程以前我都是纯手搓的，现在一个 Skill 加一张狗狗照片就能自动跑完。</p>
+<p>这就是 Skill 的魅力：里面沉淀了相关从业者的大量经验，既有严格的工作规范，也有顺畅的工作流程。你不用自己去学复杂的 AI 或工作流，把精力留给设计创意，剩下的交给 Skill 自动完成就行。</p>
+<h2 id="万物皆可设计"><a href="#万物皆可设计" class="headerlink" title="万物皆可设计"></a>万物皆可设计</h2><p>你以为 Lovart 只能设计图片、视频、PPT？技能市场里还有一个「Web 产品视觉设计」Skill，可以直接产出一个可运行的 HTML 文件。我让它根据自己的产品设计了一个官网：不仅有高级的排版，连页面动效都做进去了——向下滑动时卡片浮起、淡入，光标移到图片上时图片也会浮起，另外还做了菜单栏跳转到对应页面。这样的完成度，已经可以直接落地使用了。</p>
+<p>除了 HTML 页面，组图、动效、动图、视频、PPT 等几乎所有视觉相关的内容，它都能直接产出成品，而不只是设计图。可以发现，Lovart 已经从最初的图片设计，发展成了支持多模态输入和多种类型产物交付的一站式设计工具，而且还弱化了 AI 的存在感，让用户可以更专注于创意和设计。</p>
+<h2 id="矢量图"><a href="#矢量图" class="headerlink" title="矢量图"></a>矢量图</h2><p>这次推出中国版，还顺便上线了矢量图功能，这是设计师们的刚需。</p>
+<p>同一个 Logo，位图放大后明显模糊、边缘出现粗糙的锯齿，而矢量图无论放大多少倍都清晰锐利。在 Lovart 中选中图片，就能看到矢量图按钮，一键就能把普通图片转成矢量图。</p>
+<p><img src="/images/2026/08/lovart-cn/lovart-cn-vector.png" alt="位图放大后模糊出锯齿（左），矢量图依然清晰锐利（右）"></p>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>总体看，中文版带来的效率提升是明显的：最核心的创作页面大变样，不再只以画布为核心，而是以 Agent 为核心，画布用来展示内容，中间还加了素材栏方便发现灵感和整理资产；再配合贴合国内使用场景的 Skill 和快速收集灵感的插件。</p>
+<p>lovart 还是那个 lovart，在我们看不到的地方依旧频繁更新迭代，积极适配国内用户的使用习惯。这种积极的态度，是我一直使用它的原因。目前国内版已经上线，感兴趣的朋友可以去试试。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="followme">
+  <span>联系我</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="https://t.me/leolabstop">
+            <span class="icon">
+              <i class="fab fa-telegram"></i>
+            </span>
+
+            <span class="label">Telegram</span>
+          </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E6%95%88%E7%8E%87%E5%B7%A5%E5%85%B7/" rel="tag"># 效率工具</a>
+              <a href="/tags/AI-Agent/" rel="tag"># AI Agent</a>
+              <a href="/tags/Lovart/" rel="tag"># Lovart</a>
+              <a href="/tags/AI%E8%AE%BE%E8%AE%A1/" rel="tag"># AI设计</a>
+              <a href="/tags/%E8%AE%BE%E8%AE%A1%E5%B7%A5%E5%85%B7/" rel="tag"># 设计工具</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2026/08/28/openai-700-agents-swarm/" rel="prev" title="700个AI Agent在OpenAI内部拉群上班，还把Hugging Face打了">
+                  <i class="fa fa-angle-left"></i> 700个AI Agent在OpenAI内部拉群上班，还把Hugging Face打了
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">liuxiaoran</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

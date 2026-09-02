@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#222" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 5.4.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"blog.leolabs.top","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="模型是商品，Harness 才是护城河：让 Agent 敢对结论负责的工程纪律Agent 圈流传一句话：「模型是商品，harness 才是护城河」。所有「高风险 + 复杂分支 + 结论必须可解释」的决策场景，都会撞上同一堵墙——模型是概率性的，而结论必须是确定性的。 这篇文章不聊怎么把模型调得更聪明，而是回答一个更普遍的问题：在高风险决策场景里，如何把 Agent 概率性的输出，约束成可交付的确定">
+<meta property="og:type" content="article">
+<meta property="og:title" content="模型是商品，Harness 才是护城河：让 Agent 敢对结论负责的工程纪律">
+<meta property="og:url" content="https://blog.leolabs.top/2026/09/02/model-commodity-harness-moat/index.html">
+<meta property="og:site_name" content="leo工作室">
+<meta property="og:description" content="模型是商品，Harness 才是护城河：让 Agent 敢对结论负责的工程纪律Agent 圈流传一句话：「模型是商品，harness 才是护城河」。所有「高风险 + 复杂分支 + 结论必须可解释」的决策场景，都会撞上同一堵墙——模型是概率性的，而结论必须是确定性的。 这篇文章不聊怎么把模型调得更聪明，而是回答一个更普遍的问题：在高风险决策场景里，如何把 Agent 概率性的输出，约束成可交付的确定">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.leolabs.top/images/harness-expect-vs-real.png">
+<meta property="og:image" content="https://blog.leolabs.top/images/harness-four-designs.png">
+<meta property="article:published_time" content="2026-09-01T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-09-01T16:00:00.000Z">
+<meta property="article:author" content="liuxiaoran">
+<meta property="article:tag" content="Agent">
+<meta property="article:tag" content="AI工程">
+<meta property="article:tag" content="LLM">
+<meta property="article:tag" content="软件工程">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.leolabs.top/images/harness-expect-vs-real.png">
+
+
+<link rel="canonical" href="https://blog.leolabs.top/2026/09/02/model-commodity-harness-moat/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.leolabs.top/2026/09/02/model-commodity-harness-moat/","path":"2026/09/02/model-commodity-harness-moat/","title":"模型是商品，Harness 才是护城河：让 Agent 敢对结论负责的工程纪律"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>模型是商品，Harness 才是护城河：让 Agent 敢对结论负责的工程纪律 | leo工作室</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">leo工作室</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">hope</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E6%98%AF%E5%95%86%E5%93%81%EF%BC%8CHarness-%E6%89%8D%E6%98%AF%E6%8A%A4%E5%9F%8E%E6%B2%B3%EF%BC%9A%E8%AE%A9-Agent-%E6%95%A2%E5%AF%B9%E7%BB%93%E8%AE%BA%E8%B4%9F%E8%B4%A3%E7%9A%84%E5%B7%A5%E7%A8%8B%E7%BA%AA%E5%BE%8B"><span class="nav-number">1.</span> <span class="nav-text">模型是商品，Harness 才是护城河：让 Agent 敢对结论负责的工程纪律</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E3%80%8C%E6%8E%A5%E4%B8%AA-LLM-%E5%B0%B1%E5%A4%9F%E3%80%8D%E6%98%AF%E9%94%99%E8%A7%89"><span class="nav-number">1.1.</span> <span class="nav-text">一、「接个 LLM 就够」是错觉</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E6%A0%B9%E5%AD%90%E6%98%AF%E7%A1%AE%E5%AE%9A%E6%80%A7%E4%B8%8E%E6%A6%82%E7%8E%87%E6%80%A7%E7%9A%84%E7%9F%9B%E7%9B%BE"><span class="nav-number">1.2.</span> <span class="nav-text">二、根子是确定性与概率性的矛盾</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81Harness-%E7%9A%84%E5%9B%9B%E4%B8%AA%E5%85%B3%E9%94%AE%E8%AE%BE%E8%AE%A1"><span class="nav-number">1.3.</span> <span class="nav-text">三、Harness 的四个关键设计</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-%E9%98%B6%E6%AE%B5%E5%8C%96%E7%BC%96%E6%8E%92%EF%BC%9Agoto-%E6%A0%87%E7%AD%BE%E8%B7%AF%E7%94%B1"><span class="nav-number">1.3.1.</span> <span class="nav-text">3.1 阶段化编排：goto 标签路由</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-%E5%85%A8%E9%93%BE%E8%B7%AF%E7%95%99%E7%97%95%EF%BC%9AFlowTracer"><span class="nav-number">1.3.2.</span> <span class="nav-text">3.2 全链路留痕：FlowTracer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-%E6%8F%90%E5%89%8D%E7%BB%88%E6%AD%A2%EF%BC%9AIsFinal-%E7%9F%AD%E8%B7%AF"><span class="nav-number">1.3.3.</span> <span class="nav-text">3.3 提前终止：IsFinal 短路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-%E7%BB%9F%E4%B8%80%E7%BD%91%E5%85%B3%E4%B8%8E%E7%BC%93%E5%AD%98"><span class="nav-number">1.3.4.</span> <span class="nav-text">3.4 统一网关与缓存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-%E5%9B%9B%E4%BB%B6%E4%BA%8B%E7%9A%84%E5%86%85%E5%9C%A8%E4%B8%80%E8%87%B4%E6%80%A7"><span class="nav-number">1.3.5.</span> <span class="nav-text">3.5 四件事的内在一致性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E5%AE%9E%E6%88%98%E6%95%88%E6%9E%9C"><span class="nav-number">1.4.</span> <span class="nav-text">四、实战效果</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E5%8F%8D%E7%9B%B4%E8%A7%89%E7%9A%84%E5%8F%96%E8%88%8D"><span class="nav-number">1.5.</span> <span class="nav-text">五、反直觉的取舍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AD%E3%80%81%E9%80%82%E7%94%A8%E8%BE%B9%E7%95%8C"><span class="nav-number">1.6.</span> <span class="nav-text">六、适用边界</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%93%E8%AF%AD"><span class="nav-number">1.7.</span> <span class="nav-text">结语</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">liuxiaoran</p>
+  <div class="site-description" itemprop="description">You adored the light,so you will never fear the darkness</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">37</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">78</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/liu-xiaoran" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;liu-xiaoran" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:liuxiaoranm@gmail.com" title="E-Mail → mailto:liuxiaoranm@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://blog.leolabs.top/2026/09/02/model-commodity-harness-moat/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liuxiaoran">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="leo工作室">
+      <meta itemprop="description" content="You adored the light,so you will never fear the darkness">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="模型是商品，Harness 才是护城河：让 Agent 敢对结论负责的工程纪律 | leo工作室">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          模型是商品，Harness 才是护城河：让 Agent 敢对结论负责的工程纪律
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2026-09-02 00:00:00" itemprop="dateCreated datePublished" datetime="2026-09-02T00:00:00+08:00">2026-09-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/AI%E5%B7%A5%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">AI工程</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="模型是商品，Harness-才是护城河：让-Agent-敢对结论负责的工程纪律"><a href="#模型是商品，Harness-才是护城河：让-Agent-敢对结论负责的工程纪律" class="headerlink" title="模型是商品，Harness 才是护城河：让 Agent 敢对结论负责的工程纪律"></a>模型是商品，Harness 才是护城河：让 Agent 敢对结论负责的工程纪律</h1><p>Agent 圈流传一句话：<strong>「模型是商品，harness 才是护城河」</strong>。所有「高风险 + 复杂分支 + 结论必须可解释」的决策场景，都会撞上同一堵墙——模型是概率性的，而结论必须是确定性的。</p>
+<p>这篇文章不聊怎么把模型调得更聪明，而是回答一个更普遍的问题：在高风险决策场景里，如何把 Agent 概率性的输出，约束成可交付的确定性结论？</p>
+<p>我们给出的答案是<strong>确定性 Harness</strong>。它只做四件事：</p>
+<ol>
+<li><strong>阶段化编排</strong>——把策略文档拆成代码流水线；</li>
+<li><strong>全链路留痕</strong>——FlowTracer 记录每一步的输入、输出与分支；</li>
+<li><strong>提前终止</strong>——IsFinal 短路，能下结论就停；</li>
+<li><strong>统一网关与缓存</strong>——稳住外部依赖，幂等内部响应。</li>
+</ol>
+<p>在这套骨架里，LLM 不是主角，只是一个可以随时插拔的判断单元。</p>
+<p>我们用工单审核业务验证了这套框架：九个阶段、几十个条件分支、六步顺序校验，背后是策略文档、十几个原子接口和用户提交的多类材料——只要判错一单就是客诉，典型的「结论必须负责」场景。</p>
+<p><img src="/images/harness-expect-vs-real.png" alt="业务预期 vs 工程现实"></p>
+<h2 id="一、「接个-LLM-就够」是错觉"><a href="#一、「接个-LLM-就够」是错觉" class="headerlink" title="一、「接个 LLM 就够」是错觉"></a>一、「接个 LLM 就够」是错觉</h2><p>工单审核结果直接决定用户、商家的权益与合规认定。这个场景里，Agent 真正的门槛从来不是「模型能不能答对」，而是<strong>「它答完之后，谁来为这个答案负责」</strong>。模型能生成答案，却无法为答案背书；一个敢上线的 Agent，必须让每个结论都能被验证、被追溯、被追责。</p>
+<p>过去一个工单从进来到出结论，靠的是一条「人肉流水线」：审单员手动调接口、肉眼比对材料。而「接个 LLM 就能自动化」的想法，往往死在这些工程细节上——三个问题随之而来：</p>
+<ul>
+<li><strong>黑盒不可解释</strong>：审单员、用户、监管问「为什么驳回」，纯 LLM 答不上来；</li>
+<li><strong>循环失控</strong>：工具调用链长、字段错配，模型一「死循环」就卡住整条流水线；</li>
+<li><strong>证据链断裂</strong>：接口、模型、人工补充混在一起，事后复盘找不到「这一单凭什么这么判」。</li>
+</ul>
+<h2 id="二、根子是确定性与概率性的矛盾"><a href="#二、根子是确定性与概率性的矛盾" class="headerlink" title="二、根子是确定性与概率性的矛盾"></a>二、根子是确定性与概率性的矛盾</h2><p>这三个坎，换更聪明的模型、写更精致的 prompt 都绕不过去，因为它们指向同一个根源：<strong>LLM 本质上是概率性的，而审核要的是确定性</strong>。</p>
+<p>模型给的是「最可能的回答」，不是「必然正确的回答」。同一句话换个问法，答案可能不同；同一张工单重跑一遍，结论可能漂移。放在写文案、做摘要里，这叫「创造力」；放在审单里，就意味着同一条规则下，A 用户被判「驳回」、B 用户被判「通过」——这不可接受。</p>
+<p>Harness 做的所有事，本质上都是在为这道鸿沟搭桥：<strong>用编排固定路径，用留痕固定证据，用终止固定边界，用网关固定依赖</strong>。桥搭稳了，模型这个「概率性部件」才能被安全地装进「确定性机器」里。</p>
+<h2 id="三、Harness-的四个关键设计"><a href="#三、Harness-的四个关键设计" class="headerlink" title="三、Harness 的四个关键设计"></a>三、Harness 的四个关键设计</h2><p><img src="/images/harness-four-designs.png" alt="Harness 关键设计总览"></p>
+<p>这四件事不是并列的技巧，而是一条环环相扣的闭环：编排回答「该走哪条路」，留痕回答「走完怎么证明」，终止回答「走到哪一步就够了」，网关回答「外部依赖怎么稳住」。少了留痕，出错无从查起；少了终止，就是「明知结果还要跑完全程」；少了网关，再完善的编排也会被不稳定上游反复打断。缺一个，闭环就断了。</p>
+<h3 id="3-1-阶段化编排：goto-标签路由"><a href="#3-1-阶段化编排：goto-标签路由" class="headerlink" title="3.1 阶段化编排：goto 标签路由"></a>3.1 阶段化编排：goto 标签路由</h3><p><strong>挑战</strong>：策略文档几十个分支，深层 if/else 会晦涩冗长。</p>
+<p><strong>方案</strong>：拆成签名统一的阶段函数，每个函数只做一件事、只写自己负责的字段；主流程用 <code>goto</code> 标签把「条件命中 → 规则匹配 → 信息提取 → 状态判定 → 材料核验 → 打标结单」串成一条线性可读的主干。新增一个判断点，就是新增一个函数加一段编排，不动既有分支。</p>
+<figure class="highlight go"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(a *Agent)</span></span> Main(ctx context.Context) (*Result, <span class="type">error</span>) {</span><br><span class="line">    a.Tracer = NewFlowTracer()</span><br><span class="line"></span><br><span class="line">    st := a.Tracer.BeginStage(<span class="string">"阶段一：条件命中判断"</span>)</span><br><span class="line">    StageOne(ctx, &amp;a.Req, &amp;a.Rsp)</span><br><span class="line">    st.EndStage()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> a.Rsp.HitConditionA {</span><br><span class="line">        StageTwo(ctx, &amp;a.Req, &amp;a.Rsp)</span><br><span class="line">        <span class="keyword">if</span> !a.Rsp.RuleMatched {</span><br><span class="line">            <span class="keyword">goto</span> TAG <span class="comment">// 未命中 → 直接打标结单</span></span><br><span class="line">        }</span><br><span class="line">        <span class="comment">// 阶段三~六：信息提取 → 状态判定 → 分流...</span></span><br><span class="line">    } <span class="keyword">else</span> {</span><br><span class="line">        <span class="keyword">goto</span> VERIFY <span class="comment">// 走核验分支</span></span><br><span class="line">    }</span><br><span class="line"></span><br><span class="line">VERIFY:</span><br><span class="line">    StageVerify(ctx, &amp;a.Req, &amp;a.Rsp)</span><br><span class="line"></span><br><span class="line">TAG:</span><br><span class="line">    StageFinalTag(ctx, &amp;a.Req, &amp;a.Rsp)</span><br><span class="line">    a.Rsp.DebugTrace = a.Tracer.GetStages()</span><br><span class="line">    <span class="keyword">return</span> &amp;a.Rsp, <span class="literal">nil</span></span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p><code>goto</code> 在大众认知里是「坏味道」，但在分支密集的编排里，它反而是让主干保持线性的最直白手段。策略文档改动只需重写对应阶段函数，主流程骨架稳定不动。</p>
+<h3 id="3-2-全链路留痕：FlowTracer"><a href="#3-2-全链路留痕：FlowTracer" class="headerlink" title="3.2 全链路留痕：FlowTracer"></a>3.2 全链路留痕：FlowTracer</h3><p><strong>挑战</strong>：阶段一多，每一步「为什么这么判」就没人记得住了。</p>
+<p><strong>方案</strong>：追踪器是一个阶段记录数组——每个阶段 <code>BeginStage</code> 开档，<code>SetInput / SetBranch / SetOutput / SetError</code> 记数据，<code>EndStage</code> 收尾算耗时，整个数组随结果一起返回，逐阶段可回放。</p>
+<figure class="highlight go"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> debugEnabled = os.Getenv(<span class="string">"AGENT_DEBUG"</span>) != <span class="string">"0"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> StageTrace <span class="keyword">struct</span> {</span><br><span class="line">    StageName  <span class="type">string</span>                 <span class="string">`json:"stage_name"`</span></span><br><span class="line">    StartTime  time.Time              <span class="string">`json:"start_time"`</span></span><br><span class="line">    CostMs     <span class="type">int64</span>                  <span class="string">`json:"cost_ms"`</span></span><br><span class="line">    Inputs     <span class="keyword">map</span>[<span class="type">string</span>]<span class="keyword">interface</span>{} <span class="string">`json:"inputs"`</span></span><br><span class="line">    RawAPIData <span class="keyword">map</span>[<span class="type">string</span>]<span class="keyword">interface</span>{} <span class="string">`json:"raw_api_data"`</span> <span class="comment">// 接口原始返回</span></span><br><span class="line">    BranchHit  <span class="type">string</span>                 <span class="string">`json:"branch_hit"`</span>   <span class="comment">// 命中的分支</span></span><br><span class="line">    Outputs    <span class="keyword">map</span>[<span class="type">string</span>]<span class="keyword">interface</span>{} <span class="string">`json:"outputs"`</span></span><br><span class="line">    Error      <span class="type">string</span>                 <span class="string">`json:"error,omitempty"`</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">// debug 关闭时返回 nil，所有方法空转，零开销</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">NewFlowTracer</span><span class="params">()</span></span> *FlowTracer {</span><br><span class="line">    <span class="keyword">if</span> !debugEnabled {</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">return</span> &amp;FlowTracer{Stages: <span class="built_in">make</span>([]*StageTrace, <span class="number">0</span>)}</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(t *FlowTracer)</span></span> BeginStage(name <span class="type">string</span>) *StageTrace {</span><br><span class="line">    <span class="keyword">if</span> t == <span class="literal">nil</span> { <span class="keyword">return</span> <span class="literal">nil</span> }</span><br><span class="line">    st := &amp;StageTrace{StageName: name, StartTime: time.Now()}</span><br><span class="line">    t.Stages = <span class="built_in">append</span>(t.Stages, st)</span><br><span class="line">    <span class="keyword">return</span> st</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p><strong>关键设计是 nil 安全降级</strong>：debug 关闭时 tracer 为 nil，所有方法第一行都是 <code>if t == nil { return }</code>——线上零开销；需要排查时改一个环境变量即可全量开启。可解释是刚需，但「需要时能查」和「平时不拖累」必须同时成立，否则留痕自己就会变成新的性能包袱。</p>
+<h3 id="3-3-提前终止：IsFinal-短路"><a href="#3-3-提前终止：IsFinal-短路" class="headerlink" title="3.3 提前终止：IsFinal 短路"></a>3.3 提前终止：IsFinal 短路</h3><p><strong>挑战</strong>：六步顺序校验里，前面已经能下结论的工单，没必要把后面全跑一遍。</p>
+<p><strong>方案</strong>：整个校验流程是声明式 handler 列表，主循环按顺序执行——单个 handler 失败只记日志继续走（<code>continue</code>）；一旦某个 handler 判定「已有最终结论」，置 <code>IsFinal=true</code>，主循环立即 <code>break</code>。</p>
+<figure class="highlight go"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i, handler := <span class="keyword">range</span> a.buildWorkFlow() {</span><br><span class="line">    <span class="keyword">if</span> err := handler(ctx, &amp;a.Req, &amp;a.Rsp); err != <span class="literal">nil</span> {</span><br><span class="line">        log.Errorf(<span class="string">"handler[%d] failed (continue): %v"</span>, i, err)</span><br><span class="line">        <span class="keyword">continue</span> <span class="comment">// 单步异常不阻断</span></span><br><span class="line">    }</span><br><span class="line">    <span class="keyword">if</span> a.Rsp.IsFinal {</span><br><span class="line">        <span class="keyword">break</span> <span class="comment">// 能下结论就停</span></span><br><span class="line">    }</span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">// 声明式工作流：新增节点 = 数组加一项</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(a *Agent)</span></span> buildWorkFlow() []FlowHandler {</span><br><span class="line">    <span class="keyword">return</span> []FlowHandler{</span><br><span class="line">        CheckBasicInfo,      <span class="comment">// 基本信息校验</span></span><br><span class="line">        CheckConditionMatch, <span class="comment">// 条件匹配</span></span><br><span class="line">        CheckMaterialA, CheckMaterialB, CheckMaterialC,</span><br><span class="line">        CheckFinalVerify,    <span class="comment">// 最终校验</span></span><br><span class="line">    }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<p><code>continue</code> 保证单步异常不炸全链路，<code>IsFinal</code> 保证能下结论就停——不让「已知结果还跑完全程」。</p>
+<h3 id="3-4-统一网关与缓存"><a href="#3-4-统一网关与缓存" class="headerlink" title="3.4 统一网关与缓存"></a>3.4 统一网关与缓存</h3><p>十几个原子接口签名各搞各的、同一工单重复查询反复打接口，怎么办？所有原子接口收口到同一条 <code>CallLxAtomAPIs</code>（MD5 签名封装），结果按 TaskID 落 Redis 100 小时缓存。上游签名统一后业务层只关心路径和 body，重复请求直接命中缓存，天然幂等。</p>
+<h3 id="3-5-四件事的内在一致性"><a href="#3-5-四件事的内在一致性" class="headerlink" title="3.5 四件事的内在一致性"></a>3.5 四件事的内在一致性</h3><p>拆开看各解决一个问题，合起来遵循同一条原则：<strong>把「不可控」关进「可控」的笼子</strong>。编排关住分支，留痕关住黑盒，终止关住循环，网关关住依赖——四个「可控」指向同一个词：确定性。所以这套骨架能沉淀成可复用的模式，换个场景，解法不变。</p>
+<h2 id="四、实战效果"><a href="#四、实战效果" class="headerlink" title="四、实战效果"></a>四、实战效果</h2><ul>
+<li><strong>量化提效</strong>：工单平均处理耗时从 2–3 分钟压缩到 20–40 秒；</li>
+<li><strong>能力下沉</strong>：审核员从「手动调接口 + 肉眼比对」变成「看结论 + 调 DebugTrace 回放」；开发从「每个接口写样板代码」变成「只写阶段业务判断」；</li>
+<li><strong>模式升级</strong>：这套思路可以从审单搬到任何「强监管 + 复杂分支」的决策场景。</li>
+</ul>
+<p>两个典型案例：多分支审单主线里，几十个分支的策略文档被翻译成「阶段函数 + 标签路由」的确定性代码，面对用户质疑时调出 DebugTrace 就能逐条回放；提前结单场景里，基础信息校验一步判定「信息不存在」即置 <code>IsFinal=true</code> 立即短路，审核员 3 秒内拿到驳回结论，而不是等 5 个步骤跑完。</p>
+<h2 id="五、反直觉的取舍"><a href="#五、反直觉的取舍" class="headerlink" title="五、反直觉的取舍"></a>五、反直觉的取舍</h2><p>这套框架里有几个决策看起来「反常识」，恰恰最值得说：</p>
+<ul>
+<li><strong>单一阶段失败不阻断</strong>。工程直觉是「出错就该停」，但审单场景里一个接口超时不该让整单卡死——「带着伤口的结论」好过「没有结论」。</li>
+<li><strong>留痕默认关着</strong>。可解释是刚需，但让它默认零开销，留痕才不会变成新的性能包袱。</li>
+<li><strong>用 goto 而非「更优雅」的结构</strong>。在分支密集的编排里，goto 是让主干保持线性的最直白手段。</li>
+</ul>
+<p>这些取舍提醒我们：Agent 工程不是把软件工程的老规矩照搬过来，而是回到「这个场景到底要什么」重新做判断。</p>
+<h2 id="六、适用边界"><a href="#六、适用边界" class="headerlink" title="六、适用边界"></a>六、适用边界</h2><p>这套方案<strong>不适合</strong>：纯生成式任务（文案、翻译、摘要，prompt 工程就够）；必须 100% 黑盒的探索性任务（可解释诉求与之冲突）；单次调用、无循环无工具的轻量任务（没有发挥空间）。</p>
+<p>核心判断：<strong>「高风险 + 复杂分支 + 必须可解释」选 Harness 优先；「低风险 + 灵活开放 + 追求吞吐」直接用模型即可。</strong></p>
+<p>更进一步：Harness 解决的是「结论要负责」，不是「结论要更快」。如果场景根本不在乎结论可不可解释、可不可追溯，那 Harness 的每一层都是纯成本。该不该上 Harness，本质是问一句：<strong>这个 Agent 的结论，需不需要对某个人、某条规则、某次检查负责？</strong> 需要，就值得为确定性付出工程成本；不需要，就让它自由地快。</p>
+<p>LLM 的介入程度也可以分级：L1 模型直接出结论，L2 模型给建议、人工拍板，L3 模型只能给 SOP、禁止自动执行。</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>阶段化编排，把复杂分支翻译成可读流程；全链路留痕，让每次判断有迹可循；提前终止，在能下结论时立刻收口；统一网关与缓存，把外部依赖关进笼子。</p>
+<p>四件事没有一件是为了让模型更聪明。它们补的是模型天生缺的那块——约束与规范化的工程。让 Agent 敢对结论负责的，从来不是模型的智力，而是模型之外那层纪律。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="followme">
+  <span>联系我</span>
+
+  <div class="social-list">
+
+      <div class="social-item">
+          <a target="_blank" class="social-link" href="https://t.me/leolabstop">
+            <span class="icon">
+              <i class="fab fa-telegram"></i>
+            </span>
+
+            <span class="label">Telegram</span>
+          </a>
+      </div>
+  </div>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Agent/" rel="tag"># Agent</a>
+              <a href="/tags/AI%E5%B7%A5%E7%A8%8B/" rel="tag"># AI工程</a>
+              <a href="/tags/LLM/" rel="tag"># LLM</a>
+              <a href="/tags/%E8%BD%AF%E4%BB%B6%E5%B7%A5%E7%A8%8B/" rel="tag"># 软件工程</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2026/08/31/lovart-chinese-version/" rel="prev" title="Lovart中文版上线：一个Skill，自动完成整套设计">
+                  <i class="fa fa-angle-left"></i> Lovart中文版上线：一个Skill，自动完成整套设计
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">liuxiaoran</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

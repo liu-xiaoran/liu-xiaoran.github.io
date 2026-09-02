@@ -134,7 +134,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">36</span>
+          <span class="site-state-item-count">37</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -145,7 +145,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">76</span>
+        <span class="site-state-item-count">78</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -170,6 +170,128 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://blog.leolabs.top/2026/04/21/cnn-introduction/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liuxiaoran">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="leo工作室">
+      <meta itemprop="description" content="You adored the light,so you will never fear the darkness">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | leo工作室">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2026/04/21/cnn-introduction/" class="post-title-link" itemprop="url">极简入门！卷积神经网络（CNN），看完就懂</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2026-04-21 12:10:24" itemprop="dateCreated datePublished" datetime="2026-04-21T12:10:24+08:00">2026-04-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">算法笔记</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>提到深度学习，绕不开<strong>卷积神经网络（CNN）</strong>——它是专门为处理图像、视频等网格状数据而生的算法，也是如今人脸识别、图像识别、自动驾驶等技术的核心。</p>
+<p>不用复杂推导，新手也能快速 get 它的核心逻辑。</p>
+<hr>
+<h2 id="一、什么是-CNN？"><a href="#一、什么是-CNN？" class="headerlink" title="一、什么是 CNN？"></a>一、什么是 CNN？</h2><p>简单说，CNN 是一种模仿人类视觉系统的深度学习模型。</p>
+<p>我们看一张图片时，会先注意到整体轮廓，再聚焦细节（比如五官、纹理）。CNN 就像”智能眼睛”，通过分层处理，自动提取图像的特征，从简单的线条、颜色，到复杂的物体形状、场景，最终实现图像的识别和分类。</p>
+<p>和传统算法相比，CNN 最大的优势是**”自动提取特征”**——不用人工手动设计特征，它能自己从数据中学习，大大降低了人工成本，也提升了识别的准确率。</p>
+<hr>
+<h2 id="二、CNN-核心结构（极简版）"><a href="#二、CNN-核心结构（极简版）" class="headerlink" title="二、CNN 核心结构（极简版）"></a>二、CNN 核心结构（极简版）</h2><p>CNN 的结构不复杂，核心就 3 个关键层，层层递进处理图像：</p>
+<h3 id="1-卷积层（核心）"><a href="#1-卷积层（核心）" class="headerlink" title="1. 卷积层（核心）"></a>1. 卷积层（核心）</h3><p>相当于**”特征探测器”**，用一个”小窗口”（卷积核）在图像上滑动，捕捉图像的线条、边缘、颜色等简单特征，是 CNN 能识别图像的基础。</p>
+<h3 id="2-池化层"><a href="#2-池化层" class="headerlink" title="2. 池化层"></a>2. 池化层</h3><p>相当于**”精简器”**，在不丢失关键特征的前提下，缩小图像尺寸，减少计算量，让模型运行更快。</p>
+<h3 id="3-全连接层"><a href="#3-全连接层" class="headerlink" title="3. 全连接层"></a>3. 全连接层</h3><p>相当于**”决策者”**，把前面提取到的所有特征汇总，进行分类判断（比如判断图像是猫、狗，还是汽车）。</p>
+<hr>
+<h2 id="三、常见应用场景"><a href="#三、常见应用场景" class="headerlink" title="三、常见应用场景"></a>三、常见应用场景</h2><p>CNN 的应用早已渗透日常，我们每天都在接触：</p>
+<table>
+<thead>
+<tr>
+<th align="left">场景</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>人脸识别</strong></td>
+<td align="left">手机解锁、支付验证，都是 CNN 在快速识别你的面部特征。</td>
+</tr>
+<tr>
+<td align="left"><strong>图像分类</strong></td>
+<td align="left">相册自动归类（人物、风景、动物）、电商平台的商品识别。</td>
+</tr>
+<tr>
+<td align="left"><strong>医学影像</strong></td>
+<td align="left">识别病灶、辅助诊断。</td>
+</tr>
+<tr>
+<td align="left"><strong>自动驾驶</strong></td>
+<td align="left">识别路况、行人。</td>
+</tr>
+<tr>
+<td align="left"><strong>美颜相机</strong></td>
+<td align="left">识别面部轮廓，自动美颜。</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="四、新手小总结"><a href="#四、新手小总结" class="headerlink" title="四、新手小总结"></a>四、新手小总结</h2><p>CNN 的核心逻辑很简单：<strong>分层提取图像特征，从简单到复杂，最终实现识别和分类。</strong></p>
+<p>它不用复杂的数学基础，核心优势是擅长处理图像类数据，也是深度学习新手入门的首选算法之一。</p>
+<p>如果想进一步尝试，新手可以从简单的图像分类案例（比如识别猫狗）入手，直观感受 CNN 的强大！</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1377,80 +1499,8 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://blog.leolabs.top/2021/11/09/hello-world/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="liuxiaoran">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="leo工作室">
-      <meta itemprop="description" content="You adored the light,so you will never fear the darkness">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | leo工作室">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/11/09/hello-world/" class="post-title-link" itemprop="url">119行动</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-11-09 13:36:45" itemprop="dateCreated datePublished" datetime="2021-11-09T13:36:45+08:00">2021-11-09</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="内容"><a href="#内容" class="headerlink" title="内容"></a>内容</h2><p>我打算开始写博客，今天是2021年11月9号。我称之为119行动。</p>
-<p>119，一方面因为今天是11月9号开始时间，另一方面也表示这个事情对我像火灾一样比较紧迫。</p>
-<p>github是我主发的地方，抽空会将文章同步到个人公众号等等各个平台。</p>
-<p>119行动的内容包含写119篇博客</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
-    <a class="extend prev" rel="prev" title="上一页" aria-label="上一页" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span>
+    <a class="extend prev" rel="prev" title="上一页" aria-label="上一页" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/4/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 </div>

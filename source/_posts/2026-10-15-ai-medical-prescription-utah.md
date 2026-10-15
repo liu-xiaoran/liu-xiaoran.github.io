@@ -13,7 +13,7 @@ cover: /images/2026/10/ai-medical-xutah/cover.png
 
 在美国犹他州，一项为期一年的试点正在测试：AI 能否在没有医生事前逐单审核的情况下，为患者完成诊断并开具处方。它的范围目前很窄——只面向成年轻中度痤疮患者；但它提出的问题并不小：当算法开始参与诊疗决策，便利与安全该如何平衡？
 
-![Nolla Derm应用界面展示](/Users/liu-haixiao/blog-hexo/source/images/2026/10/ai-medical-xutah/img-1.jpg)
+![Nolla Derm应用界面展示](/images/2026/10/ai-medical-xutah/img-1.jpg)
 
 ## 从续方到初诊，AI的权限向前一步
 
@@ -21,7 +21,7 @@ cover: /images/2026/10/ai-medical-xutah/cover.png
 
 用户每月支付 4.99 美元，完成身份验证并填写健康信息，再按要求从多个角度拍摄面部。系统据此评估皮肤状况并生成最高 5 分的严重程度评分。评分超过 3.5 分，或用户处于妊娠、哺乳期，或有严重肝肾疾病等情况时，自动开方流程会停止，转交医生评估。
 
-![Nolla Derm治疗产品与应用界面](/Users/liu-haixiao/blog-hexo/source/images/2026/10/ai-medical-xutah/img-2.jpg)
+![Nolla Derm治疗产品与应用界面](/images/2026/10/ai-medical-xutah/img-2.jpg)
 
 进入处方环节后，AI 只能从预设的 8 种外用药物中选择，包括维 A 酸、阿达帕林、过氧化苯甲酰、壬二酸及部分复方制剂。口服药、异维 A 酸和重度痤疮均不在范围内。患者可选择配送药物，或凭处方到药房购买；后续还可在线复诊。
 
@@ -33,7 +33,7 @@ cover: /images/2026/10/ai-medical-xutah/cover.png
 
 任何严重不良事件都将触发项目暂停。每次进入下一阶段前，还需获得州政府批准，并满足包括诊疗意见一致率至少 95%、抽检未发现严重遗漏等条件。
 
-![AI医疗平台关于训练数据与系统能力的说明](/Users/liu-haixiao/blog-hexo/source/images/2026/10/ai-medical-xutah/img-4.jpg)
+![AI医疗平台关于训练数据与系统能力的说明](/images/2026/10/ai-medical-xutah/img-4.jpg)
 
 这些安排体现了试点的核心思路：先以人工审核积累证据，再逐步扩大自动化。但“医生每周复核”或“按比例抽检”与逐单事前把关并不相同，风险能否被及时发现，仍取决于监测质量、患者反馈渠道以及暂停机制是否真正有效。
 
@@ -51,7 +51,7 @@ Nolla Health 将痤疮作为切入口，理由之一是皮肤状况可以通过�
 
 在中国，互联网诊疗监管规则明确要求处方由接诊医师本人开具，并禁止使用人工智能等自动生成处方。不同制度的差异，反映出监管者对患者安全、医疗责任和创新速度的不同权衡。
 
-![互联网诊疗处方监管规定截图](/Users/liu-haixiao/blog-hexo/source/images/2026/10/ai-medical-xutah/img-6.jpg)
+![互联网诊疗处方监管规定截图](/images/2026/10/ai-medical-xutah/img-6.jpg)
 
 因此，犹他州试点的意义不只是“AI能不能开药”。它更像一次边界测试：在适用人群有限、治疗方案受约束、持续监督并可随时暂停的条件下，自动化决策能否达到可接受的安全水平？答案需要由透明的试验数据和独立评估给出，而不能只看便利、成本或企业宣传。
 

@@ -134,18 +134,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">38</span>
+          <span class="site-state-item-count">40</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-count">12</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">81</span>
+        <span class="site-state-item-count">84</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -170,6 +170,288 @@
     </div>
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://blog.leolabs.top/2026/06/01/llm-context-window-long-context-vs-rag/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liuxiaoran">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="leo工作室">
+      <meta itemprop="description" content="You adored the light,so you will never fear the darkness">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | leo工作室">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2026/06/01/llm-context-window-long-context-vs-rag/" class="post-title-link" itemprop="url">大模型上下文窗口详解：超长上下文原理与工程取舍，小白也能看懂</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2026-06-01 00:00:00" itemprop="dateCreated datePublished" datetime="2026-06-01T00:00:00+08:00">2026-06-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/AI%E5%B7%A5%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">AI工程</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="大模型上下文窗口详解：超长上下文原理与工程取舍，小白也能看懂"><a href="#大模型上下文窗口详解：超长上下文原理与工程取舍，小白也能看懂" class="headerlink" title="大模型上下文窗口详解：超长上下文原理与工程取舍，小白也能看懂"></a>大模型上下文窗口详解：超长上下文原理与工程取舍，小白也能看懂</h1><p><img src="/images/2026/06/llm-context-window-long-context-vs-rag-cover.jpg" alt="文章封面"></p>
+<p>在做大模型落地开发时，很多人都会遇到这些问题：多轮对话越聊越乱、长文档喂进去之后模型抓不住重点、超长代码分析越到后面越不准、上下文一多模型像突然“降智”一样开始答非所问。</p>
+<p>大多数人会简单地把问题归结为“模型不够强”。但从工程角度看，这些现象背后真正的核心变量，往往不是模型名字，而是<strong>上下文窗口（Context Window）</strong>。</p>
+<p>上下文窗口决定了模型当前这一轮到底能看到多少信息、记住多少信息、基于多少信息做推理。它既是大模型非常底层的一项能力，也是影响 Prompt 设计、长文档处理、RAG 架构和模型选型的关键参数。</p>
+<p>这篇文章会把上下文窗口的底层逻辑、优势、短板以及工程上的取舍讲清楚，帮助你真正理解：为什么有时应该上长上下文模型，为什么更多时候反而应该优先考虑 RAG。</p>
+<h2 id="一、什么是上下文窗口？"><a href="#一、什么是上下文窗口？" class="headerlink" title="一、什么是上下文窗口？"></a>一、什么是上下文窗口？</h2><p>一句话解释：<strong>上下文窗口，就是大模型当前这次回答中，最多能“看见、记住、理解”的文本范围。</strong></p>
+<p>如果把大模型类比成人，那么上下文窗口有点像人的“瞬时工作记忆”。</p>
+<p>人不可能在同一时刻把几万字内容都牢牢抓在脑子里，只能优先关注当前最相关、最重要的一部分信息。大模型也是一样，它每次生成回答时，并不是无限读取所有历史内容，而是只能处理窗口范围内的 token。超出窗口的内容，模型就看不到了。</p>
+<p>因此，无论是：</p>
+<ul>
+<li>系统提示词；</li>
+<li>多轮对话历史；</li>
+<li>用户当前问题；</li>
+<li>上传的文档、代码、资料；</li>
+<li>输出格式要求与约束条件；</li>
+</ul>
+<p>本质上都要一起“挤”进这个窗口里。</p>
+<p>窗口越大，模型一次能处理的内容就越多；窗口越小，能容纳的信息就越有限。</p>
+<h3 id="Token-是怎么回事？"><a href="#Token-是怎么回事？" class="headerlink" title="Token 是怎么回事？"></a>Token 是怎么回事？</h3><p>上下文窗口通常不是按“字数”算，而是按 <strong>Token</strong> 计算。</p>
+<p>Token 可以理解成模型内部处理文本的最小单位。中文、英文、标点、数字在分词后都会转成 token。粗略理解时，很多文章会把 1 token 近似看作 0.75 个中文字符左右，但这只是一个非常粗的经验值，实际会随内容结构变化。</p>
+<p>工程上更重要的是知道：<strong>窗口容量拼的是 token，不是拼字数。</strong></p>
+<hr>
+<h2 id="二、上下文窗口里到底包含什么？"><a href="#二、上下文窗口里到底包含什么？" class="headerlink" title="二、上下文窗口里到底包含什么？"></a>二、上下文窗口里到底包含什么？</h2><p>很多刚接触大模型的人，会误以为上下文窗口只计算“用户这一句提问”。</p>
+<p>其实远不止如此。</p>
+<p>在实际系统里，一个请求通常至少包含三部分内容：</p>
+<h3 id="1-系统提示词"><a href="#1-系统提示词" class="headerlink" title="1. 系统提示词"></a>1. 系统提示词</h3><p>这是模型最开始拿到的全局规则，包括：</p>
+<ul>
+<li>角色设定；</li>
+<li>输出格式；</li>
+<li>风格要求；</li>
+<li>禁止事项；</li>
+<li>防幻觉约束；</li>
+<li>工具调用规范。</li>
+</ul>
+<p>这部分虽然用户看不到，但会真实占用上下文窗口。</p>
+<h3 id="2-历史对话"><a href="#2-历史对话" class="headerlink" title="2. 历史对话"></a>2. 历史对话</h3><p>只要是多轮对话，前面几轮的问答记录也会一起带进当前请求中。这部分就是模型看起来“有记忆”的根源。</p>
+<p>如果历史内容很多，它会持续吞掉窗口预算。</p>
+<h3 id="3-当前输入内容"><a href="#3-当前输入内容" class="headerlink" title="3. 当前输入内容"></a>3. 当前输入内容</h3><p>包括用户本轮新提问，以及附带上传的文档、参考材料、代码片段等。</p>
+<p>这才是大多数人最容易想到的部分，但它往往只是总窗口的一部分，而不是全部。</p>
+<p>因此，真正的 token 消耗不是“当前问了多少”，而是：</p>
+<p><strong>系统提示词 + 历史对话 + 当前输入 + 预留输出空间</strong></p>
+<p>一起构成完整预算。</p>
+<p>一旦总量超出窗口上限，系统通常就会开始截断。最常见的是裁掉最前面的历史内容，结果就是：</p>
+<ul>
+<li>模型忘记最初约束；</li>
+<li>前面需求丢失；</li>
+<li>人设失效；</li>
+<li>输出风格突然变化；</li>
+<li>对话越聊越跑偏。</li>
+</ul>
+<hr>
+<h2 id="三、超长上下文窗口到底强在哪里？"><a href="#三、超长上下文窗口到底强在哪里？" class="headerlink" title="三、超长上下文窗口到底强在哪里？"></a>三、超长上下文窗口到底强在哪里？</h2><p>近年来，越来越多模型开始宣传 128K、200K，甚至 1M 级别的上下文窗口。它们之所以被视为更高级的模型，不是因为“数字更大看起来更厉害”，而是它们确实在一些场景中具备非常明显的价值。</p>
+<h3 id="1-可以整文件全量处理"><a href="#1-可以整文件全量处理" class="headerlink" title="1. 可以整文件全量处理"></a>1. 可以整文件全量处理</h3><p>如果窗口足够大，模型就能直接读取：</p>
+<ul>
+<li>完整论文；</li>
+<li>合同全文；</li>
+<li>上万行代码；</li>
+<li>超长会议纪要；</li>
+<li>整份调研报告。</li>
+</ul>
+<p>这样做的好处是，不需要先把内容切片，也不一定需要额外做检索召回，模型可以直接在全局范围内理解内容之间的联系。</p>
+<h3 id="2-多轮对话不容易失忆"><a href="#2-多轮对话不容易失忆" class="headerlink" title="2. 多轮对话不容易失忆"></a>2. 多轮对话不容易失忆</h3><p>当窗口足够长时，前面几十轮甚至更多轮的对话都还能被保留下来。</p>
+<p>这意味着模型更容易记住：</p>
+<ul>
+<li>初始目标；</li>
+<li>最开始定义的规则；</li>
+<li>前面讨论过的术语口径；</li>
+<li>之前确认过的输出结构。</li>
+</ul>
+<p>在复杂协作式任务里，这一点非常重要。</p>
+<h3 id="3-更适合做全局关联分析"><a href="#3-更适合做全局关联分析" class="headerlink" title="3. 更适合做全局关联分析"></a>3. 更适合做全局关联分析</h3><p>很多任务不是只看局部片段就能完成的，而是必须跨章节、跨段落、跨文件做整体理解。</p>
+<p>比如：</p>
+<ul>
+<li>比较合同前后条款是否冲突；</li>
+<li>找论文结论是否与前文实验设置一致；</li>
+<li>做整仓代码架构梳理；</li>
+<li>对长文做统一改写与逻辑复盘。</li>
+</ul>
+<p>在这类场景里，长上下文的优势非常明显，因为模型不是在碎片化地看内容，而是在更完整的全局视角下做分析。</p>
+<hr>
+<h2 id="四、为什么“窗口越大越好”是个误区？"><a href="#四、为什么“窗口越大越好”是个误区？" class="headerlink" title="四、为什么“窗口越大越好”是个误区？"></a>四、为什么“窗口越大越好”是个误区？</h2><p>很多人第一次接触长上下文模型时，会自然得出一个结论：既然大窗口能装更多信息，那肯定越大越好。</p>
+<p>但工程实践里，这其实是一个非常常见的新手误区。</p>
+<p>长上下文并不是没有代价的，它反而伴随着几个很容易踩坑的硬伤。</p>
+<h3 id="1-成本更高，速度更慢"><a href="#1-成本更高，速度更慢" class="headerlink" title="1. 成本更高，速度更慢"></a>1. 成本更高，速度更慢</h3><p>上下文越长，模型在注意力计算时要处理的内容就越多。</p>
+<p>这直接带来几件事：</p>
+<ul>
+<li>输入 token 成本上升；</li>
+<li>推理延迟变长；</li>
+<li>整体调用价格更贵；</li>
+<li>并发吞吐下降。</li>
+</ul>
+<p>如果业务是高频调用、批量调用或在线实时调用，这个差异会非常明显。</p>
+<p>所以在很多企业场景里，长上下文并不只是“更强”，它首先意味着“更贵”。</p>
+<h3 id="2-注意力会被稀释"><a href="#2-注意力会被稀释" class="headerlink" title="2. 注意力会被稀释"></a>2. 注意力会被稀释</h3><p>这是最关键、也最容易被忽视的问题。</p>
+<p>很多人以为信息越多越好，但实际上，当你把几万字甚至十几万字内容一股脑全塞进模型时，模型并不一定会因此更精准，反而可能更容易忽略真正关键的信息。</p>
+<p>因为在超长文本里：</p>
+<ul>
+<li>冗余信息变多；</li>
+<li>无关片段变多；</li>
+<li>关键信息被埋得更深；</li>
+<li>模型对核心细节的关注度被分散。</li>
+</ul>
+<p>这就是所谓的“注意力稀释”。</p>
+<p>结果就是：看起来给了更多材料，实际上回答却可能更飘、更泛、更抓不住重点。</p>
+<h3 id="3-幻觉和逻辑混乱更容易增加"><a href="#3-幻觉和逻辑混乱更容易增加" class="headerlink" title="3. 幻觉和逻辑混乱更容易增加"></a>3. 幻觉和逻辑混乱更容易增加</h3><p>长文本本身往往包含更多语义冲突、更多模糊片段、更多跨段关系。</p>
+<p>当这些内容一起进入上下文时，模型更容易出现：</p>
+<ul>
+<li>错误关联；</li>
+<li>前后矛盾；</li>
+<li>引用错位；</li>
+<li>逻辑链路混乱；</li>
+<li>结论偏离重点。</li>
+</ul>
+<p>也就是说，长上下文并不是“自动提升质量”的万能钥匙。很多时候，它只是提供了更大的输入空间，而不是更强的筛选能力。</p>
+<hr>
+<h2 id="五、长上下文和-RAG，到底该怎么选？"><a href="#五、长上下文和-RAG，到底该怎么选？" class="headerlink" title="五、长上下文和 RAG，到底该怎么选？"></a>五、长上下文和 RAG，到底该怎么选？</h2><p>这是大模型工程里最常见、也最实用的一个选型问题。</p>
+<p>很多团队都会在这里纠结：到底应该直接上超长上下文模型，还是用短窗口模型加 RAG？</p>
+<p>一个非常实用的判断方式是：<strong>你到底是要模型“全量读完”，还是只要它“精准找到相关内容”。</strong></p>
+<h3 id="更适合用-RAG-的场景"><a href="#更适合用-RAG-的场景" class="headerlink" title="更适合用 RAG 的场景"></a>更适合用 RAG 的场景</h3><p>RAG 更适合这些情况：</p>
+<ul>
+<li>知识库问答；</li>
+<li>海量文档中查某个问题；</li>
+<li>资料持续更新；</li>
+<li>高频业务调用；</li>
+<li>大篇幅材料里只需要局部相关内容；</li>
+<li>企业私有知识需要动态接入。</li>
+</ul>
+<p>RAG 的核心思路不是把所有材料一次性塞给模型，而是先通过检索找出最相关的少量片段，再把这些片段交给模型回答。</p>
+<p>它的优势在于：</p>
+<ul>
+<li>成本更低；</li>
+<li>延迟更稳；</li>
+<li>相关性更集中；</li>
+<li>动态知识更新更方便；</li>
+<li>能有效避免海量冗余信息稀释注意力。</li>
+</ul>
+<h3 id="更适合用长上下文的场景"><a href="#更适合用长上下文的场景" class="headerlink" title="更适合用长上下文的场景"></a>更适合用长上下文的场景</h3><p>长上下文更适合这些任务：</p>
+<ul>
+<li>合同全文审阅；</li>
+<li>论文精读；</li>
+<li>整仓代码理解；</li>
+<li>全文统一改写；</li>
+<li>长报告全局对比；</li>
+<li>需要跨章节整体关联的复杂任务。</li>
+</ul>
+<p>这类任务的问题在于：你不能只取几个片段，因为真正的答案很可能依赖全文结构、段落前后关系、不同章节之间的对应逻辑。</p>
+<p>此时如果强行用 RAG 切碎，可能会损失整体语义关系。</p>
+<h3 id="一个工程上非常实用的结论"><a href="#一个工程上非常实用的结论" class="headerlink" title="一个工程上非常实用的结论"></a>一个工程上非常实用的结论</h3><p>如果问题的本质是“从很多内容里找最相关的一小部分”，优先考虑 <strong>RAG</strong>。</p>
+<p>如果问题的本质是“必须通读完整材料并保持整体关联”，再考虑 <strong>长上下文模型</strong>。</p>
+<p>换句话说：</p>
+<p><strong>细碎知识库更适合 RAG，完整文件精读更适合长上下文。</strong></p>
+<hr>
+<h2 id="六、上下文窗口的工程最佳实践"><a href="#六、上下文窗口的工程最佳实践" class="headerlink" title="六、上下文窗口的工程最佳实践"></a>六、上下文窗口的工程最佳实践</h2><p>理解原理之后，更重要的是如何在系统里真正把它用对。</p>
+<h3 id="1-不要盲目迷信大窗口"><a href="#1-不要盲目迷信大窗口" class="headerlink" title="1. 不要盲目迷信大窗口"></a>1. 不要盲目迷信大窗口</h3><p>在大多数业务里，真正需要整份长文全文理解的情况，并没有想象中那么多。</p>
+<p>很多任务其实只是：</p>
+<ul>
+<li>查一个问题；</li>
+<li>找一个字段；</li>
+<li>抽一段信息；</li>
+<li>根据少量材料回答。</li>
+</ul>
+<p>这种场景下，短窗口模型配合 RAG，通常成本更低、稳定性更高、整体性价比也更好。</p>
+<h3 id="2-系统提示词要尽量精简"><a href="#2-系统提示词要尽量精简" class="headerlink" title="2. 系统提示词要尽量精简"></a>2. 系统提示词要尽量精简</h3><p>很多项目一开始就把系统提示词写得特别长，结果关键业务信息还没进来，窗口已经被说明文字吃掉一大块。</p>
+<p>所以系统提示词的原则应该是：</p>
+<ul>
+<li>保留真正有效的规则；</li>
+<li>删除冗余套话；</li>
+<li>减少重复约束；</li>
+<li>把关键规则写得短而明确。</li>
+</ul>
+<p>窗口是预算，不要把预算浪费在形式化废话上。</p>
+<h3 id="3-多轮对话要做历史修剪"><a href="#3-多轮对话要做历史修剪" class="headerlink" title="3. 多轮对话要做历史修剪"></a>3. 多轮对话要做历史修剪</h3><p>如果是长期对话系统，不能无限堆历史消息。</p>
+<p>更稳妥的做法是：</p>
+<ul>
+<li>保留任务起点；</li>
+<li>保留最近关键轮次；</li>
+<li>删除中间无效闲聊；</li>
+<li>必要时做摘要压缩。</li>
+</ul>
+<p>这样既能保住上下文连续性，又能防止窗口被历史垃圾信息挤爆。</p>
+<h3 id="4-长文档优先考虑切片与筛选"><a href="#4-长文档优先考虑切片与筛选" class="headerlink" title="4. 长文档优先考虑切片与筛选"></a>4. 长文档优先考虑切片与筛选</h3><p>并不是所有长文都要原样整篇喂给模型。</p>
+<p>如果任务本身并不依赖全文逻辑，而只是要回答某个问题，那么先切片、再检索、再召回核心片段，通常会比整篇硬塞更有效。</p>
+<p>这本质上是在主动对抗注意力稀释。</p>
+<h3 id="5-关键信息要放在模型更容易注意的位置"><a href="#5-关键信息要放在模型更容易注意的位置" class="headerlink" title="5. 关键信息要放在模型更容易注意的位置"></a>5. 关键信息要放在模型更容易注意的位置</h3><p>很多模型对开头和结尾的信息相对更敏感。</p>
+<p>因此在实际提示设计中，最好把这些内容尽量前置或后置：</p>
+<ul>
+<li>核心规则；</li>
+<li>真正任务目标；</li>
+<li>不能违反的约束；</li>
+<li>最终输出格式要求。</li>
+</ul>
+<p>不要把最重要的信息埋在一堆冗长背景材料中间。</p>
+<hr>
+<h2 id="七、全文总结"><a href="#七、全文总结" class="headerlink" title="七、全文总结"></a>七、全文总结</h2><p>上下文窗口决定了大模型的记忆上限、视野上限和理解上限。</p>
+<p>但它并不是越大越万能。</p>
+<p>短窗口模型往往更便宜、更精准，也更适合和 RAG 组成高性价比方案；长上下文模型虽然更适合全局理解，但代价更高，也更容易受到注意力稀释和长文本幻觉的影响。</p>
+<p>真正成熟的大模型工程思维，不是单纯追求“窗口最大”，而是根据任务本质选择最合适的路线：</p>
+<ul>
+<li>能检索定位的任务，优先 RAG；</li>
+<li>必须全文理解的任务，再上长上下文；</li>
+<li>能省窗口的地方，尽量省；</li>
+<li>能减少冗余输入的地方，尽量减。</li>
+</ul>
+<p>当你把上下文窗口的逻辑想清楚之后，Prompt 设计、参数使用、RAG 选型、模型选择，其实都会自然串成一套完整的判断体系。</p>
+<p>而这，正是从“会用 AI”走向“能把 AI 落地”的关键一步。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -259,6 +541,161 @@
 <p>所以，Project Eden 的价值不只是把 3D 生成推进到交互内容阶段，更在于为世界规则学习、仿真模拟、具身智能和多智能体协同提供一个可以被反复进入、持续实验的环境。</p>
 <h2 id="结尾"><a href="#结尾" class="headerlink" title="结尾"></a>结尾</h2><p>如果只看表面，Project Eden 像是在做一个更强的 3D 世界生成模型。但更值得关注的，是它把世界模型的问题重新写了一遍：不是继续预测画面，而是先维护世界本身。</p>
 <p>一旦这条路线成立，世界模型就不再只是“把视频做得更真”，而是第一次真正有机会从内容生成走向环境生成。从这个意义上说，Project Eden 最值得关注的地方，不是它又做出了一个惊艳 demo，而是它让世界模型第一次更像“世界”，而不只是“视频”。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://blog.leolabs.top/2026/06/01/rtx-spark-personal-pc-ai-era/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="liuxiaoran">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="leo工作室">
+      <meta itemprop="description" content="You adored the light,so you will never fear the darkness">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | leo工作室">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2026/06/01/rtx-spark-personal-pc-ai-era/" class="post-title-link" itemprop="url">RTX Spark 来了：为什么它可能重新定义个人 PC 的 AI 时代</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2026-06-01 00:00:00" itemprop="dateCreated datePublished" datetime="2026-06-01T00:00:00+08:00">2026-06-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/AI%E5%B7%A5%E7%A8%8B/" itemprop="url" rel="index"><span itemprop="name">AI工程</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="RTX-Spark-来了：为什么它可能重新定义个人-PC-的-AI-时代"><a href="#RTX-Spark-来了：为什么它可能重新定义个人-PC-的-AI-时代" class="headerlink" title="RTX Spark 来了：为什么它可能重新定义个人 PC 的 AI 时代"></a>RTX Spark 来了：为什么它可能重新定义个人 PC 的 AI 时代</h1><p>今天，英伟达的 NVIDIA GTC Taipei 2026 如约而至。</p>
+<p>发布会上讲了很多东西，但如果只挑一个最值得单独拎出来讲的，我觉得就是 <strong>RTX Spark</strong>。</p>
+<p>因为它不是一次普通的产品更新，而更像是英伟达在试着回答一个问题：<strong>个人电脑诞生 40 年之后，AI 时代的 PC，到底该重新长成什么样。</strong></p>
+<p>“A New Line, A New Beginning。”</p>
+<p>这句口号放在这次发布里，并不只是营销话术。至少从英伟达给出的路线来看，它想做的并不只是更强的消费级芯片，而是把“本地大模型 + 统一内存 + CUDA + Windows 原生 Agent”第一次比较完整地装进一台个人电脑里。</p>
+<p><img src="/images/2026/06/rtx-spark-original-cover.jpg" alt="RTX Spark 发布会原图"></p>
+<p>过去半年，AI 的主要进展几乎都发生在云端。</p>
+<p>OpenClaw、Claude Code、Codex 这类产品的背后，本质上还是云端大模型在持续变强。但如果视角回到 ToC 端硬件，你会发现真正有决定性变化的东西并不多。</p>
+<p>可问题是，谁不想把大模型和 Agent 真正部署到自己的本地端？</p>
+<p>低延迟、隐私保护、无需网络，不只是推理，甚至还可以微调。那种自由又安全的感觉，始终很有吸引力。</p>
+<p>所以，这次 RTX Spark 真正打动人的地方，不是它又多了一块新芯片，而是它让“本地 AI PC”这件事第一次显得没那么像概念，而像是一条正在被认真推进的产品线。</p>
+<h2 id="RTX-Spark，到底给了什么？"><a href="#RTX-Spark，到底给了什么？" class="headerlink" title="RTX Spark，到底给了什么？"></a>RTX Spark，到底给了什么？</h2><p>如果只看参数，这次的东西已经很夸张了。</p>
+<ul>
+<li>最高 <strong>1 PFLOP 的 FP4 AI 性能</strong></li>
+<li><strong>20 个 CPU 核心</strong></li>
+<li><strong>6144 个 GPU 核心</strong></li>
+<li><strong>128GB LPDDR5X 统一内存</strong></li>
+<li>官方给出的定位，是可以在本地直接承载 <strong>120B 级模型</strong></li>
+</ul>
+<p><img src="/images/2026/06/rtx-spark-original-chip.jpg" alt="RTX Spark 芯片图"></p>
+<p>这组参数最重要的意义，不在于看起来够不够猛，而在于它在个人消费级设备里，第一次比较明确地把“本地跑更大模型”这件事推到了主舞台上。</p>
+<p>如果只是云端推理更快，那还是云服务的故事；但如果个人电脑本身开始具备稳定承载大模型和 Agent 的能力，那就是另一条路了。</p>
+<h2 id="为什么这次最关键的是统一内存"><a href="#为什么这次最关键的是统一内存" class="headerlink" title="为什么这次最关键的是统一内存"></a>为什么这次最关键的是统一内存</h2><p>要理解 RTX Spark，最绕不过去的就是 <strong>统一内存</strong>。</p>
+<p>传统 PC 里，CPU 和 GPU 各有各的内存：</p>
+<ul>
+<li>CPU 用系统内存（RAM）</li>
+<li>GPU 用显存（VRAM）</li>
+<li>两边交换数据，要通过 PCIe 之类的通道来回搬运</li>
+</ul>
+<p>这套架构对很多传统应用没问题，但对本地大模型很不友好。</p>
+<p>比如一台机器有 64GB RAM，再搭一张 16GB VRAM 的显卡。你看起来总内存不小，但 GPU 真正能高速访问的，往往还是那 16GB 显存。</p>
+<p>一旦模型太大，显存放不下，就只能把一部分权重留在系统内存里。GPU 每次需要这些权重时，就得跨通道去拿，结果就是：<strong>理论上能跑，实际上很慢。</strong></p>
+<p>统一内存解决的，就是这个问题。</p>
+<p>当 CPU 和 GPU 共享同一个大内存池之后，GPU 不再被那点独立显存卡得死死的。对本地大模型、长上下文推理、多模态工作负载来说，这几乎是体验能不能真正上一个台阶的关键差别。</p>
+<p>所以这次 RTX Spark 的价值，并不只是“性能更强”，而是它在消费级 PC 上，把统一内存真正推成了 AI 时代的核心卖点。</p>
+<h2 id="那为什么不是-Mac，而是-RTX-Spark-更让行业兴奋？"><a href="#那为什么不是-Mac，而是-RTX-Spark-更让行业兴奋？" class="headerlink" title="那为什么不是 Mac，而是 RTX Spark 更让行业兴奋？"></a>那为什么不是 Mac，而是 RTX Spark 更让行业兴奋？</h2><p>说到统一内存，很多人第一反应都是 Mac。</p>
+<p>这没错。Apple 早就把统一内存做成了自己的主流路线，而且体验也很好。</p>
+<p>但问题在于，<strong>统一内存只是其中一半，另一半是 CUDA。</strong></p>
+<p>这也是为什么 RTX Spark 会让这么多开发者真正兴奋。</p>
+<p>因为对 AI 工程来说，CUDA 从来不只是一个“显卡加速技术”的名字，它是一整套积累了将近二十年的生态。</p>
+<ul>
+<li>cuBLAS 做线性代数</li>
+<li>cuDNN 做深度学习基础运算</li>
+<li>TensorRT 做推理优化</li>
+<li>NCCL 做多卡通信</li>
+<li>大量开源模型、训练代码、推理框架，默认首先支持的依然是 CUDA</li>
+</ul>
+<p>这意味着什么？</p>
+<p>意味着今天你去看学术代码、开源模型、工程教程、性能优化经验，默认语境基本都还是 CUDA。AI 工程界的“母语”，到今天依然是它。</p>
+<p>而 Apple 的问题并不是统一内存不够好，而是它的 GPU 生态更多是 Metal / MLX 路线。推理层面在很多轻量场景已经不错，但一旦进入训练、微调、复杂工作流兼容这些问题，CUDA 的护城河仍然非常深。</p>
+<p>所以 RTX Spark 真正最有杀伤力的点，是它第一次把过去在 PC 端很难兼得的两件事往一起捏：</p>
+<p><strong>统一内存的容量优势 + CUDA 生态的工程优势。</strong></p>
+<h2 id="它瞄准的并不只是硬件，而是一整套本地-Agent-平台"><a href="#它瞄准的并不只是硬件，而是一整套本地-Agent-平台" class="headerlink" title="它瞄准的并不只是硬件，而是一整套本地 Agent 平台"></a>它瞄准的并不只是硬件，而是一整套本地 Agent 平台</h2><p>如果 RTX Spark 只是一块更强的芯片，这次发布不会有这么大反响。</p>
+<p>真正值得注意的是，英伟达讲的已经不只是硬件，而是一套完整的平台路线。</p>
+<p>从发布信息看，这套路线至少包括三层：</p>
+<h3 id="1-底层硬件"><a href="#1-底层硬件" class="headerlink" title="1. 底层硬件"></a>1. 底层硬件</h3><p>RTX Spark 提供统一内存、高带宽和 CUDA 兼容能力，让本地大模型真正有了更现实的承载基础。</p>
+<h3 id="2-系统层支持"><a href="#2-系统层支持" class="headerlink" title="2. 系统层支持"></a>2. 系统层支持</h3><p>微软会和英伟达一起重构 Windows 对本地 Agent 的支持。这件事非常关键，因为它意味着未来 Windows 可能不是“顺便能跑 AI”，而是开始朝“原生承载 Agent 工作流”去改。</p>
+<h3 id="3-安全与运行环境"><a href="#3-安全与运行环境" class="headerlink" title="3. 安全与运行环境"></a>3. 安全与运行环境</h3><p>无论是 Windows security primitives，还是英伟达提到的 OpenShell，本质都在说明一件事：本地 Agent 不能只是能跑，还得能被认证、隔离、授权和管控。</p>
+<p>这点其实很重要。因为真正进入个人生产力和企业环境后，决定一套平台能不能落地的，从来都不只是算力，还包括权限、安全和系统协同。</p>
+<h2 id="这意味着什么？"><a href="#这意味着什么？" class="headerlink" title="这意味着什么？"></a>这意味着什么？</h2><p>如果你是开发者，这套东西的吸引力会很直接：</p>
+<ul>
+<li>本地跑更大的模型</li>
+<li>更自然地做 Agent 工作流</li>
+<li>更低门槛地试多模态应用</li>
+<li>更顺滑地接入 CUDA 现有工具链</li>
+</ul>
+<p>如果你是创作者，这件事也不只是“AI 生图更快”那么简单。</p>
+<p>一旦 Adobe、视频编辑、3D 场景、内容工作流都围绕这种本地 AI 设备做深度优化，那么未来很多创作行为会从“调用云端 AI 服务”，变成“系统原生调用 AI 能力”。这两者的体验逻辑，其实完全不是一回事。</p>
+<h2 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h2><p>RTX Spark 最值得关注的地方，不只是参数强不强，而是它第一次试图把几块长期割裂的能力整合进同一套个人 PC 方案里：</p>
+<ul>
+<li>统一内存</li>
+<li>CUDA 生态</li>
+<li>本地大模型能力</li>
+<li>Windows 原生 Agent 支持</li>
+</ul>
+<p>如果说过去的 AI 浪潮主要发生在云端，那么 RTX Spark 真正想回答的问题就是：<strong>下一波 AI，能不能回到每个人自己的电脑上？</strong></p>
+<p>至少从这次发布会看，英伟达给出的答案已经非常明确了。</p>
+<p>它想开启的，不只是一个新品，而是一整代 AI 原生个人 PC 的起点。</p>
 
       
     </div>
@@ -2441,244 +2878,6 @@
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Prompt 标准化的本质，是把业务规则代码化，把交互经验工程化，把模型输出可控化。</p>
 <p>对于大模型应用开发来说，它往往是成本最低、落地最快、稳定性最强的一类优化手段，也是 AI 应用工程师必须掌握的基础工程能力。</p>
 <p>当业务真正进入规模化阶段，Prompt 不再只是“提问技巧”，而是生产系统中的一层关键控制面。谁先把这层能力标准化，谁就更容易把 AI 从可演示，变成可交付、可运营、可复制的能力。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  <div class="post-gallery" itemscope itemtype="http://schema.org/ImageGallery">
-    
-    <div class="post-gallery-image">
-      <img src="/images/prompt-engineering-cover.png" itemprop="contentUrl">
-    </div>
-    </div>
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://blog.leolabs.top/2026/05/15/2026-05-15-prompt-engineering/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="liuxiaoran">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="leo工作室">
-      <meta itemprop="description" content="You adored the light,so you will never fear the darkness">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | leo工作室">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2026/05/15/2026-05-15-prompt-engineering/" class="post-title-link" itemprop="url">浅谈提示词工程核心原理与工程实践</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2026-05-15 11:00:00" itemprop="dateCreated datePublished" datetime="2026-05-15T11:00:00+08:00">2026-05-15</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="一、什么是提示词工程"><a href="#一、什么是提示词工程" class="headerlink" title="一、什么是提示词工程"></a>一、什么是提示词工程</h2><p>提示词工程，是<strong>面向大语言模型与多模态大模型</strong>，通过结构化设计、优化输入提示文本，引导模型按照指定逻辑、格式、约束与任务范式，稳定输出预期结果的系统化工程方法。</p>
-<p>它不依赖模型微调、无需二次训练，属于<strong>模型推理层的低成本调优手段</strong>，是当前大模型落地业务场景、标准化调用、效果可控化的核心基础能力。</p>
-<h2 id="二、核心底层逻辑"><a href="#二、核心底层逻辑" class="headerlink" title="二、核心底层逻辑"></a>二、核心底层逻辑</h2><p>大模型遵循<strong>上下文学习（In-Context Learning）</strong> 范式，不更新权重，仅依靠输入提示里的：任务描述、角色定义、规则约束、示例样例、输出规范，来推理并对齐用户意图。</p>
-<p>提示词工程的本质，就是<strong>把业务逻辑、任务规则、输出标准全部固化到Prompt上下文</strong>，让模型零训练即可适配各类业务任务。</p>
-<h2 id="三、专业Prompt工程核心构成要素"><a href="#三、专业Prompt工程核心构成要素" class="headerlink" title="三、专业Prompt工程核心构成要素"></a>三、专业Prompt工程核心构成要素</h2><ol>
-<li><p><strong>角色定位</strong><br>指定模型专业身份与知识边界，限定回答领域与专业视角，避免泛化闲聊。</p>
-</li>
-<li><p><strong>任务指令</strong><br>清晰定义目标任务：归纳、推理、改写、代码生成、结构化抽取、多轮对话等。</p>
-</li>
-<li><p><strong>上下文背景</strong><br>补充业务场景、前置信息、约束条件，消除意图歧义。</p>
-</li>
-<li><p><strong>范例引导（Few-shot）</strong><br>给出输入输出示例，让模型模仿固定格式与逻辑，大幅提升结果一致性。</p>
-</li>
-<li><p><strong>格式约束</strong><br>指定输出为Markdown、JSON、表格、分点步骤、结构化字段等，便于程序解析对接业务接口。</p>
-</li>
-<li><p><strong>边界与规则限制</strong><br>限定字数、专业口径、禁止内容、逻辑严谨性、拒绝幻觉输出等。</p>
-</li>
-</ol>
-<h2 id="四、主流工程化设计范式"><a href="#四、主流工程化设计范式" class="headerlink" title="四、主流工程化设计范式"></a>四、主流工程化设计范式</h2><ul>
-<li><strong>零样本提示（Zero-shot）</strong>：无示例，依靠清晰指令直接完成任务，适合通用场景。</li>
-<li><strong>少样本提示（Few-shot）</strong>：附带多条标准样例，适合结构化抽取、固定格式输出。</li>
-<li><strong>思维链CoT</strong>：引导模型分步推理、先思考再给出结论，提升复杂逻辑问题准确率。</li>
-<li><strong>角色隔离+规则锁死</strong>：用于企业业务落地，固定人设、固定口径、禁止自由发挥。</li>
-<li><strong>模块化Prompt</strong>：将角色、规则、模板、示例拆为独立模块，可复用、可配置、便于版本管理。</li>
-</ul>
-<h2 id="五、工程落地应用场景"><a href="#五、工程落地应用场景" class="headerlink" title="五、工程落地应用场景"></a>五、工程落地应用场景</h2><ul>
-<li>企业知识库问答、文档结构化抽取与摘要生成</li>
-<li>代码生成、接口文档编写、算法逻辑解释</li>
-<li>自动化文案生成、业务报表标准化输出</li>
-<li>多模态图文理解、AI绘画标准化正向/反向提示词设计</li>
-<li>智能客服、行业专属大模型对话口径管控</li>
-</ul>
-<h2 id="六、工程化价值总结"><a href="#六、工程化价值总结" class="headerlink" title="六、工程化价值总结"></a>六、工程化价值总结</h2><p>提示词工程是<strong>大模型轻量化落地的最优解</strong>之一，具备低成本、可快速迭代、无需算力训练、跨模型通用的特点。</p>
-<p>规范化、模块化的Prompt设计，能有效抑制模型幻觉、统一输出格式、保障业务结果稳定，是AI工程开发、业务落地必备的基础技能。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://blog.leolabs.top/2026/04/23/cnn-deep-learning/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="liuxiaoran">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="leo工作室">
-      <meta itemprop="description" content="You adored the light,so you will never fear the darkness">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | leo工作室">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2026/04/23/cnn-deep-learning/" class="post-title-link" itemprop="url">一文读懂卷积神经网络（CNN）：深度学习图像处理核心算法</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2026-04-23 22:23:43" itemprop="dateCreated datePublished" datetime="2026-04-23T22:23:43+08:00">2026-04-23</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%97%E6%B3%95%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">算法笔记</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>在深度学习领域，<strong>卷积神经网络（Convolutional Neural Network，CNN）</strong>是专为图像、视频、网格类数据设计的经典算法，也是计算机视觉技术的基石。</p>
-<p>从手机人脸识别、相册智能分类，到自动驾驶路况识别、医学影像病灶检测，都离不开它的支撑。</p>
-<p>CNN 的核心设计思路，是模拟人类大脑视觉皮层的工作原理：我们观察物体时，会先捕捉边缘、线条等基础特征，再逐步组合成完整的物体轮廓；而 CNN 通过分层特征提取，自动从数据中学习有效信息，无需人工手动设计特征，完美解决了传统算法处理图像时效率低、准确率差的问题。</p>
-<hr>
-<h2 id="CNN-核心结构极简解析"><a href="#CNN-核心结构极简解析" class="headerlink" title="CNN 核心结构极简解析"></a>CNN 核心结构极简解析</h2><h3 id="1-卷积层"><a href="#1-卷积层" class="headerlink" title="1. 卷积层"></a>1. 卷积层</h3><p>算法核心，通过卷积核（过滤器）在图像上滑动，提取边缘、纹理、色彩等基础视觉特征，利用<strong>权值共享</strong>、<strong>局部连接</strong>大幅减少模型参数，提升计算效率。</p>
-<h3 id="2-池化层"><a href="#2-池化层" class="headerlink" title="2. 池化层"></a>2. 池化层</h3><p>对特征图进行降维采样，在保留关键特征的同时，压缩数据量、降低计算复杂度，还能增强模型的<strong>鲁棒性</strong>。</p>
-<h3 id="3-全连接层"><a href="#3-全连接层" class="headerlink" title="3. 全连接层"></a>3. 全连接层</h3><p>汇总前面提取的所有特征，将高维特征映射到样本标签空间，最终完成分类、识别等任务输出。</p>
-<hr>
-<h2 id="CNN-核心优势"><a href="#CNN-核心优势" class="headerlink" title="CNN 核心优势"></a>CNN 核心优势</h2><ul>
-<li><strong>自动提取特征</strong>：省去繁琐的人工特征工程，让模型自己学习有效信息。</li>
-<li><strong>处理效果好</strong>：对图像、语音等结构化数据处理效果极佳，泛化能力强。</li>
-<li><strong>效率高</strong>：参数量少、训练效率高，适配深度学习多层架构。</li>
-</ul>
-<hr>
-<h2 id="典型应用场景"><a href="#典型应用场景" class="headerlink" title="典型应用场景"></a>典型应用场景</h2><table>
-<thead>
-<tr>
-<th align="left">领域</th>
-<th align="left">应用</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">图像处理</td>
-<td align="left">图像分类、目标检测与分割</td>
-</tr>
-<tr>
-<td align="left">人脸识别</td>
-<td align="left">手机解锁、支付验证、图像风格迁移</td>
-</tr>
-<tr>
-<td align="left">医疗</td>
-<td align="left">医学影像分析、病灶检测</td>
-</tr>
-<tr>
-<td align="left">自动驾驶</td>
-<td align="left">视觉感知、路况识别、行人检测</td>
-</tr>
-<tr>
-<td align="left">文字与视频</td>
-<td align="left">OCR 文字识别、视频内容理解</td>
-</tr>
-</tbody></table>
-<hr>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>卷积神经网络凭借独特的结构优势，成为计算机视觉领域最主流的算法，也是深度学习入门必学模型。</p>
-<p>即便没有深厚的数学基础，也能快速理解其核心逻辑，轻松上手相关实践任务。</p>
 
       
     </div>
